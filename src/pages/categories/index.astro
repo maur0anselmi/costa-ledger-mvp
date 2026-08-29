@@ -1,0 +1,301 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allDossiers = await getCollection('intelligence');
+
+const taxonomy = [
+  {
+    pillar: "PROPERTY & CAPITAL",
+    subcategories: [
+      "Property & Estate Investments",
+      "High-Yield Rentals & Commercial",
+      "Business Acquisitions & Ventures",
+      "Mortgage & Capital Structuring"
+    ]
+  },
+  {
+    pillar: "LEGAL & TAXES",
+    subcategories: [
+      "Visa & Residency Pathways",
+      "Cross-Border Tax Analysis",
+      "International Banking & Accounts",
+      "Corporate Privacy & Estates"
+    ]
+  },
+  {
+    pillar: "LIFESTYLE & WELLNESS",
+    subcategories: [
+      "Elite Schools & IB Education",
+      "Private Healthcare & Clinics",
+      "Yachting, Golf & Private Clubs",
+      "Aviation & Vehicle Logistics"
+    ]
+  }
+];
+---
+
+<Layout title="Costa Ledger - Intelligence Vault">
+  
+  <!-- REGIONAL FILTER BAR -->
+<section class="bg-[#07182D] text-[#F9F9F6] py-2 border-b border-[#C5A059]/20">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-wrap items-center justify-between gap-3 text-[11px]">
+    <div class="flex items-center gap-2 font-bold tracking-widest uppercase text-slate-300">
+      <span class="w-2 h-2 bg-[#C5A059]"></span>
+      <span>FILTER BY REGION:</span>
+    </div>
+    <div class="flex flex-wrap gap-2 text-xs font-semibold tracking-wider uppercase">
+      <button 
+        data-region="all" 
+        class="region-btn bg-[#C5A059] text-[#07182D] px-3 py-1 font-bold transition-all"
+      >
+        ALL SOUTHERN EUROPE
+      </button>
+      <button 
+        data-region="Costa del Sol" 
+        class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
+      >
+        COSTA DEL SOL
+      </button>
+      <button 
+        data-region="Gibraltar" 
+        class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
+      >
+        GIBRALTAR
+      </button>
+      <button 
+        data-region="Portugal" 
+        class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
+      >
+        PORTUGAL
+      </button>
+    </div>
+  </div>
+</section>
+
+  <!-- MAIN SPLIT VIEW CONTENT -->
+  <main class="max-w-7xl mx-auto px-6 lg:px-12 py-12 flex-grow w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      
+      <!-- LEFT SIDEBAR: COMPLETE TAXONOMY -->
+      <aside class="lg:col-span-3 space-y-8">
+        <div>
+          <div class="flex items-center justify-between mb-4 border-b border-[#E5E4DF] pb-2">
+            <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-[#666666]">INTELLIGENCE INDEX</h3>
+            <button id="reset-filters" class="hidden text-[10px] text-[#C5A059] hover:underline font-bold uppercase cursor-pointer">RESET FILTERS</button>
+          </div>
+          
+          {taxonomy.map(section => (
+            <div class="mb-6">
+              <span class="font-serif font-bold text-base text-[#121212] block mb-2">{section.pillar}</span>
+              <ul class="space-y-1.5 text-xs text-[#2A2E33] border-l border-[#E5E4DF] pl-3">
+                {section.subcategories.map(sub => (
+                  <li>
+                    <button 
+                      data-sub={sub} 
+                      class="sub-btn text-left hover:text-[#C5A059] transition-colors block cursor-pointer w-full py-0.5"
+                    >
+                      {sub}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <!-- SIDEBAR LEAD MAGNET -->
+        <div class="bg-[#07182D] p-6 text-[#F9F9F6] space-y-3 border-l-2 border-[#C5A059]">
+          <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
+          <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
+          <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
+          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
+        </div>
+      </aside>
+
+      <!-- RIGHT PANEL -->
+      <section class="lg:col-span-9 space-y-8">
+        
+        <!-- KEY METRICS BANNER -->
+        <div class="bg-white border border-[#E5E4DF] p-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <span class="text-[10px] tracking-widest text-[#666666] uppercase block">AVG REAL ESTATE YIELD</span>
+            <span class="font-serif text-xl font-bold text-[#121212]">5.8% – 7.2%</span>
+          </div>
+          <div>
+            <span class="text-[10px] tracking-widest text-[#666666] uppercase block">BECKHAM LAW CAP</span>
+            <span class="font-serif text-xl font-bold text-[#C5A059]">24% Flat</span>
+          </div>
+          <div>
+            <span class="text-[10px] tracking-widest text-[#666666] uppercase block">GOLDEN VISA STATUS</span>
+            <span class="font-serif text-xl font-bold text-[#121212]">Active Pathways</span>
+          </div>
+          <div>
+            <span class="text-[10px] tracking-widest text-[#666666] uppercase block">GIBRALTAR CAT 2 CAP</span>
+            <span class="font-serif text-xl font-bold text-[#121212]">£44,700 Tax Max</span>
+          </div>
+        </div>
+
+        <!-- DOSSIERS LIST CONTAINER -->
+        <div id="dossiers-container" class="space-y-6">
+          {allDossiers.map(dossier => (
+            <div 
+              class="dossier-card bg-white border-l-4 border-[#C5A059] border-y border-r border-[#E5E4DF] p-8 shadow-sm"
+              data-regions={JSON.stringify(dossier.data.region)}
+              data-subs={JSON.stringify(dossier.data.subcategory)}
+              data-pillars={JSON.stringify(dossier.data.pillar)}
+            >
+              <div class="flex items-center justify-between mb-3">
+                <span class="bg-[#C5A059] text-[#07182D] text-[9px] font-bold tracking-widest uppercase px-2 py-0.5">
+                  {dossier.data.badgeType}
+                </span>
+                <span class="text-[11px] text-[#666666]">
+                  {dossier.data.publishedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} • {dossier.data.region.join(' & ')}
+                </span>
+              </div>
+              <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#121212] mb-3">
+                {dossier.data.title}
+              </h2>
+              <p class="text-xs md:text-sm text-[#2A2E33] leading-relaxed mb-4">
+                {dossier.data.summary}
+              </p>
+              <div class="flex items-center justify-between border-t border-[#E5E4DF] pt-4">
+                <span class="text-[11px] font-semibold text-[#121212] uppercase tracking-wider">
+                  {dossier.data.pillar.join(' & ')} / {dossier.data.subcategory.join(' & ')}
+                </span>
+                <a href={`/intelligence/${dossier.id}`} class="text-xs font-bold text-[#C5A059] hover:text-[#07182D] uppercase tracking-widest flex items-center gap-1">
+                  READ DOSSIER →
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- PENDING VERIFICATION STATE -->
+        <div id="verification-state" class="hidden bg-white border-l-4 border-[#07182D] border-y border-r border-[#E5E4DF] p-8 md:p-12 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <span class="bg-[#07182D] text-[#F9F9F6] text-[9px] font-bold tracking-[0.2em] uppercase px-2.5 py-1 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse"></span>
+              VERIFICATION IN PROGRESS
+            </span>
+            <span class="text-[11px] text-[#666666] font-mono">CODE: CL-AUDIT-2026</span>
+          </div>
+
+          <h3 class="font-serif text-2xl md:text-3xl font-bold text-[#121212] mb-3">
+            Dossier Under Institutional Compliance Review
+          </h3>
+
+          <p class="text-xs md:text-sm text-[#2A2E33] leading-relaxed mb-6 max-w-2xl">
+            Our legal and market intelligence desk is currently validating cross-border tax implications and primary asset source data for <strong id="active-filter-label" class="text-[#07182D] font-bold">this section</strong>. To preserve institutional accuracy for HNWI clients, unverified figures remain restricted from public indexing.
+          </p>
+
+          <div class="pt-6 border-t border-[#E5E4DF] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="text-[11px] text-[#666666]">
+              <span class="font-bold text-[#121212] uppercase">Estimated Release:</span> Pending Desk Sign-off
+            </div>
+            
+            <a 
+              href="/join" 
+              class="inline-flex items-center gap-2 bg-[#C5A059] hover:bg-[#B28E46] text-white text-xs uppercase font-bold tracking-widest px-6 py-3 transition-colors font-bold"
+            >
+              <span>REQUEST DIRECT DESK BRIEFING</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      let selectedRegion = 'all';
+      let selectedSub = null;
+
+      const regionBtns = document.querySelectorAll('.region-btn');
+      const subBtns = document.querySelectorAll('.sub-btn');
+      const cards = document.querySelectorAll('.dossier-card');
+      const verificationState = document.getElementById('verification-state');
+      const activeFilterLabel = document.getElementById('active-filter-label');
+      const resetBtn = document.getElementById('reset-filters');
+
+      function filterContent() {
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          const cardRegions = JSON.parse(card.getAttribute('data-regions') || '[]');
+          const cardSubs = JSON.parse(card.getAttribute('data-subs') || '[]');
+
+          const matchesRegion = (selectedRegion === 'all' || cardRegions.some(r => r.toLowerCase() === selectedRegion.toLowerCase()));
+          const matchesSub = (!selectedSub || cardSubs.some(s => s.toLowerCase() === selectedSub.toLowerCase()));
+
+          if (matchesRegion && matchesSub) {
+            card.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        if (visibleCount === 0) {
+          verificationState.classList.remove('hidden');
+          activeFilterLabel.textContent = selectedSub ? `"${selectedSub}"` : `selected region (${selectedRegion})`;
+        } else {
+          verificationState.classList.add('hidden');
+        }
+
+        if (selectedRegion !== 'all' || selectedSub !== null) {
+          resetBtn.classList.remove('hidden');
+        } else {
+          resetBtn.classList.add('hidden');
+        }
+      }
+
+      regionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedRegion = btn.getAttribute('data-region');
+          regionBtns.forEach(b => {
+            b.classList.remove('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
+            b.classList.add('bg-[#0B223D]', 'text-gray-200');
+          });
+          btn.classList.remove('bg-[#0B223D]', 'text-gray-200');
+          btn.classList.add('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
+          filterContent();
+        });
+      });
+
+      subBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const sub = btn.getAttribute('data-sub');
+          if (selectedSub === sub) {
+            selectedSub = null;
+            btn.classList.remove('text-[#C5A059]', 'font-bold');
+          } else {
+            subBtns.forEach(b => b.classList.remove('text-[#C5A059]', 'font-bold'));
+            selectedSub = sub;
+            btn.classList.add('text-[#C5A059]', 'font-bold');
+          }
+          filterContent();
+        });
+      });
+
+      resetBtn.addEventListener('click', () => {
+        selectedRegion = 'all';
+        selectedSub = null;
+        regionBtns.forEach((b, idx) => {
+          if (idx === 0) {
+            b.classList.add('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
+            b.classList.remove('bg-[#0B223D]', 'text-gray-200');
+          } else {
+            b.classList.remove('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
+            b.classList.add('bg-[#0B223D]', 'text-gray-200');
+          }
+        });
+        subBtns.forEach(b => b.classList.remove('text-[#C5A059]', 'font-bold'));
+        filterContent();
+      });
+    });
+  </script>
+</Layout>

@@ -1,0 +1,292 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Costa Ledger - The Briefing Access</title>
+  
+  <!-- Carga directa de Tailwind con directiva is:inline para Astro -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            offwhite: '#F9F9F6',
+            brandGold: '#C5A059',
+            brandGoldHover: '#B28E46',
+            brandDark: '#121212',
+            brandSlate: '#2A2E33',
+            brandMuted: '#666666',
+            brandBorder: '#E5E4DF'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F9F9F6;
+      color: #121212;
+    }
+    .custom-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%3cC5A059' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1.1em;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased selection:bg-brandGold selection:text-white min-h-screen flex flex-col justify-between">
+
+  <!-- HEADER DEDICADO PORTAL PRIVADO -->
+  <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 h-24 flex items-center justify-between">
+      
+      <!-- LOGO CON DIMENSIONES BLINDADAS -->
+      <a href="/" class="flex items-center gap-3.5 group">
+        <svg 
+          width="48" 
+          height="48" 
+          style="width: 48px; height: 48px; max-width: 48px; max-height: 48px;" 
+          class="text-brandGold flex-shrink-0 transition-transform duration-500 group-hover:rotate-45" 
+          viewBox="0 0 100 100" 
+          fill="none" 
+          stroke="currentColor"
+        >
+          <circle cx="50" cy="50" r="47" stroke-width="1.5"/>
+          <ellipse cx="50" cy="50" rx="21" ry="47" stroke-width="1.2"/>
+          <ellipse cx="50" cy="50" rx="47" ry="21" stroke-width="1.2"/>
+          <path d="M50 10 L54 38 L82 22 L62 46 L90 50 L62 54 L82 78 L54 62 L50 90 L46 62 L18 78 L38 54 L10 50 L38 46 L18 22 L46 38 Z" fill="#C5A059" stroke="none"/>
+          <circle cx="50" cy="50" r="2.5" fill="#F9F9F6"/>
+        </svg>
+
+        <div class="flex flex-col justify-center">
+          <span class="font-serif text-[25px] font-bold tracking-[0.06em] text-brandDark uppercase leading-none mb-1">
+            COSTA LEDGER
+          </span>
+          <span class="text-[8px] tracking-[0.06em] text-brandGold uppercase font-bold leading-none">
+            INTELLIGENCE FOR BETTER DECISIONS
+          </span>
+        </div>
+      </a>
+
+      <!-- DERECHA: TEXTO ESTADO -->
+      <span class="text-xs font-bold tracking-[0.15em] text-brandMuted uppercase hidden md:inline-block">
+        PRIVATE SUBSCRIBER PORTAL
+      </span>
+
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-grow flex items-center py-12 lg:py-20">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      
+      <!-- COLUMNA IZQUIERDA: PROPUESTA DE VALOR -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="inline-flex items-center gap-2">
+          <span class="w-2 h-2 bg-brandGold"></span>
+          <span class="text-xs font-bold tracking-[0.25em] text-brandMuted uppercase">SOUTHERN EUROPE • PRIVATE MARKET RADAR</span>
+        </div>
+
+        <h1 class="font-serif text-4xl sm:text-5xl font-normal tracking-tight text-brandDark leading-[1.08]">
+          THE INSIGHTS YOU NEED BEFORE YOU MOVE OR INVEST.
+        </h1>
+
+        <p class="text-base text-brandSlate font-normal leading-relaxed">
+          Agile market alerts, regulatory commentary, and independent briefs on Southern Europe real estate, visas, and capital frameworks.
+        </p>
+
+        <div class="space-y-4 pt-6 border-t border-brandBorder">
+          <div class="flex gap-4 items-start">
+            <span class="text-brandGold font-serif font-bold text-xl">01</span>
+            <div>
+              <strong class="block text-xs uppercase tracking-wider text-brandDark font-bold mb-0.5">Market Radar</strong>
+              <span class="text-xs text-brandMuted leading-relaxed">Prompt updates when visa requirements, tax policies, or mortgage rates shift.</span>
+            </div>
+          </div>
+          
+          <div class="flex gap-4 items-start">
+            <span class="text-brandGold font-serif font-bold text-xl">02</span>
+            <div>
+              <strong class="block text-xs uppercase tracking-wider text-brandDark font-bold mb-0.5">Independent Analysis</strong>
+              <span class="text-xs text-brandMuted leading-relaxed">Objective commentary on emerging developments across Southern Europe and Gibraltar.</span>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start">
+            <span class="text-brandGold font-serif font-bold text-xl">03</span>
+            <div>
+              <strong class="block text-xs uppercase tracking-wider text-brandDark font-bold mb-0.5">Special Reports</strong>
+              <span class="text-xs text-brandMuted leading-relaxed">Periodic deep-dive PDF guides for international relocation and property acquisitions.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: TARJETA FORMULARIO -->
+      <div class="lg:col-span-6">
+        <div class="bg-white p-8 sm:p-10 border border-brandBorder shadow-xl relative">
+          
+          <div class="border-b border-brandBorder pb-5 mb-6">
+            <span class="text-[10px] font-bold tracking-[0.25em] text-brandGold uppercase block mb-1">FREE SUBSCRIBER ACCESS</span>
+            <h2 class="font-serif text-2xl font-bold text-brandDark">JOIN THE BRIEFING</h2>
+            <p class="text-xs text-brandMuted mt-1">Direct delivery. High signal, low frequency. Unsubscribe anytime.</p>
+          </div>
+
+          <!-- SUBSCRIPTION FORM -->
+          <form id="subscribeForm" class="space-y-4">
+            
+            <!-- FULL NAME FIELD -->
+            <div>
+              <label for="fullName" class="block text-[11px] font-bold uppercase tracking-wider text-brandDark mb-1">
+                Full Name <span class="text-brandGold">*</span>
+              </label>
+              <input type="text" id="fullName" required placeholder="e.g. Alexander Vance" 
+                class="w-full bg-offwhite border border-brandBorder px-4 py-3.5 text-xs text-brandDark focus:outline-none focus:border-brandGold focus:bg-white transition-colors">
+            </div>
+
+            <!-- EMAIL ADDRESS FIELD -->
+            <div>
+              <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-brandDark mb-1">
+                Official Email Address <span class="text-brandGold">*</span>
+              </label>
+              <input type="email" id="email" required placeholder="alexander@vancecapital.com" 
+                class="w-full bg-offwhite border border-brandBorder px-4 py-3.5 text-xs text-brandDark focus:outline-none focus:border-brandGold focus:bg-white transition-colors">
+            </div>
+
+            <!-- PRIMARY AREA OF INTEREST FIELD -->
+            <div>
+              <label for="interest" class="block text-[11px] font-bold uppercase tracking-wider text-brandDark mb-1">
+                Primary Area of Interest <span class="text-brandGold">*</span>
+              </label>
+              <select id="interest" required 
+                class="custom-select w-full bg-offwhite border border-brandBorder px-4 py-3.5 text-xs text-brandDark focus:outline-none focus:border-brandGold focus:bg-white transition-colors cursor-pointer">
+                <option value="general" selected>General Southern Europe Intelligence (All Topics)</option>
+                <option value="real-estate">Real Estate &amp; Property Acquisitions</option>
+                <option value="visas-taxes">Visas, Residency &amp; Cross-Border Tax</option>
+                <option value="lifestyle-relocation">Lifestyle, Education &amp; Family Relocation</option>
+                <option value="business-assets">Business Acquisitions &amp; Commercial Assets</option>
+              </select>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" id="submitBtn" 
+              class="w-full bg-brandGold hover:bg-brandGoldHover text-white text-xs uppercase font-bold tracking-[0.2em] py-4 transition-all shadow-md hover:shadow-xl mt-2 flex items-center justify-center gap-2 cursor-pointer">
+              <span>SUBSCRIBE TO THE BRIEFING</span>
+              <svg width="16" height="16" style="width:16px; height:16px;" class="text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+
+          </form>
+
+          <div class="mt-6 pt-5 border-t border-brandBorder space-y-2.5">
+            <p class="text-[10px] text-brandMuted leading-relaxed">
+              🔒 <strong>Exclusivity Protocol:</strong> Double verification (Double Opt-In) is required. You will receive an instant confirmation link in your inbox. Fully GDPR compliant.
+            </p>
+            <p class="text-[9.5px] text-brandMuted leading-relaxed italic border-t border-brandBorder/60 pt-2.5">
+              <strong>Regulatory Disclaimer:</strong> Costa Ledger is an independent publisher and market intelligence platform. Content is provided strictly for educational and informational purposes and does not constitute financial, investment, legal, or tax advice.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+<!-- LIGHT FORM FOOTER BAR -->
+<footer class="bg-[#F9F9F6] text-[#666666] py-6 border-t border-[#E5E4DF] font-sans">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+    
+    <!-- LEFT: BRAND & POSITIONING -->
+    <div class="flex items-center gap-2 whitespace-nowrap">
+      <span class="font-serif font-bold text-[#121212] tracking-wider uppercase">COSTA LEDGER</span>
+      <span class="text-[#C5A059]">•</span>
+      <span class="text-[#666666]">Independent Research Unit</span>
+    </div>
+
+    <!-- RIGHT: LEGAL LINKS & COPYRIGHT -->
+    <div class="flex flex-wrap items-center justify-center md:justify-end gap-3 text-[11px] text-[#666666] whitespace-nowrap">
+      <a href="/privacy" class="hover:text-[#C5A059] transition-colors">Privacy Policy</a>
+      <span class="text-[#C5A059]/40">•</span>
+      <a href="/terms" class="hover:text-[#C5A059] transition-colors">Terms of Service</a>
+      <span class="text-[#C5A059]/40">•</span>
+      <a href="/disclosures" class="hover:text-[#C5A059] transition-colors">Disclosures & Disclaimers</a>
+      <span class="text-[#C5A059]/40">•</span>
+      <a href="/cookies" class="hover:text-[#C5A059] transition-colors">Cookie Policy</a>
+      <span class="text-[#C5A059]/40">•</span>
+      <span>© 2026 COSTA LEDGER</span>
+    </div>
+
+  </div>
+</footer>
+
+  <!-- MODAL DE CONFIRMACIÓN (DOUBLE OPT-IN) -->
+  <div id="successModal" class="fixed inset-0 bg-brandDark/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-offwhite max-w-md w-full p-8 border border-brandGold shadow-2xl text-center relative">
+      <div class="w-12 h-12 bg-brandGold/20 rounded-full flex items-center justify-center mx-auto mb-4 text-brandGold">
+        <svg width="24" height="24" style="width:24px; height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+      </div>
+      
+      <span class="text-[10px] font-bold tracking-[0.25em] text-brandGold uppercase block mb-1">VERIFICATION REQUIRED</span>
+      <h3 class="font-serif text-2xl font-bold text-brandDark mb-3">CHECK YOUR EMAIL INBOX</h3>
+      
+      <p class="text-xs text-brandSlate leading-relaxed mb-6">
+        We have dispatched a double opt-in verification link to your email address. Please confirm your subscription to activate your access to <strong>The Ledger Briefing</strong>.
+      </p>
+
+      <button id="closeModalBtn" class="w-full bg-brandDark hover:bg-black text-white text-xs uppercase font-bold tracking-widest py-3.5 transition-all cursor-pointer">
+        RETURN TO PORTAL
+      </button>
+    </div>
+  </div>
+
+  <script is:inline>
+    const form = document.getElementById('subscribeForm');
+    const modal = document.getElementById('successModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (submitBtn) {
+          submitBtn.innerHTML = '<span>VERIFYING PROFILE...</span>';
+          submitBtn.setAttribute('disabled', 'true');
+        }
+
+        setTimeout(() => {
+          if (modal) modal.classList.remove('hidden');
+          if (submitBtn) {
+            submitBtn.innerHTML = '<span>SUBSCRIBE TO THE BRIEFING</span>';
+            submitBtn.removeAttribute('disabled');
+          }
+          form.reset();
+        }, 700);
+      });
+    }
+
+    if (closeModalBtn && modal) {
+      closeModalBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Cookie & Tracking Policy - Costa Ledger">
+  <main class="max-w-3xl mx-auto px-6 lg:px-12 py-16 flex-grow w-full">
+    
+    <!-- HEADER -->
+    <div class="mb-10 border-b border-[#E5E4DF] pb-6">
+      <span class="bg-[#07182D] text-[#F9F9F6] text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 mb-4 inline-block">
+        PRIVACY STANDARDS
+      </span>
+      <h1 class="font-serif text-3xl md:text-4xl font-bold text-[#121212] mb-3">
+        Cookie & Tracking Policy
+      </h1>
+      <div class="text-xs text-[#666666] space-y-1 font-sans">
+        <p><strong>Operating Entity:</strong> MGO Asset Holdings LLC (d/b/a Costa Ledger)</p>
+      </div>
+    </div>
+
+    <!-- DOCUMENT CONTENT -->
+    <div class="prose max-w-none text-sm text-[#2A2E33] leading-relaxed space-y-6">
+      
+      <section>
+        <h2 class="font-serif text-lg font-bold text-[#121212] mb-2">1. Privacy-First Analytics Architecture</h2>
+        <p class="mb-3">
+          Costa Ledger operates a privacy-first web architecture. We utilize Plausible Analytics, an independent, cookie-free analytics solution.
+        </p>
+        <ul class="list-disc pl-5 space-y-2">
+          <li><strong>Zero Persistent Cookies:</strong> We do not place persistent tracking cookies on your device to monitor your behavior across third-party websites.</li>
+          <li><strong>No Personal Identifiers:</strong> Site metrics (page visits, referral sources, content popularity) are aggregated and anonymized in real time without storing personal data or IP credentials.</li>
+          <li><strong>Full Regulatory Compliance:</strong> Our analytics setup complies natively with European GDPR, UK-GDPR, California CCPA, and Brazilian LGPD without requiring intrusive cookie banner consent popups.</li>
+        </ul>
+      </section>
+
+      <section class="pt-4 border-t border-[#E5E4DF]">
+        <h2 class="font-serif text-lg font-bold text-[#121212] mb-2">2. Essential Storage & Server Processing</h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li><strong>Essential Session Data:</strong> Browser local storage is used exclusively for basic site functionality, security protocols, and memory of form preferences during active sessions.</li>
+          <li><strong>Server-Side Conversions:</strong> To measure campaign performance from ad platforms (such as Meta Ads) without dropping third-party tracking scripts on your browser, we utilize server-to-server event transfers (Conversions API). Events are hashed and transmitted directly from our servers without client-side cookie profiling.</li>
+        </ul>
+      </section>
+
+      <section class="pt-4 border-t border-[#E5E4DF]">
+        <h2 class="font-serif text-lg font-bold text-[#121212] mb-2">3. Managing Preferences</h2>
+        <p>
+          You can clear or disable browser local storage at any time through your browser settings. Because we do not drop advertising cookies, opting out of third-party tracking on Costa Ledger is unnecessary by design.
+        </p>
+      </section>
+
+    </div>
+  </main>
+</Layout>

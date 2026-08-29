@@ -1,0 +1,137 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+
+    <!-- TAILWIND CSS & BRAND CONFIGURATION -->
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <script is:inline>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              offwhite: '#F9F9F6',
+              brandGold: '#C5A059',
+              brandGoldHover: '#B28E46',
+              brandNavy: '#07182D',
+              brandNavyHover: '#0B223D',
+              brandDark: '#121212',
+              brandSlate: '#2A2E33',
+              brandMuted: '#666666',
+              brandBorder: '#E5E4DF'
+            },
+            fontFamily: {
+              serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+              sans: ['"Plus Jakarta Sans"', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brandGold selection:text-white">
+    
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-brandNavy text-offwhite text-[10px] font-bold tracking-[0.2em] uppercase py-2.5 text-center border-b border-brandGold/30">
+      SOUTHERN EUROPE MARKET INTELLIGENCE UNIT • Q3 2026 SPECIAL BRIEFING AVAILABLE
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 h-24 flex items-center justify-between">
+        
+        <a href="/" class="flex items-center gap-3.5 group">
+          <svg 
+            width="48" 
+            height="48" 
+            style="width: 48px; height: 48px; max-width: 48px; max-height: 48px;" 
+            class="text-brandGold flex-shrink-0 transition-transform duration-500 group-hover:rotate-45" 
+            viewBox="0 0 100 100" 
+            fill="none" 
+            stroke="currentColor"
+          >
+            <circle cx="50" cy="50" r="47" stroke-width="1.5"/>
+            <ellipse cx="50" cy="50" rx="21" ry="47" stroke-width="1.2"/>
+            <ellipse cx="50" cy="50" rx="47" ry="21" stroke-width="1.2"/>
+            <path d="M50 10 L54 38 L82 22 L62 46 L90 50 L62 54 L82 78 L54 62 L50 90 L46 62 L18 78 L38 54 L10 50 L38 46 L18 22 L46 38 Z" fill="#C5A059" stroke="none"/>
+            <circle cx="50" cy="50" r="2.5" fill="#F9F9F6"/>
+          </svg>
+
+          <div class="flex flex-col justify-center">
+            <span class="font-serif text-[25px] font-bold tracking-[0.06em] text-brandDark uppercase leading-none mb-1">
+              COSTA LEDGER
+            </span>
+            <span class="text-[8px] tracking-[0.06em] text-brandGold uppercase font-bold leading-none">
+              INTELLIGENCE FOR BETTER DECISIONS
+            </span>
+          </div>
+        </a>
+
+        <!-- NAVIGATION LINKS -->
+<nav class="hidden lg:flex items-center gap-8 text-xs font-semibold tracking-wider uppercase">
+  <a href="/categories" class="hover:text-[#C5A059] transition-colors py-2">
+    ALL INTELLIGENCE
+  </a>
+  <a href="/categories" class="hover:text-[#C5A059] transition-colors py-2">
+    PROPERTY & CAPITAL
+  </a>
+  <a href="/categories" class="hover:text-[#C5A059] transition-colors py-2">
+    LEGAL & TAXES
+  </a>
+  <a href="/categories" class="hover:text-[#C5A059] transition-colors py-2">
+    LIFESTYLE & WELLNESS
+  </a>
+</nav>
+
+        <a href="/join" class="bg-brandGold hover:bg-brandGoldHover text-white text-xs uppercase font-bold tracking-widest px-6 py-3.5 transition-all shadow-sm">
+          JOIN THE BRIEFING
+        </a>
+
+      </div>
+    </header>
+
+    <slot />
+
+  <!-- SINGLE-LINE EXECUTIVE FOOTER BAR -->
+<footer class="bg-[#0B1528] text-white py-5 border-t border-slate-800 font-sans">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] tracking-wider uppercase font-semibold">
+    
+    <!-- LEFT: BRAND & SHORT SLOGAN -->
+    <div class="flex items-center gap-2 text-slate-300 whitespace-nowrap">
+      <span class="font-serif font-bold text-white text-xs tracking-wider">COSTA LEDGER</span>
+      <span class="text-slate-600">•</span>
+      <span class="text-slate-400 font-normal">Southern Europe Intelligence</span>
+    </div>
+
+    <!-- RIGHT: INLINE LEGAL LINKS & COPYRIGHT -->
+    <div class="flex items-center gap-2.5 text-slate-400 whitespace-nowrap">
+      <a href="/privacy" class="hover:text-[#C5A059] transition-colors">Privacy Policy</a>
+      <span class="text-slate-700">•</span>
+      <a href="/terms" class="hover:text-[#C5A059] transition-colors">Terms of Service</a>
+      <span class="text-slate-700">•</span>
+      <a href="/disclosures" class="hover:text-[#C5A059] transition-colors">Disclosures & Disclaimers</a>
+      <span class="text-slate-700">•</span>
+      <a href="/cookies" class="hover:text-[#C5A059] transition-colors">Cookie Policy</a>
+      <span class="text-slate-700">•</span>
+      <span class="text-slate-300 font-normal">© 2026 COSTA LEDGER</span>
+    </div>
+
+  </div>
+</footer>
+
+  </body>
+</html>
