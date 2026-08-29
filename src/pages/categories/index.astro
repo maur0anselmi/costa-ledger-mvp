@@ -82,9 +82,9 @@ const taxonomy = [
   
   <!-- ACCORDION CONTAINER FOR MOBILE -->
   <div class="bg-[#F4F3EF] border border-[#E5E4DF] rounded-sm p-4 lg:p-0 lg:bg-transparent lg:border-none">
-    <details class="group lg:open">
+    <details class="group lg:[&>*:not(summary)]:!block">
       
-      <!-- HEADER (Clickable on Mobile, Static on Desktop) -->
+      <!-- HEADER -->
       <summary class="flex items-center justify-between cursor-pointer lg:cursor-default select-none list-none">
         <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-[#666666] flex items-center gap-2">
           <span class="w-1.5 h-1.5 bg-[#C5A059] inline-block lg:hidden"></span>
