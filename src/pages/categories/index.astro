@@ -38,96 +38,97 @@ const taxonomy = [
 <Layout title="Costa Ledger - Intelligence Vault">
   
   <!-- REGIONAL FILTER BAR -->
-<section class="bg-[#07182D] text-[#F9F9F6] py-2 border-b border-[#C5A059]/20">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-wrap items-center justify-between gap-3 text-[11px]">
-    <div class="flex items-center gap-2 font-bold tracking-widest uppercase text-slate-300">
-      <span class="w-2 h-2 bg-[#C5A059]"></span>
-      <span>FILTER BY REGION:</span>
+  <section class="bg-[#07182D] text-[#F9F9F6] py-2 border-b border-[#C5A059]/20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-wrap items-center justify-between gap-3 text-[11px]">
+      <div class="flex items-center gap-2 font-bold tracking-widest uppercase text-slate-300">
+        <span class="w-2 h-2 bg-[#C5A059]"></span>
+        <span>FILTER BY REGION:</span>
+      </div>
+      <div class="flex flex-wrap gap-2 text-xs font-semibold tracking-wider uppercase">
+        <button 
+          data-region="all" 
+          class="region-btn bg-[#C5A059] text-[#07182D] px-3 py-1 font-bold transition-all"
+        >
+          ALL SOUTHERN EUROPE
+        </button>
+        <button 
+          data-region="Costa del Sol" 
+          class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
+        >
+          COSTA DEL SOL
+        </button>
+        <button 
+          data-region="Gibraltar" 
+          class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
+        >
+          GIBRALTAR
+        </button>
+        <button 
+          data-region="Portugal" 
+          class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
+        >
+          PORTUGAL
+        </button>
+      </div>
     </div>
-    <div class="flex flex-wrap gap-2 text-xs font-semibold tracking-wider uppercase">
-      <button 
-        data-region="all" 
-        class="region-btn bg-[#C5A059] text-[#07182D] px-3 py-1 font-bold transition-all"
-      >
-        ALL SOUTHERN EUROPE
-      </button>
-      <button 
-        data-region="Costa del Sol" 
-        class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
-      >
-        COSTA DEL SOL
-      </button>
-      <button 
-        data-region="Gibraltar" 
-        class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
-      >
-        GIBRALTAR
-      </button>
-      <button 
-        data-region="Portugal" 
-        class="region-btn border border-slate-700 text-slate-300 hover:border-[#C5A059] hover:text-white px-3 py-1 transition-all"
-      >
-        PORTUGAL
-      </button>
-    </div>
-  </div>
-</section>
+  </section>
 
   <!-- MAIN SPLIT VIEW CONTENT -->
   <main class="max-w-7xl mx-auto px-6 lg:px-12 py-12 flex-grow w-full">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
       
       <!-- LEFT SIDEBAR: COMPLETE TAXONOMY -->
-<aside class="lg:col-span-3 space-y-8">
-  
-  <!-- ACCORDION CONTAINER FOR MOBILE -->
-  <div class="bg-[#F4F3EF] border border-[#E5E4DF] rounded-sm p-4 lg:p-0 lg:bg-transparent lg:border-none">
-    <details class="group lg:[&>*:not(summary)]:!block">
-      
-      <!-- HEADER -->
-      <summary class="flex items-center justify-between cursor-pointer lg:cursor-default select-none list-none">
-        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-[#666666] flex items-center gap-2">
-          <span class="w-1.5 h-1.5 bg-[#C5A059] inline-block lg:hidden"></span>
-          INTELLIGENCE INDEX
-        </h3>
-        <div class="flex items-center gap-3">
-          <button id="reset-filters" class="hidden text-[10px] text-[#C5A059] hover:underline font-bold uppercase cursor-pointer">RESET FILTERS</button>
-          <span class="text-xs text-[#C5A059] lg:hidden transition-transform duration-200 group-open:rotate-180">▼</span>
-        </div>
-      </summary>
-      
-      <!-- COLLAPSIBLE TAXONOMY LIST -->
-      <div class="mt-4 pt-4 border-t border-[#E5E4DF] lg:border-none lg:pt-0 lg:mt-6">
-        {taxonomy.map(section => (
-          <div class="mb-6">
-            <span class="font-serif font-bold text-base text-[#121212] block mb-2">{section.pillar}</span>
-            <ul class="space-y-1.5 text-xs text-[#2A2E33] border-l border-[#E5E4DF] pl-3">
-              {section.subcategories.map(sub => (
-                <li>
-                  <button 
-                    data-sub={sub} 
-                    class="sub-btn text-left hover:text-[#C5A059] transition-colors block cursor-pointer w-full py-0.5"
-                  >
-                    {sub}
-                  </button>
-                </li>
+      <aside class="lg:col-span-3 space-y-8">
+        
+        <!-- ACCORDION CONTAINER (Interactive on Mobile & Desktop) -->
+        <div class="bg-[#F4F3EF] border border-[#E5E4DF] rounded-sm p-4 lg:p-0 lg:bg-transparent lg:border-none">
+          <details id="intelligence-index-details" class="group">
+            
+            <!-- HEADER WITH ALWAYS VISIBLE TOGGLE CHEVRON -->
+            <summary class="flex items-center justify-between cursor-pointer select-none list-none">
+              <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-[#666666] flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-[#C5A059] inline-block"></span>
+                INTELLIGENCE INDEX
+              </h3>
+              <div class="flex items-center gap-3">
+                <button id="reset-filters" class="hidden text-[10px] text-[#C5A059] hover:underline font-bold uppercase cursor-pointer">RESET FILTERS</button>
+                <span class="text-xs text-[#C5A059] transition-transform duration-200 group-open:rotate-180">▼</span>
+              </div>
+            </summary>
+            
+            <!-- COLLAPSIBLE TAXONOMY LIST -->
+            <div class="mt-4 pt-4 border-t border-[#E5E4DF] lg:border-t-0 lg:pt-2 lg:mt-4">
+              {taxonomy.map(section => (
+                <div class="mb-6">
+                  <span class="font-serif font-bold text-base text-[#121212] block mb-2">{section.pillar}</span>
+                  <ul class="space-y-1.5 text-xs text-[#2A2E33] border-l border-[#E5E4DF] pl-3">
+                    {section.subcategories.map(sub => (
+                      <li>
+                        <button 
+                          data-sub={sub} 
+                          class="sub-btn text-left hover:text-[#C5A059] transition-colors block cursor-pointer w-full py-0.5"
+                        >
+                          {sub}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
-          </div>
-        ))}
-      </div>
+            </div>
 
-    </details>
-  </div>
+          </details>
+        </div>
 
-  <!-- SIDEBAR LEAD MAGNET -->
-  <div class="bg-[#07182D] p-6 text-[#F9F9F6] space-y-3 border-l-2 border-[#C5A059]">
-    <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
-    <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
-    <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
-    <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
-  </div>
-</aside>
+        <!-- SIDEBAR LEAD MAGNET (Desktop Only) -->
+        <div class="hidden lg:block bg-[#07182D] p-6 text-[#F9F9F6] space-y-3 border-l-2 border-[#C5A059]">
+          <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
+          <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
+          <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
+          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
+        </div>
+
+      </aside>
 
       <!-- RIGHT PANEL -->
       <section class="lg:col-span-9 space-y-8">
@@ -220,6 +221,14 @@ const taxonomy = [
           </div>
         </div>
 
+        <!-- BOTTOM LEAD MAGNET (Mobile Only) -->
+        <div class="block lg:hidden bg-[#07182D] p-6 text-[#F9F9F6] space-y-3 border-l-2 border-[#C5A059] mt-12">
+          <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
+          <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
+          <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
+          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
+        </div>
+
       </section>
 
     </div>
@@ -227,6 +236,12 @@ const taxonomy = [
 
   <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
+      // AUTO-OPEN ACCORDION ON DESKTOP SCREENS
+      const indexDetails = document.getElementById('intelligence-index-details');
+      if (indexDetails && window.innerWidth >= 1024) {
+        indexDetails.open = true;
+      }
+
       let selectedRegion = 'all';
       let selectedSub = null;
 
