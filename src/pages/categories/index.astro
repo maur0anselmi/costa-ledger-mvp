@@ -78,40 +78,56 @@ const taxonomy = [
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
       
       <!-- LEFT SIDEBAR: COMPLETE TAXONOMY -->
-      <aside class="lg:col-span-3 space-y-8">
-        <div>
-          <div class="flex items-center justify-between mb-4 border-b border-[#E5E4DF] pb-2">
-            <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-[#666666]">INTELLIGENCE INDEX</h3>
-            <button id="reset-filters" class="hidden text-[10px] text-[#C5A059] hover:underline font-bold uppercase cursor-pointer">RESET FILTERS</button>
+<aside class="lg:col-span-3 space-y-8">
+  
+  <!-- ACCORDION CONTAINER FOR MOBILE -->
+  <div class="bg-[#F4F3EF] border border-[#E5E4DF] rounded-sm p-4 lg:p-0 lg:bg-transparent lg:border-none">
+    <details class="group lg:open">
+      
+      <!-- HEADER (Clickable on Mobile, Static on Desktop) -->
+      <summary class="flex items-center justify-between cursor-pointer lg:cursor-default select-none list-none">
+        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-[#666666] flex items-center gap-2">
+          <span class="w-1.5 h-1.5 bg-[#C5A059] inline-block lg:hidden"></span>
+          INTELLIGENCE INDEX
+        </h3>
+        <div class="flex items-center gap-3">
+          <button id="reset-filters" class="hidden text-[10px] text-[#C5A059] hover:underline font-bold uppercase cursor-pointer">RESET FILTERS</button>
+          <span class="text-xs text-[#C5A059] lg:hidden transition-transform duration-200 group-open:rotate-180">▼</span>
+        </div>
+      </summary>
+      
+      <!-- COLLAPSIBLE TAXONOMY LIST -->
+      <div class="mt-4 pt-4 border-t border-[#E5E4DF] lg:border-none lg:pt-0 lg:mt-6">
+        {taxonomy.map(section => (
+          <div class="mb-6">
+            <span class="font-serif font-bold text-base text-[#121212] block mb-2">{section.pillar}</span>
+            <ul class="space-y-1.5 text-xs text-[#2A2E33] border-l border-[#E5E4DF] pl-3">
+              {section.subcategories.map(sub => (
+                <li>
+                  <button 
+                    data-sub={sub} 
+                    class="sub-btn text-left hover:text-[#C5A059] transition-colors block cursor-pointer w-full py-0.5"
+                  >
+                    {sub}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
-          
-          {taxonomy.map(section => (
-            <div class="mb-6">
-              <span class="font-serif font-bold text-base text-[#121212] block mb-2">{section.pillar}</span>
-              <ul class="space-y-1.5 text-xs text-[#2A2E33] border-l border-[#E5E4DF] pl-3">
-                {section.subcategories.map(sub => (
-                  <li>
-                    <button 
-                      data-sub={sub} 
-                      class="sub-btn text-left hover:text-[#C5A059] transition-colors block cursor-pointer w-full py-0.5"
-                    >
-                      {sub}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        ))}
+      </div>
 
-        <!-- SIDEBAR LEAD MAGNET -->
-        <div class="bg-[#07182D] p-6 text-[#F9F9F6] space-y-3 border-l-2 border-[#C5A059]">
-          <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
-          <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
-          <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
-          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
-        </div>
-      </aside>
+    </details>
+  </div>
+
+  <!-- SIDEBAR LEAD MAGNET -->
+  <div class="bg-[#07182D] p-6 text-[#F9F9F6] space-y-3 border-l-2 border-[#C5A059]">
+    <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
+    <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
+    <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
+    <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
+  </div>
+</aside>
 
       <!-- RIGHT PANEL -->
       <section class="lg:col-span-9 space-y-8">
