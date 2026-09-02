@@ -1,3 +1,9 @@
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
+
+// Helper for arrays or strings
+const stringOrArray = z.union([z.string(), z.array(z.string())]);
+
 const intelligence = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/intelligence' }),
   schema: z.object({
@@ -11,6 +17,7 @@ const intelligence = defineCollection({
     publishedDate: z.coerce.date(),
     readTime: z.string(),
     featured: z.boolean().default(false),
+    
     // CAMPOS DE IMAGEN:
     image: z.string().optional(),
     imageCaption: z.string().optional(),
