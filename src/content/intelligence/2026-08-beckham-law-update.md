@@ -20,8 +20,6 @@ imageCaption: "Cross-border tax structuring and wealth management operations in 
 ---
 ---
 
-Aquí comienza el contenido de tu nota...
-
 The integration of the Digital Nomad Visa with the expanded Special Expat Tax Regime (*Régimen Especial para Trabajadores Desplazados*, widely known as the Beckham Law) has reshaped cross-border capital allocation across Southern Spain. For international founders, corporate executives, and family offices establishing a footprint in Andalucia, the framework offers substantial fiscal optimization—provided structural compliance is audited prior to relocation.
 
 ## Beckham Law vs. Standard Fiscal Residency
