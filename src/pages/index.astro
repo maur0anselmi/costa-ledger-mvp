@@ -3,69 +3,84 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Costa Ledger - Intelligence for Better Decisions">
-  <main class="flex-grow flex items-center py-16 lg:py-24">
-    <div class="max-w-5xl mx-auto px-6 lg:px-12 text-left">
+  
+  <!-- HERO SECTION WITH BACKGROUND IMAGE -->
+  <main class="relative flex-grow flex items-center py-16 lg:py-28 overflow-hidden bg-[#07182D]">
+    
+    <!-- BACKGROUND IMAGE & OVERLAY -->
+    <div class="absolute inset-0 z-0">
+      <img 
+        src="/hero-bg.jpg" 
+        alt="Costa Ledger Southern Europe" 
+        class="w-full h-full object-cover object-center"
+      />
+      <!-- Oscurecimiento azul marino degradado para garantizar legibilidad -->
+      <div class="absolute inset-0 bg-gradient-to-r from-[#07182D]/95 via-[#07182D]/80 to-[#07182D]/40"></div>
+    </div>
+
+    <!-- HERO CONTENT -->
+    <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-12 text-left w-full">
       
       <!-- KICKER -->
       <div class="inline-flex items-center gap-2 mb-6">
         <span class="w-2 h-2 bg-[#C5A059]"></span>
-        <span class="text-xs font-bold tracking-[0.25em] text-[#666666] uppercase">SOUTHERN EUROPE • SPECIAL PREMIUM REPORTS</span>
+        <span class="text-xs font-bold tracking-[0.25em] text-[#C5A059] uppercase">SOUTHERN EUROPE • SPECIAL PREMIUM REPORTS</span>
       </div>
 
       <!-- MAIN HEADLINE -->
-      <h1 class="font-['Cormorant_Garamond'] text-4xl md:text-6xl lg:text-7xl font-normal tracking-tight text-[#121212] leading-[1.1] mb-8">
+      <h1 class="font-serif text-4xl md:text-6xl lg:text-7xl font-normal tracking-tight text-[#F9F9F6] leading-[1.1] mb-8">
         PROPERTY, CAPITAL & RELOCATION INTELLIGENCE.
       </h1>
 
       <!-- SUBTITLE -->
-      <p class="text-base md:text-xl text-[#2A2E33] font-normal leading-relaxed max-w-3xl mb-12">
+      <p class="text-base md:text-xl text-gray-200 font-normal leading-relaxed max-w-3xl mb-12">
         Independent market data, legal analysis, and lifestyle intelligence for{" "}
-        <strong class="font-semibold text-[#121212]">high-net-worth investors, founders, and families</strong>{" "}
+        <strong class="font-semibold text-white">high-net-worth investors, founders, and families</strong>{" "}
         establishing a footprint in Southern Europe.
       </p>
 
-    <!-- DOUBLE CTA ACTION BUTTONS -->
-<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-  <a 
-    href="/report" 
-    class="bg-[#C5A059] hover:bg-[#B28E46] text-white text-xs font-bold tracking-[0.18em] uppercase px-8 py-4 transition-all shadow-md hover:shadow-xl text-center"
-  >
-    ACCESS SPECIAL ANALYSIS
-  </a>
+      <!-- DOUBLE CTA ACTION BUTTONS -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+        <a 
+          href="/report" 
+          class="bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-xs font-bold tracking-[0.18em] uppercase px-8 py-4 transition-all shadow-md hover:shadow-xl text-center"
+        >
+          ACCESS SPECIAL ANALYSIS
+        </a>
 
-  <a 
-    href="/categories" 
-    class="group inline-flex items-center justify-center gap-3 bg-transparent hover:bg-[#07182D] text-[#07182D] hover:text-[#F9F9F6] border border-[#07182D] text-xs font-bold tracking-[0.18em] uppercase px-8 py-4 transition-all shadow-sm hover:shadow-xl cursor-pointer text-center"
-  >
-    <span>ACCESS INTELLIGENCE VAULT</span>
-    <svg width="16" height="16" class="text-[#C5A059] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-    </svg>
-  </a>
-</div>
+        <a 
+          href="/categories" 
+          class="group inline-flex items-center justify-center gap-3 bg-transparent hover:bg-white/10 text-white border border-white/50 text-xs font-bold tracking-[0.18em] uppercase px-8 py-4 transition-all shadow-sm hover:shadow-xl cursor-pointer text-center"
+        >
+          <span>ACCESS INTELLIGENCE VAULT</span>
+          <svg width="16" height="16" class="text-[#C5A059] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </a>
+      </div>
 
-   <!-- HERO VALUE PROPOSITION GRID -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-8 border-t border-[#E5E4DF]">
-  <div>
-    <h4 class="text-xs font-bold text-[#121212] uppercase tracking-wider mb-1">Curated Network</h4>
-    <p class="text-[11px] text-[#666666]">Admission earned, not purchased</p>
-  </div>
+      <!-- HERO VALUE PROPOSITION GRID -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-8 border-t border-white/20">
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-1">Curated Network</h4>
+          <p class="text-[11px] text-gray-400">Admission earned, not purchased</p>
+        </div>
 
-  <div>
-    <h4 class="text-xs font-bold text-[#121212] uppercase tracking-wider mb-1">HNWI & Family Focus</h4>
-    <p class="text-[11px] text-[#666666]">Internationally mobile wealth & capital</p>
-  </div>
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-1">HNWI & Family Focus</h4>
+          <p class="text-[11px] text-gray-400">Internationally mobile wealth & capital</p>
+        </div>
 
-  <div>
-    <h4 class="text-xs font-bold text-[#121212] uppercase tracking-wider mb-1">Cross-Border Scope</h4>
-    <p class="text-[11px] text-[#666666]">Southern Spain, Gibraltar & Portugal</p>
-  </div>
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-1">Cross-Border Scope</h4>
+          <p class="text-[11px] text-gray-400">Southern Spain, Gibraltar & Portugal</p>
+        </div>
 
-  <div>
-    <h4 class="text-xs font-bold text-[#121212] uppercase tracking-wider mb-1">GDPR Protected</h4>
-    <p class="text-[11px] text-[#666666]">Private encrypted database</p>
-  </div>
-</div>
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-1">GDPR Protected</h4>
+          <p class="text-[11px] text-gray-400">Private encrypted database</p>
+        </div>
+      </div>
 
     </div>
   </main>
