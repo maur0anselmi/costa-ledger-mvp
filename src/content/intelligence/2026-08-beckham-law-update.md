@@ -15,8 +15,9 @@ keyMetric: "Tax Rate: 24% Flat"
 publishedDate: "2026-08-15"
 readTime: "5 min read"
 featured: true
-image: "https://images.unsplash.com/photo-1577983072945-8f47fce53ee2?q=80&w=2000&auto=format&fit=crop"
+image: "/beckham-cover.jpg"
 imageCaption: "Cross-border tax structuring and wealth management operations in Southern Spain. Source: Costa Ledger Desk."
+---
 ---
 
 Aquí comienza el contenido de tu nota...
