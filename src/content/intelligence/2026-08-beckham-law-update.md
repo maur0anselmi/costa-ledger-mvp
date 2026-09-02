@@ -15,7 +15,11 @@ keyMetric: "Tax Rate: 24% Flat"
 publishedDate: "2026-08-15"
 readTime: "5 min read"
 featured: true
+image: "https://images.unsplash.com/photo-1577983072945-8f47fce53ee2?q=80&w=2000&auto=format&fit=crop"
+imageCaption: "Cross-border tax structuring and wealth management operations in Southern Spain. Source: Costa Ledger Desk."
 ---
+
+Aquí comienza el contenido de tu nota...
 
 The integration of the Digital Nomad Visa with the expanded Special Expat Tax Regime (*Régimen Especial para Trabajadores Desplazados*, widely known as the Beckham Law) has reshaped cross-border capital allocation across Southern Spain. For international founders, corporate executives, and family offices establishing a footprint in Andalucia, the framework offers substantial fiscal optimization—provided structural compliance is audited prior to relocation.
 

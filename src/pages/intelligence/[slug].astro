@@ -82,6 +82,24 @@ const subcategoriesList = Array.isArray(dossier.data.subcategory)
       <span>{dossier.data.readTime}</span>
     </div>
 
+    <!-- FEATURED DOSSIER IMAGE BLOCK -->
+    {dossier.data.image && (
+      <figure class="my-8">
+        <div class="overflow-hidden border border-[#E5E4DF] bg-[#F4F3EF]">
+          <img 
+            src={dossier.data.image} 
+            alt={dossier.data.title}
+            class="w-full h-[320px] md:h-[480px] object-cover"
+          />
+        </div>
+        {dossier.data.imageCaption && (
+          <figcaption class="flex justify-between items-center text-[11px] text-[#666666] mt-2 px-1 border-b border-[#E5E4DF] pb-2 font-mono">
+            <span>{dossier.data.imageCaption}</span>
+          </figcaption>
+        )}
+      </figure>
+    )}
+
     <!-- DOSSIER BODY CONTENT -->
     <div class="prose max-w-none text-sm text-[#2A2E33] leading-relaxed space-y-4">
       <Content />

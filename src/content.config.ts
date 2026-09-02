@@ -1,10 +1,3 @@
-import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
-
-// Parsea tanto textos únicos ("Costa del Sol") como listas (["Costa del Sol", "Gibraltar"])
-const stringOrArray = z.union([z.string(), z.array(z.string())])
-  .transform(val => (Array.isArray(val) ? val : [val]));
-
 const intelligence = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/intelligence' }),
   schema: z.object({
@@ -17,7 +10,10 @@ const intelligence = defineCollection({
     keyMetric: z.string().optional(),
     publishedDate: z.coerce.date(),
     readTime: z.string(),
-    featured: z.boolean().default(false)
+    featured: z.boolean().default(false),
+    // CAMPOS DE IMAGEN:
+    image: z.string().optional(),
+    imageCaption: z.string().optional(),
   }),
 });
 
