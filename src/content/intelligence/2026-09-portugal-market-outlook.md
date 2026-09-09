@@ -3,14 +3,10 @@ title: "Portugal 2026 Outlook: Selective Value in a Maturing Market"
 summary: "Commercial real estate volume enters a nuanced phase with €2.4B forecast for 2026. A breakdown of Lisbon, Porto, and Algarve liquidity for international buyers."
 region:
   - "Portugal"
-  - "Algarve"
-  - "Lisbon"
-  - "Porto"
 pillar:
-  - "Property & Capital"
+  - "PROPERTY & CAPITAL"
 subcategory:
-  - "Prime Real Estate"
-  - "Cross-Border Allocation"
+  - "Property Markets & Developments"
 badgeType: "MARKET BRIEFING"
 keyMetric: "2026 RE Investment: €2.4B"
 publishedDate: "2026-09-09"

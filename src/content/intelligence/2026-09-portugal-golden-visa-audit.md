@@ -4,10 +4,9 @@ summary: "Direct real estate is no longer an option. A strategic audit of AIMA-c
 region:
   - "Portugal"
 pillar:
-  - "Legal & Taxes"
+  - "LEGAL, TAX & RESIDENCY"
 subcategory:
-  - "Visa & Residency Pathways"
-  - "Cross-Border Allocation"
+  - "Residency & Visa Pathways"
 badgeType: "REGULATORY UPDATE"
 keyMetric: "Min. Fund Entry: €500k"
 publishedDate: "2026-09-09"

@@ -3,15 +3,10 @@ title: "Portugal's Emerging Markets: Separating Hype from Liquidity Data"
 summary: "An analytical evaluation of Marvila, Seixal, Bonfim, Silver Coast, and sub-Algarve micro-markets using an institutional liquidity and infrastructure framework."
 region:
   - "Portugal"
-  - "Algarve"
-  - "Lisbon"
-  - "Porto"
-  - "Silver Coast"
 pillar:
-  - "Property & Capital"
+  - "PROPERTY & CAPITAL"
 subcategory:
-  - "Prime Real Estate"
-  - "Cross-Border Allocation"
+  - "Property Markets & Developments"
 badgeType: "DOSSIER"
 keyMetric: "Audit Focus: 9 Micro-Markets"
 publishedDate: "2026-09-09"

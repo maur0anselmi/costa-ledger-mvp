@@ -5,19 +5,18 @@ region:
   - "Costa del Sol"
   - "Gibraltar"
 pillar:
-  - "Legal & Taxes"
-  - "Property & Capital"
+  - "LEGAL, TAX & RESIDENCY"
+  - "PROPERTY & CAPITAL"
 subcategory:
-  - "Cross-Border Tax Analysis"
-  - "Visa & Residency Pathways"
-badgeType: "Regulatory Update"
+  - "Cross-Border Tax"
+  - "Residency & Visa Pathways"
+badgeType: "REGULATORY UPDATE"
 keyMetric: "Tax Rate: 24% Flat"
 publishedDate: "2026-08-15"
 readTime: "5 min read"
 featured: true
 image: "/beckham-cover.jpg"
 imageCaption: "Cross-border tax structuring and wealth management operations in Southern Spain. Source: Costa Ledger Desk."
----
 ---
 
 The integration of the Digital Nomad Visa with the expanded Special Expat Tax Regime (*Régimen Especial para Trabajadores Desplazados*, widely known as the Beckham Law) has reshaped cross-border capital allocation across Southern Spain. For international founders, corporate executives, and family offices establishing a footprint in Andalucia, the framework offers substantial fiscal optimization—provided structural compliance is audited prior to relocation.
