@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 
 const allDossiers = await getCollection('intelligence');
 
-// Ordenar dossiers por fecha de publicación descendente (más reciente primero)
+// Ordenar dossiers por fecha de publicación descendente
 const sortedDossiers = allDossiers.sort((a, b) => {
   const dateA = new Date(a.data.publishedDate).getTime();
   const dateB = new Date(b.data.publishedDate).getTime();
@@ -87,8 +87,6 @@ const taxonomy = [
       
       <!-- LEFT SIDEBAR: COMPLETE TAXONOMY -->
       <aside class="lg:col-span-3 space-y-8">
-        
-        <!-- ACCORDION CONTAINER -->
         <div class="bg-[#F4F3EF] border border-[#E5E4DF] rounded-sm p-4 lg:p-0 lg:bg-transparent lg:border-none">
           <details id="intelligence-index-details" class="group">
             
@@ -104,16 +102,24 @@ const taxonomy = [
               </div>
             </summary>
             
-            <!-- COLLAPSIBLE TAXONOMY LIST -->
+            <!-- INTERACTIVE TAXONOMY LIST -->
             <div class="mt-4 pt-4 border-t border-[#E5E4DF] lg:border-t-0 lg:pt-2 lg:mt-4">
               {taxonomy.map(section => (
                 <div class="mb-6">
-                  <span class="font-serif font-bold text-base text-[#121212] block mb-2">{section.pillar}</span>
+                  <!-- PILLAR BUTTON (CLIKEABLE) -->
+                  <button 
+                    data-pillar={section.pillar}
+                    class="pillar-btn font-serif font-bold text-base text-[#121212] hover:text-[#C5A059] transition-colors block text-left mb-2 cursor-pointer w-full"
+                  >
+                    {section.pillar}
+                  </button>
                   <ul class="space-y-1.5 text-xs text-[#2A2E33] border-l border-[#E5E4DF] pl-3">
                     {section.subcategories.map(sub => (
                       <li>
+                        <!-- SUBCATEGORY BUTTON -->
                         <button 
                           data-sub={sub} 
+                          data-pillar-parent={section.pillar}
                           class="sub-btn text-left hover:text-[#C5A059] transition-colors block cursor-pointer w-full py-0.5"
                         >
                           {sub}
@@ -128,14 +134,13 @@ const taxonomy = [
           </details>
         </div>
 
-        <!-- SIDEBAR LEAD MAGNET (Desktop Only) -->
+        <!-- SIDEBAR LEAD MAGNET -->
         <div class="hidden lg:block bg-[#07182D] p-6 text-[#F9F9F6] space-y-3 border-l-2 border-[#C5A059]">
           <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
           <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
           <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
-          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
+          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 font-bold transition-colors">REQUEST REPORT</a>
         </div>
-
       </aside>
 
       <!-- RIGHT PANEL -->
@@ -240,19 +245,12 @@ const taxonomy = [
           </div>
         </div>
 
-        <!-- BOTTOM LEAD MAGNET (Mobile Only) -->
-        <div class="block lg:hidden bg-[#07182D] p-6 text-[#F9F9F6] space-y-3 border-l-2 border-[#C5A059] mt-12">
-          <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
-          <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
-          <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
-          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
-        </div>
-
       </section>
 
     </div>
   </main>
 
+  <!-- DYNAMIC FILTER & URL SYNC SCRIPT -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       const indexDetails = document.getElementById('intelligence-index-details');
@@ -260,27 +258,77 @@ const taxonomy = [
         indexDetails.open = true;
       }
 
-      let selectedRegion = 'all';
-      let selectedSub = null;
+      // Leer parámetros iniciales de la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      let selectedRegion = urlParams.get('region') || 'all';
+      let selectedPillar = urlParams.get('pillar') || null;
+      let selectedSub = urlParams.get('sub') || null;
 
       const regionBtns = document.querySelectorAll('.region-btn');
+      const pillarBtns = document.querySelectorAll('.pillar-btn');
       const subBtns = document.querySelectorAll('.sub-btn');
       const cards = document.querySelectorAll('.dossier-card');
       const verificationState = document.getElementById('verification-state');
       const activeFilterLabel = document.getElementById('active-filter-label');
       const resetBtn = document.getElementById('reset-filters');
 
-      function filterContent() {
-        let visibleCards = [];
+      function updateURL() {
+        const params = new URLSearchParams();
+        if (selectedRegion && selectedRegion !== 'all') params.set('region', selectedRegion);
+        if (selectedPillar) params.set('pillar', selectedPillar);
+        if (selectedSub) params.set('sub', selectedSub);
 
+        const newQuery = params.toString() ? '?' + params.toString() : window.location.pathname;
+        history.pushState(null, '', newQuery);
+      }
+
+      function applyFilters() {
+        // Actualizar estilos de región
+        regionBtns.forEach(btn => {
+          const r = btn.getAttribute('data-region');
+          if (r.toLowerCase() === selectedRegion.toLowerCase()) {
+            btn.classList.add('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
+            btn.classList.remove('border', 'border-slate-700', 'text-slate-300');
+          } else {
+            btn.classList.remove('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
+            btn.classList.add('border', 'border-slate-700', 'text-slate-300');
+          }
+        });
+
+        // Actualizar estilos de pilar
+        pillarBtns.forEach(btn => {
+          const p = btn.getAttribute('data-pillar');
+          if (selectedPillar && p.toLowerCase() === selectedPillar.toLowerCase()) {
+            btn.classList.add('text-[#C5A059]');
+            btn.classList.remove('text-[#121212]');
+          } else {
+            btn.classList.remove('text-[#C5A059]');
+            btn.classList.add('text-[#121212]');
+          }
+        });
+
+        // Actualizar estilos de subcategoría
+        subBtns.forEach(btn => {
+          const s = btn.getAttribute('data-sub');
+          if (selectedSub && s.toLowerCase() === selectedSub.toLowerCase()) {
+            btn.classList.add('text-[#C5A059]', 'font-bold');
+          } else {
+            btn.classList.remove('text-[#C5A059]', 'font-bold');
+          }
+        });
+
+        // Filtrar tarjetas en el DOM
+        let visibleCards = [];
         cards.forEach(card => {
           const cardRegions = JSON.parse(card.getAttribute('data-regions') || '[]');
+          const cardPillars = JSON.parse(card.getAttribute('data-pillars') || '[]');
           const cardSubs = JSON.parse(card.getAttribute('data-subs') || '[]');
 
           const matchesRegion = (selectedRegion === 'all' || cardRegions.some(r => r.toLowerCase() === selectedRegion.toLowerCase()));
+          const matchesPillar = (!selectedPillar || cardPillars.some(p => p.toLowerCase() === selectedPillar.toLowerCase()));
           const matchesSub = (!selectedSub || cardSubs.some(s => s.toLowerCase() === selectedSub.toLowerCase()));
 
-          if (matchesRegion && matchesSub) {
+          if (matchesRegion && matchesPillar && matchesSub) {
             card.classList.remove('hidden');
             visibleCards.push(card);
           } else {
@@ -288,64 +336,79 @@ const taxonomy = [
           }
         });
 
-        // Restablecer todas las tarjetas al formato secundario de 1 columna
+        // Resetear todas las tarjetas a formato secundario
         cards.forEach(card => {
           card.classList.remove('md:col-span-2', 'border-2', 'border-[#C5A059]', 'p-8');
           card.classList.add('col-span-1', 'border', 'border-[#E5E4DF]', 'p-6');
-
           const title = card.querySelector('.card-title');
           if (title) {
             title.classList.remove('text-2xl', 'md:text-3xl');
             title.classList.add('text-lg', 'md:text-xl');
           }
-
           const summary = card.querySelector('.card-summary');
           if (summary) {
             summary.classList.add('line-clamp-3');
           }
         });
 
-        // Promocionar la primera tarjeta visible como Hero (2 columnas)
+        // Promocionar la primera tarjeta visible como Hero
         if (visibleCards.length > 0) {
           const heroCard = visibleCards[0];
           heroCard.classList.remove('col-span-1', 'border-[#E5E4DF]', 'p-6');
           heroCard.classList.add('md:col-span-2', 'border-2', 'border-[#C5A059]', 'p-8');
-
           const title = heroCard.querySelector('.card-title');
           if (title) {
             title.classList.remove('text-lg', 'md:text-xl');
             title.classList.add('text-2xl', 'md:text-3xl');
           }
-
           const summary = heroCard.querySelector('.card-summary');
           if (summary) {
             summary.classList.remove('line-clamp-3');
           }
         }
 
+        // Mostrar estado vacío si no hay resultados
         if (visibleCards.length === 0) {
           verificationState.classList.remove('hidden');
-          activeFilterLabel.textContent = selectedSub ? `"${selectedSub}"` : `selected region (${selectedRegion})`;
+          const filterLabels = [];
+          if (selectedRegion !== 'all') filterLabels.push(`Region: ${selectedRegion}`);
+          if (selectedPillar) filterLabels.push(`Pillar: ${selectedPillar}`);
+          if (selectedSub) filterLabels.push(`Subcategory: ${selectedSub}`);
+          activeFilterLabel.textContent = filterLabels.join(' | ') || 'selected query';
         } else {
           verificationState.classList.add('hidden');
         }
 
-        if (selectedRegion !== 'all' || selectedSub !== null) {
+        // Mostrar u ocultar el botón Reset
+        if (selectedRegion !== 'all' || selectedPillar !== null || selectedSub !== null) {
           resetBtn.classList.remove('hidden');
         } else {
           resetBtn.classList.add('hidden');
         }
       }
 
+      function filterContent() {
+        updateURL();
+        applyFilters();
+      }
+
+      // Event Handlers
       regionBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           selectedRegion = btn.getAttribute('data-region');
-          regionBtns.forEach(b => {
-            b.classList.remove('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
-            b.classList.add('border', 'border-slate-700', 'text-slate-300');
-          });
-          btn.classList.remove('border', 'border-slate-700', 'text-slate-300');
-          btn.classList.add('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
+          filterContent();
+        });
+      });
+
+      pillarBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pillar = btn.getAttribute('data-pillar');
+          if (selectedPillar === pillar) {
+            selectedPillar = null;
+          } else {
+            selectedPillar = pillar;
+            selectedSub = null;
+          }
           filterContent();
         });
       });
@@ -353,13 +416,12 @@ const taxonomy = [
       subBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           const sub = btn.getAttribute('data-sub');
+          const parentPillar = btn.getAttribute('data-pillar-parent');
           if (selectedSub === sub) {
             selectedSub = null;
-            btn.classList.remove('text-[#C5A059]', 'font-bold');
           } else {
-            subBtns.forEach(b => b.classList.remove('text-[#C5A059]', 'font-bold'));
             selectedSub = sub;
-            btn.classList.add('text-[#C5A059]', 'font-bold');
+            if (parentPillar) selectedPillar = parentPillar;
           }
           filterContent();
         });
@@ -367,19 +429,22 @@ const taxonomy = [
 
       resetBtn.addEventListener('click', () => {
         selectedRegion = 'all';
+        selectedPillar = null;
         selectedSub = null;
-        regionBtns.forEach((b, idx) => {
-          if (idx === 0) {
-            b.classList.add('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
-            b.classList.remove('border', 'border-slate-700', 'text-slate-300');
-          } else {
-            b.classList.remove('bg-[#C5A059]', 'text-[#07182D]', 'font-bold');
-            b.classList.add('border', 'border-slate-700', 'text-slate-300');
-          }
-        });
-        subBtns.forEach(b => b.classList.remove('text-[#C5A059]', 'font-bold'));
         filterContent();
       });
+
+      // Escuchar cambios en la navegación del navegador (botón atrás/adelante)
+      window.addEventListener('popstate', () => {
+        const params = new URLSearchParams(window.location.search);
+        selectedRegion = params.get('region') || 'all';
+        selectedPillar = params.get('pillar') || null;
+        selectedSub = params.get('sub') || null;
+        applyFilters();
+      });
+
+      // Ejecución inicial al cargar la página
+      applyFilters();
     });
   </script>
 </Layout>
