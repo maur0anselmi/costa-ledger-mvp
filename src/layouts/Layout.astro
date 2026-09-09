@@ -48,21 +48,18 @@ const { title } = Astro.props;
   <body class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brandGold selection:text-white">
     
     <!-- TOP ANNOUNCEMENT BAR -->
-    <div class="bg-brandNavy text-offwhite text-[10px] font-bold tracking-[0.2em] uppercase py-2.5 text-center border-b border-brandGold/30">
+    <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2.5 px-4 text-center border-b border-brandGold/30 truncate">
       SOUTHERN EUROPE MARKET INTELLIGENCE UNIT • Q3 2026 SPECIAL BRIEFING AVAILABLE
     </div>
 
-   <!-- MAIN HEADER -->
-    <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-20 sm:h-24 flex items-center justify-between gap-3">
+    <!-- MAIN HEADER -->
+    <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40 w-full overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-16 sm:h-20 md:h-24 flex items-center justify-between gap-2 sm:gap-4">
         
-        <!-- LOGO (ISO Y SUBTÍTULO SIEMPRE VISIBLES) -->
+        <!-- LOGO (SIN ESTILOS INLINE Y CON LEMA OCULTO EN MOBILE) -->
         <a href="/" class="flex items-center gap-2.5 sm:gap-3.5 group shrink-0">
           <svg 
-            width="48" 
-            height="48" 
-            style="width: 48px; height: 48px;" 
-            class="w-9 h-9 sm:w-12 sm:h-12 text-brandGold flex-shrink-0 transition-transform duration-500 group-hover:rotate-45" 
+            class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-brandGold shrink-0 transition-transform duration-500 group-hover:rotate-45" 
             viewBox="0 0 100 100" 
             fill="none" 
             stroke="currentColor"
@@ -75,16 +72,16 @@ const { title } = Astro.props;
           </svg>
 
           <div class="flex flex-col justify-center">
-            <span class="font-serif text-lg sm:text-[25px] font-bold tracking-[0.06em] text-brandDark uppercase leading-none mb-1">
+            <span class="font-serif text-lg sm:text-[22px] md:text-[25px] font-bold tracking-[0.06em] text-brandDark uppercase leading-none">
               COSTA LEDGER
             </span>
-            <span class="text-[7px] sm:text-[8px] tracking-[0.06em] text-brandGold uppercase font-bold leading-none">
+            <span class="text-[8px] tracking-[0.06em] text-brandGold uppercase font-bold leading-none mt-1 hidden sm:block">
               INTELLIGENCE FOR BETTER DECISIONS
             </span>
           </div>
         </a>
 
-        <!-- NAV LINKS (DESKTOP) -->
+        <!-- NAV LINKS (DESKTOP ONLY) -->
         <nav class="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs font-bold tracking-[0.15em] uppercase shrink-0">
           <a href="/categories" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
             ALL INTELLIGENCE
@@ -100,9 +97,9 @@ const { title } = Astro.props;
           </a>
         </nav>
 
-        <!-- CTA BUTTON ("JOIN" EN MOBILE, "JOIN THE BRIEFING" EN DESKTOP) -->
-        <a href="/join" class="bg-brandGold hover:bg-brandGoldHover text-white text-xs uppercase font-bold tracking-widest px-3.5 py-2.5 sm:px-6 sm:py-3.5 transition-all shadow-sm shrink-0 whitespace-nowrap">
-          <span class="sm:hidden">JOIN</span>
+        <!-- CTA BUTTON -->
+        <a href="/join" class="bg-brandGold hover:bg-brandGoldHover text-white text-[10px] sm:text-xs uppercase font-bold tracking-wider sm:tracking-widest px-3 py-2 sm:px-6 sm:py-3.5 transition-all shadow-sm shrink-0 whitespace-nowrap">
+          <span class="sm:hidden">JOIN BRIEFING</span>
           <span class="hidden sm:inline">JOIN THE BRIEFING</span>
         </a>
 
