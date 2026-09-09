@@ -2,6 +2,7 @@
 title: "Portugal's Emerging Markets: Separating Hype from Liquidity Data"
 summary: "An analytical evaluation of Marvila, Seixal, Bonfim, Silver Coast, and sub-Algarve micro-markets using an institutional liquidity and infrastructure framework."
 region:
+  - "Portugal"
   - "Algarve"
   - "Lisbon"
   - "Porto"

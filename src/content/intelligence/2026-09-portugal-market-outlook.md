@@ -2,6 +2,7 @@
 title: "Portugal 2026 Outlook: Selective Value in a Maturing Market"
 summary: "Commercial real estate volume enters a nuanced phase with €2.4B forecast for 2026. A breakdown of Lisbon, Porto, and Algarve liquidity for international buyers."
 region:
+  - "Portugal"
   - "Algarve"
   - "Lisbon"
   - "Porto"
