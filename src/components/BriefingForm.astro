@@ -1,0 +1,197 @@
+---
+interface Props {
+  badgeText?: string;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  loadingText?: string;
+  showCheckboxes?: boolean;
+  source?: string;
+  modalBadge?: string;
+  modalMessage?: string;
+}
+
+const {
+  badgeText = "FREE SUBSCRIBER ACCESS",
+  title = "JOIN THE BRIEFING",
+  subtitle = "Direct delivery. High signal, low frequency. Unsubscribe anytime.",
+  buttonText = "SUBSCRIBE TO THE BRIEFING",
+  loadingText = "VERIFYING PROFILE...",
+  showCheckboxes = false,
+  source = "general",
+  modalBadge = "VERIFICATION REQUIRED",
+  modalMessage = "We have dispatched a double opt-in verification link to your email address. Please confirm your subscription to activate your access."
+} = Astro.props;
+---
+
+<div class="bg-white p-8 sm:p-10 border border-[#E5E4DF] shadow-xl relative font-sans">
+  
+  <div class="border-b border-[#E5E4DF] pb-5 mb-6">
+    <span class="text-[10px] font-bold tracking-[0.25em] text-[#C5A059] uppercase block mb-1">{badgeText}</span>
+    <h2 class="font-serif text-2xl font-bold text-[#121212]">{title}</h2>
+    <p class="text-xs text-[#666666] mt-1">{subtitle}</p>
+  </div>
+
+  <!-- FORM -->
+  <form id="briefingForm" class="space-y-4">
+    <input type="hidden" name="source" value={source} />
+
+    <!-- FULL NAME -->
+    <div>
+      <label for="fullName" class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-1">
+        Full Name <span class="text-[#C5A059]">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="fullName" 
+        name="fullName"
+        required 
+        placeholder="e.g. Alexander Vance" 
+        class="w-full bg-[#F9F9F6] border border-[#E5E4DF] px-4 py-3.5 text-xs text-[#121212] focus:outline-none focus:border-[#C5A059] focus:bg-white transition-colors"
+      />
+    </div>
+
+    <!-- EMAIL ADDRESS (CAMBIO A "EMAIL ADDRESS") -->
+    <div>
+      <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-1">
+        Email Address <span class="text-[#C5A059]">*</span>
+      </label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email"
+        required 
+        placeholder="alexander@vancecapital.com" 
+        class="w-full bg-[#F9F9F6] border border-[#E5E4DF] px-4 py-3.5 text-xs text-[#121212] focus:outline-none focus:border-[#C5A059] focus:bg-white transition-colors"
+      />
+    </div>
+
+    <!-- PRIMARY AREAS OF INTEREST (SELECCIÓN MÚLTIPLE) -->
+    <div>
+      <label class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-2">
+        Primary Areas of Interest <span class="text-[#C5A059]">*</span>
+      </label>
+      <div class="space-y-2.5 bg-[#F9F9F6] border border-[#E5E4DF] p-3.5 rounded-sm text-xs text-[#2A2E33]">
+        <label class="flex items-center gap-2.5 cursor-pointer hover:text-[#C5A059] transition-colors">
+          <input type="checkbox" name="interest" value="general" class="accent-[#C5A059] rounded border-[#E5E4DF]" checked>
+          <span>General Southern Europe Intelligence (All Topics)</span>
+        </label>
+        <label class="flex items-center gap-2.5 cursor-pointer hover:text-[#C5A059] transition-colors">
+          <input type="checkbox" name="interest" value="real-estate" class="accent-[#C5A059] rounded border-[#E5E4DF]">
+          <span>Real Estate & Property Acquisitions</span>
+        </label>
+        <label class="flex items-center gap-2.5 cursor-pointer hover:text-[#C5A059] transition-colors">
+          <input type="checkbox" name="interest" value="visas-taxes" class="accent-[#C5A059] rounded border-[#E5E4DF]">
+          <span>Visas, Residency & Cross-Border Tax</span>
+        </label>
+        <label class="flex items-center gap-2.5 cursor-pointer hover:text-[#C5A059] transition-colors">
+          <input type="checkbox" name="interest" value="lifestyle-relocation" class="accent-[#C5A059] rounded border-[#E5E4DF]">
+          <span>Lifestyle, Education & Family Relocation</span>
+        </label>
+        <label class="flex items-center gap-2.5 cursor-pointer hover:text-[#C5A059] transition-colors">
+          <input type="checkbox" name="interest" value="business-assets" class="accent-[#C5A059] rounded border-[#E5E4DF]">
+          <span>Business Acquisitions & Commercial Assets</span>
+        </label>
+      </div>
+    </div>
+
+    {showCheckboxes && (
+      <div class="space-y-3 pt-2 text-[11px] text-[#2A2E33]">
+        <label class="flex items-start gap-2.5 cursor-pointer">
+          <input type="checkbox" required class="mt-0.5 rounded border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059]">
+          <span class="leading-tight">
+            I agree to the <a href="/privacy" class="underline text-[#121212] font-semibold hover:text-[#C5A059]">Privacy Policy</a> and <a href="/terms" class="underline text-[#121212] font-semibold hover:text-[#C5A059]">Terms of Service</a>. <span class="text-[#C5A059]">*</span>
+          </span>
+        </label>
+
+        <label class="flex items-start gap-2.5 cursor-pointer">
+          <input type="checkbox" required class="mt-0.5 rounded border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059]">
+          <span class="leading-tight">
+            I consent to receive the 2026–2027 Special Report and periodic market updates from <strong>Costa Ledger</strong>. <span class="text-[#C5A059]">*</span>
+          </span>
+        </label>
+      </div>
+    )}
+
+    <!-- SUBMIT BUTTON -->
+    <button 
+      type="submit" 
+      id="submitBtn" 
+      data-loading-text={loadingText}
+      data-default-text={buttonText}
+      class="w-full bg-[#C5A059] hover:bg-[#B28E46] text-white text-xs uppercase font-bold tracking-[0.2em] py-4 transition-all shadow-md hover:shadow-xl mt-2 flex items-center justify-center gap-2 cursor-pointer"
+    >
+      <span>{buttonText}</span>
+      <svg width="16" height="16" style="width:16px; height:16px;" class="text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+    </button>
+  </form>
+
+  <div class="mt-6 pt-5 border-t border-[#E5E4DF] space-y-2.5">
+    {!showCheckboxes && (
+      <p class="text-[10px] text-[#666666] leading-relaxed">
+        🔒 <strong>Exclusivity Protocol:</strong> Double verification (Double Opt-In) is required. You will receive an instant confirmation link in your inbox. Fully GDPR compliant.
+      </p>
+    )}
+    
+    <!-- DISCLAIMER UNIFICADO -->
+    <p class="text-[9.5px] text-[#666666] leading-relaxed italic border-t border-[#E5E4DF]/60 pt-2.5">
+      <strong>Regulatory Disclaimer:</strong> Costa Ledger is an independent editorial and market-intelligence publisher. Content is provided for general informational and educational purposes and does not constitute individualized investment, financial, legal, tax, mortgage or immigration advice.
+    </p>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div id="successModal" class="fixed inset-0 bg-[#121212]/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+  <div class="bg-[#F9F9F6] max-w-md w-full p-8 border border-[#C5A059] shadow-2xl text-center relative">
+    <div class="w-12 h-12 bg-[#C5A059]/20 rounded-full flex items-center justify-center mx-auto mb-4 text-[#C5A059]">
+      <svg width="24" height="24" style="width:24px; height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+    </div>
+    
+    <span class="text-[10px] font-bold tracking-[0.25em] text-[#C5A059] uppercase block mb-1">{modalBadge}</span>
+    <h3 class="font-serif text-2xl font-bold text-[#121212] mb-3">CHECK YOUR EMAIL INBOX</h3>
+    
+    <p class="text-xs text-[#2A2E33] leading-relaxed mb-6">
+      {modalMessage}
+    </p>
+
+    <button id="closeModalBtn" class="w-full bg-[#121212] hover:bg-black text-white text-xs uppercase font-bold tracking-widest py-3.5 transition-all cursor-pointer">
+      RETURN TO PORTAL
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('briefingForm');
+    const modal = document.getElementById('successModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (submitBtn) {
+          const loadingText = submitBtn.getAttribute('data-loading-text') || 'PROCESSING...';
+          submitBtn.innerHTML = `<span>${loadingText}</span>`;
+          submitBtn.setAttribute('disabled', 'true');
+        }
+
+        setTimeout(() => {
+          if (modal) modal.classList.remove('hidden');
+          if (submitBtn) {
+            const defaultText = submitBtn.getAttribute('data-default-text') || 'SUBMIT';
+            submitBtn.innerHTML = `<span>${defaultText}</span>`;
+            submitBtn.removeAttribute('disabled');
+          }
+          form.reset();
+        }, 700);
+      });
+    }
+
+    if (closeModalBtn && modal) {
+      closeModalBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+      });
+    }
+  });
+</script>
