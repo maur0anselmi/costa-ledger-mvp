@@ -4,16 +4,12 @@ import { getCollection } from 'astro:content';
 
 const allDossiers = await getCollection('intelligence');
 
-// Sort dossiers by publishedDate descending
+// Ordenar dossiers por fecha de publicación descendente (más reciente primero)
 const sortedDossiers = allDossiers.sort((a, b) => {
   const dateA = new Date(a.data.publishedDate).getTime();
   const dateB = new Date(b.data.publishedDate).getTime();
   return dateB - dateA;
 });
-
-// Identify featured/lead dossier vs secondary dossiers
-const heroDossier = sortedDossiers.find(d => d.data.featured) || sortedDossiers[0];
-const secondaryDossiers = sortedDossiers.filter(d => d.id !== heroDossier?.id);
 
 const taxonomy = [
   {
@@ -165,82 +161,47 @@ const taxonomy = [
           </div>
         </div>
 
-        <!-- FEATURED / LEAD DOSSIER (HERO FULL WIDTH) -->
-        {heroDossier && (
-          <article 
-            class="dossier-card bg-white border-2 border-[#C5A059] p-6 md:p-8 shadow-sm transition-all"
-            data-regions={JSON.stringify(heroDossier.data.region)}
-            data-subs={JSON.stringify(heroDossier.data.subcategory)}
-            data-pillars={JSON.stringify(heroDossier.data.pillar)}
-          >
-            <div class="flex items-center justify-between mb-3">
-              <span class="bg-[#C5A059] text-[#07182D] text-[9px] font-bold tracking-widest uppercase px-2.5 py-1">
-                {heroDossier.data.badgeType}
-              </span>
-              <span class="text-[11px] text-[#666666]">
-                {new Date(heroDossier.data.publishedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} • {heroDossier.data.region.join(' & ')}
-              </span>
-            </div>
-
-            <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#121212] mb-3 leading-snug">
-              <a href={`/intelligence/${heroDossier.id}`} class="hover:text-[#C5A059] transition-colors">
-                {heroDossier.data.title}
-              </a>
-            </h2>
-
-            <p class="text-xs md:text-sm text-[#2A2E33] leading-relaxed mb-6">
-              {heroDossier.data.summary}
-            </p>
-
-            <div class="flex items-center justify-between border-t border-[#E5E4DF] pt-4">
-              <span class="text-[11px] font-semibold text-[#121212] uppercase tracking-wider">
-                {heroDossier.data.pillar.join(' & ')} / {heroDossier.data.subcategory.join(' & ')}
-              </span>
-              <a href={`/intelligence/${heroDossier.id}`} class="text-xs font-bold text-[#C5A059] hover:text-[#07182D] uppercase tracking-widest flex items-center gap-1">
-                READ DOSSIER →
-              </a>
-            </div>
-          </article>
-        )}
-
-        <!-- SECTION DIVIDER FOR SECONDARY GRID -->
-        {secondaryDossiers.length > 0 && (
-          <div class="border-b border-[#E5E4DF] pb-2 pt-2">
-            <h3 class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#121212]">
-              LATEST DOSSIERS & COMMENTARY
-            </h3>
-          </div>
-        )}
-
-        <!-- SECONDARY DOSSIERS GRID (2 COLUMNS) -->
+        <!-- UNIFIED DOSSIERS GRID -->
         <div id="dossiers-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {secondaryDossiers.map(dossier => (
+          {sortedDossiers.map((dossier, index) => (
             <article 
-              class="dossier-card bg-white border border-[#E5E4DF] p-6 flex flex-col justify-between hover:border-[#C5A059] transition-colors shadow-sm"
+              class={`dossier-card bg-white transition-all shadow-sm flex flex-col justify-between ${
+                index === 0 
+                  ? 'md:col-span-2 border-2 border-[#C5A059] p-6 md:p-8' 
+                  : 'col-span-1 border border-[#E5E4DF] p-6 hover:border-[#C5A059]'
+              }`}
               data-regions={JSON.stringify(dossier.data.region)}
               data-subs={JSON.stringify(dossier.data.subcategory)}
               data-pillars={JSON.stringify(dossier.data.pillar)}
             >
               <div>
-                <div class="flex items-center justify-between text-[10px] uppercase tracking-wider mb-3">
-                  <span class="font-bold text-[#666666]">{dossier.data.region.join(' & ')}</span>
-                  <span class="text-[#C5A059] font-bold">{dossier.data.badgeType}</span>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="bg-[#C5A059] text-[#07182D] text-[9px] font-bold tracking-widest uppercase px-2.5 py-1">
+                    {dossier.data.badgeType}
+                  </span>
+                  <span class="text-[11px] text-[#666666]">
+                    {new Date(dossier.data.publishedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} • {dossier.data.region.join(' & ')}
+                  </span>
                 </div>
 
-                <h4 class="font-serif text-lg font-bold text-[#121212] mb-2 leading-snug line-clamp-2">
+                <h2 class={`card-title font-serif font-bold text-[#121212] mb-3 leading-snug ${index === 0 ? 'text-2xl md:text-3xl' : 'text-lg md:text-xl'}`}>
                   <a href={`/intelligence/${dossier.id}`} class="hover:text-[#C5A059] transition-colors">
                     {dossier.data.title}
                   </a>
-                </h4>
+                </h2>
 
-                <p class="text-xs text-[#666666] mb-6 line-clamp-3 leading-relaxed">
+                <p class={`card-summary text-xs md:text-sm text-[#2A2E33] leading-relaxed mb-6 ${index === 0 ? '' : 'line-clamp-3'}`}>
                   {dossier.data.summary}
                 </p>
               </div>
 
-              <div class="flex items-center justify-between text-[10px] border-t border-[#E5E4DF] pt-3 text-[#666666]">
-                <span class="uppercase tracking-wider">{dossier.data.pillar[0]}</span>
-                <span class="font-bold text-[#C5A059]">{dossier.data.readTime}</span>
+              <div class="flex items-center justify-between border-t border-[#E5E4DF] pt-4 mt-auto">
+                <span class="text-[11px] font-semibold text-[#121212] uppercase tracking-wider">
+                  {dossier.data.pillar.join(' & ')} / {dossier.data.subcategory.join(' & ')}
+                </span>
+                <a href={`/intelligence/${dossier.id}`} class="text-xs font-bold text-[#C5A059] hover:text-[#07182D] uppercase tracking-widest flex items-center gap-1">
+                  READ DOSSIER →
+                </a>
               </div>
             </article>
           ))}
@@ -310,7 +271,7 @@ const taxonomy = [
       const resetBtn = document.getElementById('reset-filters');
 
       function filterContent() {
-        let visibleCount = 0;
+        let visibleCards = [];
 
         cards.forEach(card => {
           const cardRegions = JSON.parse(card.getAttribute('data-regions') || '[]');
@@ -321,13 +282,48 @@ const taxonomy = [
 
           if (matchesRegion && matchesSub) {
             card.classList.remove('hidden');
-            visibleCount++;
+            visibleCards.push(card);
           } else {
             card.classList.add('hidden');
           }
         });
 
-        if (visibleCount === 0) {
+        // Restablecer todas las tarjetas al formato secundario de 1 columna
+        cards.forEach(card => {
+          card.classList.remove('md:col-span-2', 'border-2', 'border-[#C5A059]', 'p-8');
+          card.classList.add('col-span-1', 'border', 'border-[#E5E4DF]', 'p-6');
+
+          const title = card.querySelector('.card-title');
+          if (title) {
+            title.classList.remove('text-2xl', 'md:text-3xl');
+            title.classList.add('text-lg', 'md:text-xl');
+          }
+
+          const summary = card.querySelector('.card-summary');
+          if (summary) {
+            summary.classList.add('line-clamp-3');
+          }
+        });
+
+        // Promocionar la primera tarjeta visible como Hero (2 columnas)
+        if (visibleCards.length > 0) {
+          const heroCard = visibleCards[0];
+          heroCard.classList.remove('col-span-1', 'border-[#E5E4DF]', 'p-6');
+          heroCard.classList.add('md:col-span-2', 'border-2', 'border-[#C5A059]', 'p-8');
+
+          const title = heroCard.querySelector('.card-title');
+          if (title) {
+            title.classList.remove('text-lg', 'md:text-xl');
+            title.classList.add('text-2xl', 'md:text-3xl');
+          }
+
+          const summary = heroCard.querySelector('.card-summary');
+          if (summary) {
+            summary.classList.remove('line-clamp-3');
+          }
+        }
+
+        if (visibleCards.length === 0) {
           verificationState.classList.remove('hidden');
           activeFilterLabel.textContent = selectedSub ? `"${selectedSub}"` : `selected region (${selectedRegion})`;
         } else {
