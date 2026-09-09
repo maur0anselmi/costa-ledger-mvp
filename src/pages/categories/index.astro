@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const allDossiers = await getCollection('intelligence');
@@ -136,7 +136,7 @@ const taxonomy = [
           <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
           <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
           <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
-          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors">REQUEST REPORT</a>
+          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
         </div>
 
       </aside>
@@ -164,7 +164,7 @@ const taxonomy = [
           </div>
         </div>
 
-        <!-- FEATURED / LEAD DOSSIER (HERO) -->
+        <!-- FEATURED / LEAD DOSSIER (HERO FULL WIDTH) -->
         {heroDossier && (
           <article 
             class="dossier-card bg-white border-2 border-[#C5A059] p-6 md:p-8 shadow-sm transition-all"
@@ -270,7 +270,7 @@ const taxonomy = [
             
             <a 
               href="/join" 
-              class="inline-flex items-center gap-2 bg-[#C5A059] hover:bg-[#B28E46] text-white text-xs uppercase font-bold tracking-widest px-6 py-3 transition-colors"
+              class="inline-flex items-center gap-2 bg-[#C5A059] hover:bg-[#B28E46] text-white text-xs uppercase font-bold tracking-widest px-6 py-3 transition-colors font-bold"
             >
               <span>REQUEST DIRECT DESK BRIEFING</span>
               <span>→</span>
@@ -283,7 +283,7 @@ const taxonomy = [
           <span class="text-[9px] font-bold tracking-[0.2em] text-[#C5A059] uppercase block">EXECUTIVE DOWNLOAD</span>
           <h4 class="font-serif text-lg font-bold text-white">2026–2027 Southern Europe Report</h4>
           <p class="text-[11px] text-gray-300">Get the complete digital PDF dispatched to your inbox.</p>
-          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors">REQUEST REPORT</a>
+          <a href="/report" class="block text-center bg-[#C5A059] hover:bg-[#B28E46] text-[#07182D] text-[10px] uppercase font-bold tracking-widest py-2.5 transition-colors font-bold">REQUEST REPORT</a>
         </div>
 
       </section>
