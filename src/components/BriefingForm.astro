@@ -114,7 +114,7 @@ const {
 
         <!-- BRIEFINGS OPT-IN (OPTIONAL) -->
         <label class="flex items-start gap-2.5 cursor-pointer">
-          <input type="checkbox" class="mt-0.5 rounded border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059]">
+          <input type="checkbox" id="briefingsOptIn" class="mt-0.5 rounded border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059]">
           <span class="leading-tight text-[#666666]">
             I would also like to receive Costa Ledger briefings and market updates. I can unsubscribe at any time.
           </span>
@@ -178,7 +178,7 @@ const {
     const interestError = document.getElementById('interestError');
 
     if (form) {
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         // VALIDACIÓN: AL MENOS UN ÁREA DE INTERÉS SELECCIONADA
@@ -190,21 +190,58 @@ const {
           if (interestError) interestError.classList.add('hidden');
         }
 
+        // FEEDBACK VISUAL EN BOTÓN
+        const defaultText = submitBtn?.getAttribute('data-default-text') || 'SUBSCRIBE TO THE BRIEFING';
         if (submitBtn) {
-          const loadingText = submitBtn.getAttribute('data-loading-text') || 'PROCESSING...';
+          const loadingText = submitBtn.getAttribute('data-loading-text') || 'VERIFYING PROFILE...';
           submitBtn.innerHTML = `<span>${loadingText}</span>`;
           submitBtn.setAttribute('disabled', 'true');
         }
 
-        setTimeout(() => {
-          if (modal) modal.classList.remove('hidden');
+        try {
+          // CAPTURA AUTOMÁTICA DE UTMs Y METADATOS
+          const urlParams = new URLSearchParams(window.location.search);
+          const interestArray = Array.from(checkedInterests).map(cb => cb.value);
+          const fullNameVal = document.getElementById('fullName')?.value || '';
+          const emailVal = document.getElementById('email')?.value || '';
+          const sourceVal = form.querySelector('input[name="source"]')?.value || 'general';
+
+          const payload = {
+            email: emailVal,
+            name: fullNameVal,
+            source_page: window.location.pathname,
+            form_used: `BriefingForm_${sourceVal}`,
+            utm_source: urlParams.get("utm_source") || "direct",
+            utm_medium: urlParams.get("utm_medium") || "none",
+            utm_campaign: urlParams.get("utm_campaign") || "none",
+            primary_interest: interestArray[0] || "general",
+            interests: interestArray,
+            consent_version: "v1.0-2026-09",
+            subscriber_lifecycle_status: "subscriber"
+          };
+
+          const response = await fetch('/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (response.ok) {
+            if (modal) modal.classList.remove('hidden');
+            form.reset();
+          } else {
+            const errData = await response.json();
+            alert(`Unable to subscribe: ${errData.error || 'Server error'}`);
+          }
+        } catch (err) {
+          console.error("Subscription error:", err);
+          alert("Network connection issue. Please try again.");
+        } finally {
           if (submitBtn) {
-            const defaultText = submitBtn.getAttribute('data-default-text') || 'SUBMIT';
-            submitBtn.innerHTML = `<span>${defaultText}</span>`;
+            submitBtn.innerHTML = `<span>${defaultText}</span><svg width="16" height="16" style="width:16px; height:16px;" class="text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>`;
             submitBtn.removeAttribute('disabled');
           }
-          form.reset();
-        }, 700);
+        }
       });
     }
 
