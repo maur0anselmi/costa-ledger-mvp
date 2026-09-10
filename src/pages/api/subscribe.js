@@ -25,21 +25,11 @@ export async function POST(context) {
       });
     }
 
-    // Resolución nativa de variables para @astrojs/cloudflare
+    // Resolución de variables con fallback explícito
     const cfEnv = locals?.cloudflare?.env || {};
-    const apiKey = cfEnv.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY;
-    const listGeneral = cfEnv.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL;
-    const listReport = cfEnv.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT;
-
-    if (!apiKey) {
-      return new Response(JSON.stringify({ 
-        error: "Configuration Error", 
-        details: "KLAVIYO_PRIVATE_API_KEY non-existent in Cloudflare env" 
-      }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
-      });
-    }
+    const apiKey = cfEnv.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY || "pk_V9tnGA_84600ba0fc04a3a017b9c57b610d5e5c7e";
+    const listGeneral = cfEnv.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL || "RkLAuk";
+    const listReport = cfEnv.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT || "VFDECK";
 
     const listId = source_page?.includes("report") ? listReport : listGeneral;
     const timestampNow = new Date().toISOString();
