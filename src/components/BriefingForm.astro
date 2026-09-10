@@ -231,6 +231,9 @@ const {
           if (response.ok) {
             if (modal) modal.classList.remove('hidden');
             form.reset();
+            git add .
+git commit -m "feat: add plausible tracking script with custom account ID"
+git push
           } else {
             const errData = await response.json(); 
             alert(`Unable to subscribe: ${errData.details || errData.error || 'Server error'}`);
