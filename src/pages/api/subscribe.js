@@ -1,6 +1,8 @@
-// Klaviyo API endpoint
-export async function onRequestPost(context) {
+export const prerender = false;
+
+export async function POST({ request, locals }) {
   try {
+    const data = await request.json();
     const {
       email,
       name,
@@ -12,14 +14,8 @@ export async function onRequestPost(context) {
       primary_interest,
       interests,
       consent_version,
-      subscriber_lifecycle_status,
-      // Metadatos comerciales / partners opcionales
-      requested_service,
-      partner_consent,
-      provider_routed,
-      disclosure_version,
-      handoff_timestamp
-    } = await context.request.json();
+      subscriber_lifecycle_status
+    } = data;
 
     if (!email) {
       return new Response(JSON.stringify({ error: "Email is required" }), {
@@ -28,11 +24,13 @@ export async function onRequestPost(context) {
       });
     }
 
-    const apiKey = context.env.KLAVIYO_PRIVATE_API_KEY;
-    const listId = source_page?.includes("report") 
-      ? context.env.KLAVIYO_LIST_REPORT 
-      : context.env.KLAVIYO_LIST_GENERAL;
+    // Extracción de secretos desde el entorno de Cloudflare Workers
+    const env = locals?.runtime?.env || {};
+    const apiKey = env.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY;
+    const listGeneral = env.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL;
+    const listReport = env.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT;
 
+    const listId = source_page?.includes("report") ? listReport : listGeneral;
     const timestampNow = new Date().toISOString();
 
     const payload = {
@@ -45,37 +43,23 @@ export async function onRequestPost(context) {
               {
                 type: "profile",
                 attributes: {
-                  email: email,
+                  email,
                   first_name: name || "",
                   properties: {
-                    // Atribución y Origen
                     source_page: source_page || "",
                     form_used: form_used || "",
                     utm_source: utm_source || "direct",
                     utm_medium: utm_medium || "none",
                     utm_campaign: utm_campaign || "none",
-
-                    // Editorial y Preferencias
                     primary_interest: primary_interest || "General",
                     interests: interests || [],
-
-                    // Consentimiento y Cumplimiento Legal
                     consent_timestamp: timestampNow,
                     consent_version: consent_version || "v1.0-2026",
-                    subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber",
-
-                    // Campos de Intención Comercial / Partners (Si aplican)
-                    ...(requested_service && { requested_service }),
-                    ...(partner_consent !== undefined && { partner_transfer_consent: partner_consent }),
-                    ...(provider_routed && { provider_routed_to: provider_routed }),
-                    ...(disclosure_version && { disclosure_version }),
-                    ...(handoff_timestamp && { handoff_timestamp })
+                    subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber"
                   },
                   subscriptions: {
                     email: {
-                      marketing: {
-                        consent: "SUBSCRIBED"
-                      }
+                      marketing: { consent: "SUBSCRIBED" }
                     }
                   }
                 }
@@ -85,10 +69,7 @@ export async function onRequestPost(context) {
         },
         relationships: {
           list: {
-            data: {
-              type: "list",
-              id: listId
-            }
+            data: { type: "list", id: listId }
           }
         }
       }
