@@ -181,7 +181,6 @@ const {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // VALIDACIÓN: AL MENOS UN ÁREA DE INTERÉS SELECCIONADA
         const checkedInterests = form.querySelectorAll('input[name="interest"]:checked');
         if (checkedInterests.length === 0) {
           if (interestError) interestError.classList.remove('hidden');
@@ -190,7 +189,6 @@ const {
           if (interestError) interestError.classList.add('hidden');
         }
 
-        // FEEDBACK VISUAL EN BOTÓN
         const defaultText = submitBtn?.getAttribute('data-default-text') || 'SUBSCRIBE TO THE BRIEFING';
         if (submitBtn) {
           const loadingText = submitBtn.getAttribute('data-loading-text') || 'VERIFYING PROFILE...';
@@ -199,7 +197,6 @@ const {
         }
 
         try {
-          // CAPTURA AUTOMÁTICA DE UTMs Y METADATOS
           const urlParams = new URLSearchParams(window.location.search);
           const interestArray = Array.from(checkedInterests).map(cb => cb.value);
           const fullNameVal = document.getElementById('fullName')?.value || '';
@@ -231,9 +228,10 @@ const {
           if (response.ok) {
             if (modal) modal.classList.remove('hidden');
             form.reset();
-            git add .
-git commit -m "feat: add plausible tracking script with custom account ID"
-git push
+
+            if (typeof window.plausible === 'function') {
+              window.plausible('LeadCapture', { props: { source: sourceVal } });
+            }
           } else {
             const errData = await response.json(); 
             alert(`Unable to subscribe: ${errData.details || errData.error || 'Server error'}`);
