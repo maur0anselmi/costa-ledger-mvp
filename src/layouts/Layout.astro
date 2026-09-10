@@ -48,18 +48,18 @@ const { title } = Astro.props;
   <body class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brandGold selection:text-white overflow-x-hidden w-full">
     
     <!-- TOP ANNOUNCEMENT BAR -->
-    <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2.5 px-4 text-center border-b border-brandGold/30 truncate">
+    <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2 px-4 text-center border-b border-brandGold/30 truncate">
       SOUTHERN EUROPE MARKET INTELLIGENCE UNIT • Q3 2026 SPECIAL BRIEFING AVAILABLE
     </div>
 
-    <!-- MAIN HEADER -->
-    <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40 w-full overflow-hidden">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-16 sm:h-20 md:h-24 flex items-center justify-between gap-2 sm:gap-4">
+    <!-- MAIN HEADER (ALTURA COMPACTA H-20) -->
+    <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40 w-full">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-16 sm:h-20 flex items-center justify-between gap-3">
         
         <!-- LOGO -->
-        <a href="/" class="flex items-center gap-2.5 sm:gap-3.5 group shrink-0">
+        <a href="/" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
           <svg 
-            class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-brandGold shrink-0 transition-transform duration-500 group-hover:rotate-45" 
+            class="w-8 h-8 sm:w-10 sm:h-10 text-brandGold shrink-0 transition-transform duration-500 group-hover:rotate-45" 
             viewBox="0 0 100 100" 
             fill="none" 
             stroke="currentColor"
@@ -72,17 +72,17 @@ const { title } = Astro.props;
           </svg>
 
           <div class="flex flex-col justify-center">
-            <span class="font-serif text-lg sm:text-[22px] md:text-[25px] font-bold tracking-[0.06em] text-brandDark uppercase leading-none">
+            <span class="font-serif text-lg sm:text-[22px] font-bold tracking-[0.05em] text-brandDark uppercase leading-none">
               COSTA LEDGER
             </span>
-            <span class="text-[8px] tracking-[0.06em] text-brandGold uppercase font-bold leading-none mt-1 hidden sm:block">
+            <span class="text-[7.5px] sm:text-[8px] tracking-[0.05em] text-brandGold uppercase font-bold leading-none mt-1 hidden sm:block">
               INTELLIGENCE FOR BETTER DECISIONS
             </span>
           </div>
         </a>
 
-        <!-- NAV LINKS (DESKTOP ONLY) -->
-        <nav class="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs font-bold tracking-[0.15em] uppercase shrink-0">
+        <!-- NAV LINKS DESKTOP (LETRA Y ESPACIADO 11PX) -->
+        <nav class="hidden lg:flex items-center space-x-6 xl:space-x-8 text-[11px] font-bold tracking-[0.12em] uppercase shrink-0">
           <a href="/categories" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
             ALL INTELLIGENCE
           </a>
@@ -97,29 +97,76 @@ const { title } = Astro.props;
           </a>
         </nav>
 
-        <!-- CTA BUTTON -->
-        <a href="/join" class="bg-brandGold hover:bg-brandGoldHover text-white text-[10px] sm:text-xs uppercase font-bold tracking-wider sm:tracking-widest px-3 py-2 sm:px-6 sm:py-3.5 transition-all shadow-sm shrink-0 whitespace-nowrap">
-          <span class="sm:hidden">JOIN BRIEFING</span>
-          <span class="hidden sm:inline">JOIN THE BRIEFING</span>
-        </a>
+        <!-- ACCIONES DERECHA (BOTÓN + MENÚ HAMBURGUESA EN MOBILE) -->
+        <div class="flex items-center gap-2.5 sm:gap-4 shrink-0">
+          <a href="/join" class="bg-brandGold hover:bg-brandGoldHover text-white text-[10px] sm:text-[11px] uppercase font-bold tracking-wider px-3 py-2 sm:px-5 sm:py-2.5 transition-all shadow-sm whitespace-nowrap">
+            <span class="sm:hidden">JOIN</span>
+            <span class="hidden sm:inline">JOIN THE BRIEFING</span>
+          </a>
+
+          <!-- BOTÓN HAMBURGUESA (MÓVIL/TABLET) -->
+          <button 
+            id="mobile-menu-btn" 
+            aria-label="Toggle Navigation Menu"
+            class="lg:hidden p-2 text-brandDark hover:text-brandGold transition-colors cursor-pointer"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
 
       </div>
     </header>
 
+    <!-- MENÚ DESPLEGABLE MÓVIL (MOBILE DRAWER) -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 bg-brandNavy/95 backdrop-blur-md z-50 hidden flex-col justify-between p-8 text-white font-sans transition-all">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-6">
+        <div class="flex flex-col">
+          <span class="font-serif text-xl font-bold tracking-wider text-white uppercase">COSTA LEDGER</span>
+          <span class="text-[8px] tracking-widest text-brandGold uppercase font-bold mt-0.5">NAVIGATION MENU</span>
+        </div>
+        <button id="close-mobile-menu" class="text-slate-400 hover:text-white p-2 text-2xl font-bold cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <nav class="flex flex-col space-y-6 my-auto text-sm font-bold tracking-[0.15em] uppercase">
+        <a href="/categories" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
+          ALL INTELLIGENCE
+        </a>
+        <a href="/categories?pillar=PROPERTY%20%26%20CAPITAL" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
+          PROPERTY & CAPITAL
+        </a>
+        <a href="/categories?pillar=LEGAL,%20TAX%20%26%20RESIDENCY" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
+          LEGAL, TAX & RESIDENCY
+        </a>
+        <a href="/categories?pillar=LIFESTYLE%20%26%20RELOCATION" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
+          LIFESTYLE & RELOCATION
+        </a>
+      </nav>
+
+      <div class="pt-6 border-t border-slate-800 space-y-4">
+        <a href="/join" class="block text-center bg-brandGold hover:bg-brandGoldHover text-[#07182D] text-xs uppercase font-bold tracking-widest py-3.5 transition-colors">
+          JOIN THE BRIEFING
+        </a>
+        <p class="text-[9px] text-slate-400 text-center uppercase tracking-widest">
+          © 2026 COSTA LEDGER • PRIVATE RESEARCH UNIT
+        </p>
+      </div>
+    </div>
+
     <slot />
 
-    <!-- SINGLE-LINE EXECUTIVE FOOTER BAR (RESPONSIVO Y SIN DESBORDAMIENTO) -->
+    <!-- FOOTER -->
     <footer class="bg-[#0B1528] text-white py-5 border-t border-slate-800 font-sans w-full overflow-hidden">
       <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] tracking-wider uppercase font-semibold">
-        
-        <!-- LEFT: BRAND & SHORT SLOGAN -->
         <div class="flex items-center gap-2 text-slate-300 whitespace-nowrap">
           <span class="font-serif font-bold text-white text-xs tracking-wider">COSTA LEDGER</span>
           <span class="text-slate-600">•</span>
           <span class="text-slate-400 font-normal">Southern Europe Intelligence</span>
         </div>
 
-        <!-- RIGHT: INLINE LEGAL LINKS (CON FLEX-WRAP PARA MÓVIL) -->
         <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-2.5 gap-y-1.5 text-slate-400 text-center">
           <a href="/privacy" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Privacy Policy</a>
           <span class="text-slate-700">•</span>
@@ -131,9 +178,35 @@ const { title } = Astro.props;
           <span class="text-slate-700">•</span>
           <span class="text-slate-300 font-normal whitespace-nowrap">© 2026 COSTA LEDGER</span>
         </div>
-
       </div>
     </footer>
 
+    <!-- SCRIPT HAMBURGUESA -->
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('close-mobile-menu');
+        const drawer = document.getElementById('mobile-menu-drawer');
+        const navLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function toggleMenu() {
+          if (drawer) {
+            drawer.classList.toggle('hidden');
+            drawer.classList.toggle('flex');
+          }
+        }
+
+        if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+        if (closeBtn) closeBtn.addEventListener('click', toggleMenu);
+
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            if (drawer && !drawer.classList.contains('hidden')) {
+              toggleMenu();
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
