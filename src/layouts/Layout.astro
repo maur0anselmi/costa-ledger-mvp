@@ -1,9 +1,11 @@
 ---
 interface Props {
   title: string;
+  minimalHeader?: boolean;
+  headerLabel?: string;
 }
 
-const { title } = Astro.props;
+const { title, minimalHeader = false, headerLabel } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -45,14 +47,16 @@ const { title } = Astro.props;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brandGold selection:text-white overflow-x-hidden w-full">
+  <body class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden w-full selection:bg-brandGold selection:text-white">
     
-    <!-- TOP ANNOUNCEMENT BAR -->
-    <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2 px-4 text-center border-b border-brandGold/30 truncate">
-      SOUTHERN EUROPE MARKET INTELLIGENCE UNIT • Q3 2026 SPECIAL BRIEFING AVAILABLE
-    </div>
+    <!-- TOP ANNOUNCEMENT BAR (SÓLO SI NO ES MINIMAL) -->
+    {!minimalHeader && (
+      <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2 px-4 text-center border-b border-brandGold/30 truncate">
+        SOUTHERN EUROPE MARKET INTELLIGENCE UNIT • Q3 2026 SPECIAL BRIEFING AVAILABLE
+      </div>
+    )}
 
-    <!-- MAIN HEADER (ALTURA COMPACTA H-20) -->
+    <!-- MAIN HEADER -->
     <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40 w-full">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-16 sm:h-20 flex items-center justify-between gap-3">
         
@@ -81,80 +85,90 @@ const { title } = Astro.props;
           </div>
         </a>
 
-        <!-- NAV LINKS DESKTOP (LETRA Y ESPACIADO 11PX) -->
-        <nav class="hidden lg:flex items-center space-x-6 xl:space-x-8 text-[11px] font-bold tracking-[0.12em] uppercase shrink-0">
-          <a href="/categories" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
-            ALL INTELLIGENCE
-          </a>
-          <a href="/categories?pillar=PROPERTY%20%26%20CAPITAL" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
-            PROPERTY & CAPITAL
-          </a>
-          <a href="/categories?pillar=LEGAL,%20TAX%20%26%20RESIDENCY" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
-            LEGAL, TAX & RESIDENCY
-          </a>
-          <a href="/categories?pillar=LIFESTYLE%20%26%20RELOCATION" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
-            LIFESTYLE & RELOCATION
-          </a>
-        </nav>
+        {minimalHeader ? (
+          <!-- CABECERA LIMPIA PARA PÁGINAS DE CAPTACIÓN -->
+          <span class="text-[10px] sm:text-xs font-bold tracking-[0.15em] text-brandMuted uppercase">
+            {headerLabel || 'PRIVATE PORTAL'}
+          </span>
+        ) : (
+          <>
+            <!-- NAV LINKS DESKTOP -->
+            <nav class="hidden lg:flex items-center space-x-6 xl:space-x-8 text-[11px] font-bold tracking-[0.12em] uppercase shrink-0">
+              <a href="/categories" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
+                ALL INTELLIGENCE
+              </a>
+              <a href="/categories?pillar=PROPERTY%20%26%20CAPITAL" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
+                PROPERTY & CAPITAL
+              </a>
+              <a href="/categories?pillar=LEGAL,%20TAX%20%26%20RESIDENCY" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
+                LEGAL, TAX & RESIDENCY
+              </a>
+              <a href="/categories?pillar=LIFESTYLE%20%26%20RELOCATION" class="text-brandDark hover:text-brandGold transition-colors whitespace-nowrap">
+                LIFESTYLE & RELOCATION
+              </a>
+            </nav>
 
-        <!-- ACCIONES DERECHA (BOTÓN + MENÚ HAMBURGUESA EN MOBILE) -->
-        <div class="flex items-center gap-2.5 sm:gap-4 shrink-0">
-          <a href="/join" class="bg-brandGold hover:bg-brandGoldHover text-white text-[10px] sm:text-[11px] uppercase font-bold tracking-wider px-3 py-2 sm:px-5 sm:py-2.5 transition-all shadow-sm whitespace-nowrap">
-            <span class="sm:hidden">JOIN</span>
-            <span class="hidden sm:inline">JOIN THE BRIEFING</span>
-          </a>
+            <!-- ACCIONES DERECHA (BOTÓN + HAMBURGUESA) -->
+            <div class="flex items-center gap-2.5 sm:gap-4 shrink-0">
+              <a href="/join" class="bg-brandGold hover:bg-brandGoldHover text-white text-[10px] sm:text-[11px] uppercase font-bold tracking-wider px-3 py-2 sm:px-5 sm:py-2.5 transition-all shadow-sm whitespace-nowrap">
+                <span class="sm:hidden">JOIN</span>
+                <span class="hidden sm:inline">JOIN THE BRIEFING</span>
+              </a>
 
-          <!-- BOTÓN HAMBURGUESA (MÓVIL/TABLET) -->
-          <button 
-            id="mobile-menu-btn" 
-            aria-label="Toggle Navigation Menu"
-            class="lg:hidden p-2 text-brandDark hover:text-brandGold transition-colors cursor-pointer"
-          >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-        </div>
+              <button 
+                id="mobile-menu-btn" 
+                aria-label="Toggle Navigation Menu"
+                class="lg:hidden p-2 text-brandDark hover:text-brandGold transition-colors cursor-pointer"
+              >
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+              </button>
+            </div>
+          </>
+        )}
 
       </div>
     </header>
 
-    <!-- MENÚ DESPLEGABLE MÓVIL (MOBILE DRAWER) -->
-    <div id="mobile-menu-drawer" class="fixed inset-0 bg-brandNavy/95 backdrop-blur-md z-50 hidden flex-col justify-between p-8 text-white font-sans transition-all">
-      <div class="flex items-center justify-between border-b border-slate-700 pb-6">
-        <div class="flex flex-col">
-          <span class="font-serif text-xl font-bold tracking-wider text-white uppercase">COSTA LEDGER</span>
-          <span class="text-[8px] tracking-widest text-brandGold uppercase font-bold mt-0.5">NAVIGATION MENU</span>
+    {!minimalHeader && (
+      <!-- MENÚ DESPLEGABLE MÓVIL (SÓLO SI NO ES MINIMAL) -->
+      <div id="mobile-menu-drawer" class="fixed inset-0 bg-brandNavy/95 backdrop-blur-md z-50 hidden flex-col justify-between p-8 text-white font-sans transition-all">
+        <div class="flex items-center justify-between border-b border-slate-700 pb-6">
+          <div class="flex flex-col">
+            <span class="font-serif text-xl font-bold tracking-wider text-white uppercase">COSTA LEDGER</span>
+            <span class="text-[8px] tracking-widest text-brandGold uppercase font-bold mt-0.5">NAVIGATION MENU</span>
+          </div>
+          <button id="close-mobile-menu" class="text-slate-400 hover:text-white p-2 text-2xl font-bold cursor-pointer">
+            ✕
+          </button>
         </div>
-        <button id="close-mobile-menu" class="text-slate-400 hover:text-white p-2 text-2xl font-bold cursor-pointer">
-          ✕
-        </button>
-      </div>
 
-      <nav class="flex flex-col space-y-6 my-auto text-sm font-bold tracking-[0.15em] uppercase">
-        <a href="/categories" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
-          ALL INTELLIGENCE
-        </a>
-        <a href="/categories?pillar=PROPERTY%20%26%20CAPITAL" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
-          PROPERTY & CAPITAL
-        </a>
-        <a href="/categories?pillar=LEGAL,%20TAX%20%26%20RESIDENCY" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
-          LEGAL, TAX & RESIDENCY
-        </a>
-        <a href="/categories?pillar=LIFESTYLE%20%26%20RELOCATION" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
-          LIFESTYLE & RELOCATION
-        </a>
-      </nav>
+        <nav class="flex flex-col space-y-6 my-auto text-sm font-bold tracking-[0.15em] uppercase">
+          <a href="/categories" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
+            ALL INTELLIGENCE
+          </a>
+          <a href="/categories?pillar=PROPERTY%20%26%20CAPITAL" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
+            PROPERTY & CAPITAL
+          </a>
+          <a href="/categories?pillar=LEGAL,%20TAX%20%26%20RESIDENCY" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
+            LEGAL, TAX & RESIDENCY
+          </a>
+          <a href="/categories?pillar=LIFESTYLE%20%26%20RELOCATION" class="mobile-nav-link text-slate-200 hover:text-brandGold border-b border-slate-800 pb-3 transition-colors">
+            LIFESTYLE & RELOCATION
+          </a>
+        </nav>
 
-      <div class="pt-6 border-t border-slate-800 space-y-4">
-        <a href="/join" class="block text-center bg-brandGold hover:bg-brandGoldHover text-[#07182D] text-xs uppercase font-bold tracking-widest py-3.5 transition-colors">
-          JOIN THE BRIEFING
-        </a>
-        <p class="text-[9px] text-slate-400 text-center uppercase tracking-widest">
-          © 2026 COSTA LEDGER • PRIVATE RESEARCH UNIT
-        </p>
+        <div class="pt-6 border-t border-slate-800 space-y-4">
+          <a href="/join" class="block text-center bg-brandGold hover:bg-brandGoldHover text-[#07182D] text-xs uppercase font-bold tracking-widest py-3.5 transition-colors">
+            JOIN THE BRIEFING
+          </a>
+          <p class="text-[9px] text-slate-400 text-center uppercase tracking-widest">
+            © 2026 COSTA LEDGER • PRIVATE RESEARCH UNIT
+          </p>
+        </div>
       </div>
-    </div>
+    )}
 
     <slot />
 
@@ -181,32 +195,34 @@ const { title } = Astro.props;
       </div>
     </footer>
 
-    <!-- SCRIPT HAMBURGUESA -->
-    <script is:inline>
-      document.addEventListener('DOMContentLoaded', () => {
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const closeBtn = document.getElementById('close-mobile-menu');
-        const drawer = document.getElementById('mobile-menu-drawer');
-        const navLinks = document.querySelectorAll('.mobile-nav-link');
+    {!minimalHeader && (
+      <!-- SCRIPT HAMBURGUESA -->
+      <script is:inline>
+        document.addEventListener('DOMContentLoaded', () => {
+          const menuBtn = document.getElementById('mobile-menu-btn');
+          const closeBtn = document.getElementById('close-mobile-menu');
+          const drawer = document.getElementById('mobile-menu-drawer');
+          const navLinks = document.querySelectorAll('.mobile-nav-link');
 
-        function toggleMenu() {
-          if (drawer) {
-            drawer.classList.toggle('hidden');
-            drawer.classList.toggle('flex');
-          }
-        }
-
-        if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
-        if (closeBtn) closeBtn.addEventListener('click', toggleMenu);
-
-        navLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            if (drawer && !drawer.classList.contains('hidden')) {
-              toggleMenu();
+          function toggleMenu() {
+            if (drawer) {
+              drawer.classList.toggle('hidden');
+              drawer.classList.toggle('flex');
             }
+          }
+
+          if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+          if (closeBtn) closeBtn.addEventListener('click', toggleMenu);
+
+          navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+              if (drawer && !drawer.classList.contains('hidden')) {
+                toggleMenu();
+              }
+            });
           });
         });
-      });
-    </script>
+      </script>
+    )}
   </body>
 </html>
