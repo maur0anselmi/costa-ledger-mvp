@@ -4,9 +4,16 @@ interface Props {
   minimalHeader?: boolean;
   headerLabel?: string;
   isAdvertorial?: boolean;
+  disableLogoLink?: boolean;
 }
 
-const { title, minimalHeader = false, headerLabel, isAdvertorial = false } = Astro.props;
+const { 
+  title, 
+  minimalHeader = false, 
+  headerLabel, 
+  isAdvertorial = false,
+  disableLogoLink = isAdvertorial // If advertorial, logo is not clickable by default
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -56,44 +63,69 @@ const { title, minimalHeader = false, headerLabel, isAdvertorial = false } = Ast
   </head>
   <body data-page-type={isAdvertorial ? "advertorial" : "vault"} class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden w-full selection:bg-brandGold selection:text-white">
     
-    {!minimalHeader && (
-      <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2 px-4 text-center border-b border-brandGold/30 truncate">
-        SOUTHERN EUROPE MARKET INTELLIGENCE UNIT • Q3 2026 SPECIAL BRIEFING AVAILABLE
-      </div>
-    )}
+    <!-- TOP BLUE BANNER (ALWAYS VISIBLE) -->
+    <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2 px-4 text-center border-b border-brandGold/30 truncate">
+      SOUTHERN EUROPE MARKET INTELLIGENCE UNIT • Q3 2026 SPECIAL BRIEFING AVAILABLE
+    </div>
 
     <!-- MAIN HEADER -->
     <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40 w-full">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-16 sm:h-20 flex items-center justify-between gap-3">
         
-        <!-- LOGO -->
-        <a href="/" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-          <svg 
-            class="w-8 h-8 sm:w-10 sm:h-10 text-brandGold shrink-0 transition-transform duration-500 group-hover:rotate-45" 
-            viewBox="0 0 100 100" 
-            fill="none" 
-            stroke="currentColor"
-          >
-            <circle cx="50" cy="50" r="47" stroke-width="1.5"/>
-            <ellipse cx="50" cy="50" rx="21" ry="47" stroke-width="1.2"/>
-            <ellipse cx="50" cy="50" rx="47" ry="21" stroke-width="1.2"/>
-            <path d="M50 10 L54 38 L82 22 L62 46 L90 50 L62 54 L82 78 L54 62 L50 90 L46 62 L18 78 L38 54 L10 50 L38 46 L18 22 L46 38 Z" fill="#C5A059" stroke="none"/>
-            <circle cx="50" cy="50" r="2.5" fill="#F9F9F6"/>
-          </svg>
+        <!-- LOGO (CLICKABLE OR STATIC BASED ON PROPS) -->
+        {disableLogoLink ? (
+          <div class="flex items-center gap-2.5 sm:gap-3 group shrink-0 select-none">
+            <svg 
+              class="w-8 h-8 sm:w-10 sm:h-10 text-brandGold shrink-0" 
+              viewBox="0 0 100 100" 
+              fill="none" 
+              stroke="currentColor"
+            >
+              <circle cx="50" cy="50" r="47" stroke-width="1.5"/>
+              <ellipse cx="50" cy="50" rx="21" ry="47" stroke-width="1.2"/>
+              <ellipse cx="50" cy="50" rx="47" ry="21" stroke-width="1.2"/>
+              <path d="M50 10 L54 38 L82 22 L62 46 L90 50 L62 54 L82 78 L54 62 L50 90 L46 62 L18 78 L38 54 L10 50 L38 46 L18 22 L46 38 Z" fill="#C5A059" stroke="none"/>
+              <circle cx="50" cy="50" r="2.5" fill="#F9F9F6"/>
+            </svg>
 
-          <div class="flex flex-col justify-center">
-            <span class="font-serif text-lg sm:text-[22px] font-bold tracking-[0.05em] text-brandDark uppercase leading-none">
-              COSTA LEDGER
-            </span>
-            <span class="text-[7.5px] sm:text-[8px] tracking-[0.05em] text-brandGold uppercase font-bold leading-none mt-1 hidden sm:block">
-              INTELLIGENCE FOR BETTER DECISIONS
-            </span>
+            <div class="flex flex-col justify-center">
+              <span class="font-serif text-lg sm:text-[22px] font-bold tracking-[0.05em] text-brandDark uppercase leading-none">
+                COSTA LEDGER
+              </span>
+              <span class="text-[7.5px] sm:text-[8px] tracking-[0.05em] text-brandGold uppercase font-bold leading-none mt-1 hidden sm:block">
+                INTELLIGENCE FOR BETTER DECISIONS
+              </span>
+            </div>
           </div>
-        </a>
+        ) : (
+          <a href="/" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+            <svg 
+              class="w-8 h-8 sm:w-10 sm:h-10 text-brandGold shrink-0 transition-transform duration-500 group-hover:rotate-45" 
+              viewBox="0 0 100 100" 
+              fill="none" 
+              stroke="currentColor"
+            >
+              <circle cx="50" cy="50" r="47" stroke-width="1.5"/>
+              <ellipse cx="50" cy="50" rx="21" ry="47" stroke-width="1.2"/>
+              <ellipse cx="50" cy="50" rx="47" ry="21" stroke-width="1.2"/>
+              <path d="M50 10 L54 38 L82 22 L62 46 L90 50 L62 54 L82 78 L54 62 L50 90 L46 62 L18 78 L38 54 L10 50 L38 46 L18 22 L46 38 Z" fill="#C5A059" stroke="none"/>
+              <circle cx="50" cy="50" r="2.5" fill="#F9F9F6"/>
+            </svg>
+
+            <div class="flex flex-col justify-center">
+              <span class="font-serif text-lg sm:text-[22px] font-bold tracking-[0.05em] text-brandDark uppercase leading-none">
+                COSTA LEDGER
+              </span>
+              <span class="text-[7.5px] sm:text-[8px] tracking-[0.05em] text-brandGold uppercase font-bold leading-none mt-1 hidden sm:block">
+                INTELLIGENCE FOR BETTER DECISIONS
+              </span>
+            </div>
+          </a>
+        )}
 
         {minimalHeader ? (
           <span class="text-[10px] sm:text-xs font-bold tracking-[0.15em] text-brandMuted uppercase">
-            {headerLabel || 'PRIVATE PORTAL'}
+            {headerLabel || 'PRIVATE SUBSCRIBER PORTAL'}
           </span>
         ) : (
           <>
@@ -174,7 +206,7 @@ const { title, minimalHeader = false, headerLabel, isAdvertorial = false } = Ast
 
     <slot />
 
-    <!-- FOOTER -->
+    <!-- FOOTER (ALL LINKS OPEN IN NEW TAB) -->
     <footer class="bg-[#0B1528] text-white py-5 border-t border-slate-800 font-sans w-full overflow-hidden">
       <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] tracking-wider uppercase font-semibold">
         <div class="flex items-center gap-2 text-slate-300 whitespace-nowrap">
@@ -184,13 +216,13 @@ const { title, minimalHeader = false, headerLabel, isAdvertorial = false } = Ast
         </div>
 
         <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-2.5 gap-y-1.5 text-slate-400 text-center">
-          <a href="/privacy" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Privacy Policy</a>
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Privacy Policy</a>
           <span class="text-slate-700">•</span>
-          <a href="/terms" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Terms of Service</a>
+          <a href="/terms" target="_blank" rel="noopener noreferrer" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Terms of Service</a>
           <span class="text-slate-700">•</span>
-          <a href="/disclosures" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Disclosures & Disclaimers</a>
+          <a href="/disclosures" target="_blank" rel="noopener noreferrer" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Disclosures & Disclaimers</a>
           <span class="text-slate-700">•</span>
-          <a href="/cookies" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Cookie Policy</a>
+          <a href="/cookies" target="_blank" rel="noopener noreferrer" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Cookie Policy</a>
           <span class="text-slate-700">•</span>
           <span class="text-slate-300 font-normal whitespace-nowrap">© 2026 COSTA LEDGER</span>
         </div>
@@ -226,7 +258,7 @@ const { title, minimalHeader = false, headerLabel, isAdvertorial = false } = Ast
       </script>
     )}
 
-    <!-- SCRIPT GLOBAL: DELEGACIÓN DE CLICS EN CTAS (VAULT VS ADVERTORIAL) -->
+    <!-- GLOBAL SCRIPT: CTA CLICK EVENT DELEGATION (VAULT VS ADVERTORIAL) -->
     <script is:inline>
       document.addEventListener('click', (e) => {
         const link = e.target.closest('a');
