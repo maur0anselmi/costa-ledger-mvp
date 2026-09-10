@@ -1,37 +1,26 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import BriefingForm from '../../components/BriefingForm.astro';
 ---
 
 <Layout 
   title="Southern Europe Capital Strategy 2026 | Costa Ledger" 
   minimalHeader={true} 
-  headerLabel="PRIVATE SUBSCRIBER PORTAL" 
+  headerLabel="SPECIAL INTELLIGENCE REPORT" 
   isAdvertorial={true}
 >
   <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
     
     <!-- ARTICLE HEADER -->
-    <header class="mb-8 border-b border-[#E5E4DF] pb-8 text-center max-w-3xl mx-auto">
-      <span class="text-[#C5A059] font-bold tracking-[0.2em] text-[10px] uppercase block mb-3">
-        SPECIAL INTELLIGENCE REPORT
-      </span>
-      
+    <header class="mb-8 border-b border-[#E5E4DF] pb-6 text-center max-w-3xl mx-auto">
       <!-- TITLE -->
       <h1 class="font-serif text-3xl sm:text-5xl font-bold text-[#121212] leading-tight mb-4">
         The Capital Shift: How High-Net-Worth Investors Are Navigating Europe's New Fiscal Rules
       </h1>
 
       <!-- LEDE (SUBTITLE / INTRO) -->
-      <p class="text-base sm:text-lg text-[#666666] font-sans leading-relaxed mb-6 italic">
+      <p class="text-base sm:text-lg text-[#666666] font-sans leading-relaxed italic">
         A quiet overhaul of cross-border tax incentives and residency pathways is prompting institutional investors and private capitals to restructure assets across Spain, Portugal, and Italy.
       </p>
-
-      <div class="flex items-center justify-center gap-2 text-[10px] sm:text-[11px] text-[#666666] uppercase tracking-wider font-bold">
-        <span>Costa Ledger Intelligence Unit</span>
-        <span>•</span>
-        <span>Read Time: 4 Mins</span>
-      </div>
     </header>
 
     <!-- HERO IMAGE -->
@@ -41,14 +30,15 @@ import BriefingForm from '../../components/BriefingForm.astro';
         alt="Southern Europe Investment Asset" 
         class="w-full h-[280px] sm:h-[400px] object-cover border border-[#E5E4DF] shadow-sm"
       />
-      <span class="text-[10px] text-[#666666] mt-2 block text-right italic font-serif">
+      <!-- IMAGE CAPTION (INCREASED FONT SIZE) -->
+      <span class="text-xs sm:text-sm text-[#666666] mt-2.5 block text-right italic font-sans">
         Market positioning across key Mediterranean corridors, Q3 2026.
       </span>
     </div>
 
-    <!-- CONTENT (NARRATIVE) -->
-    <article class="prose prose-slate max-w-3xl mx-auto font-serif text-lg sm:text-xl leading-relaxed text-[#2A2E33] space-y-6">
-      <p class="first-letter:text-5xl first-letter:font-bold first-letter:text-[#121212] first-letter:float-left first-letter:mr-3 first-letter:mt-1">
+    <!-- CONTENT (NARRATIVE - VAULT TYPOGRAPHY) -->
+    <article class="max-w-3xl mx-auto font-sans text-base sm:text-lg leading-relaxed text-[#2A2E33] space-y-6">
+      <p class="first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:text-[#121212] first-letter:float-left first-letter:mr-3 first-letter:mt-1">
         As Southern European economies realign their foreign investment incentives, high-net-worth individuals are moving quickly to adapt to shifting legislative frameworks.
       </p>
 
@@ -56,7 +46,7 @@ import BriefingForm from '../../components/BriefingForm.astro';
         The window for legacy residency pathways and simplified tax regimes is closing. What remains requires a far more strategic approach to asset allocation, legal structuring, and lifestyle migration.
       </p>
 
-      <h2 class="font-sans font-bold text-lg sm:text-xl uppercase tracking-wider mt-8 mb-2 text-[#121212]">
+      <h2 class="font-serif font-bold text-2xl sm:text-3xl text-[#121212] mt-8 mb-2">
         Key Strategic Takeaways
       </h2>
 
@@ -65,15 +55,26 @@ import BriefingForm from '../../components/BriefingForm.astro';
       </p>
     </article>
 
-    <!-- LEAD CAPTURE FORM / FINAL CTA -->
-    <div class="mt-14 max-w-2xl mx-auto">
-      <BriefingForm 
-        source="advertorial_capital_shift" 
-        title="ACCESS THE COMPLETE BRIEFING"
-        subtitle="Direct delivery to your inbox. High signal market intelligence."
-        buttonText="SUBSCRIBE & ACCESS REPORT"
-        showCheckboxes={false}
-      />
+    <!-- HIGH-CONVERTING CTA BLOCK (BRAND STYLED) -->
+    <div class="mt-14 max-w-2xl mx-auto bg-[#F9F9F6] border border-[#C5A059] p-8 sm:p-10 text-center shadow-lg rounded-sm">
+      <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#121212] mb-3">
+        Ready to Secure Your European Residency?
+      </h3>
+      
+      <p class="text-sm sm:text-base text-[#666666] font-sans mb-6 max-w-lg mx-auto">
+        Speak with our intelligence team to discover if you qualify for the remaining 2026 fast-track pathways.
+      </p>
+
+      <a 
+        href="/join" 
+        class="inline-block w-full sm:w-auto bg-[#C5A059] hover:bg-[#B28E46] text-white text-xs sm:text-sm font-bold uppercase tracking-[0.2em] px-10 py-4 transition-all shadow-md hover:shadow-xl cursor-pointer"
+      >
+        Continue
+      </a>
+
+      <p class="text-xs text-[#666666] italic mt-4 font-sans">
+        (No obligations. 100% Secure.)
+      </p>
     </div>
 
   </main>
