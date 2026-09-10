@@ -230,8 +230,8 @@ const {
             if (modal) modal.classList.remove('hidden');
             form.reset();
           } else {
-            const errData = await response.json();
-            alert(`Unable to subscribe: ${errData.error || 'Server error'}`);
+            const errData = await response.json(); 
+           alert(`Unable to subscribe: ${errData.details || errData.error || 'Server error'}`);
           }
         } catch (err) {
           console.error("Subscription error:", err);

@@ -1,9 +1,8 @@
 export const prerender = false;
 
-import { env as cfEnv } from "cloudflare:workers";
-
-export async function POST({ request }) {
+export async function POST(context) {
   try {
+    const { request, locals } = context;
     const data = await request.json();
     const {
       email,
@@ -26,10 +25,21 @@ export async function POST({ request }) {
       });
     }
 
-    // Extracción de secretos desde el módulo oficial de Cloudflare Workers
-    const apiKey = cfEnv?.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY;
-    const listGeneral = cfEnv?.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL;
-    const listReport = cfEnv?.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT;
+    // Resolución nativa de variables para @astrojs/cloudflare
+    const cfEnv = locals?.cloudflare?.env || {};
+    const apiKey = cfEnv.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY;
+    const listGeneral = cfEnv.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL;
+    const listReport = cfEnv.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT;
+
+    if (!apiKey) {
+      return new Response(JSON.stringify({ 
+        error: "Configuration Error", 
+        details: "KLAVIYO_PRIVATE_API_KEY non-existent in Cloudflare env" 
+      }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
 
     const listId = source_page?.includes("report") ? listReport : listGeneral;
     const timestampNow = new Date().toISOString();
@@ -88,7 +98,10 @@ export async function POST({ request }) {
 
     if (!klaviyoResponse.ok) {
       const errorData = await klaviyoResponse.text();
-      return new Response(JSON.stringify({ error: "Klaviyo sync failed", details: errorData }), {
+      return new Response(JSON.stringify({ 
+        error: "Klaviyo sync failed", 
+        details: errorData 
+      }), {
         status: klaviyoResponse.status,
         headers: { "Content-Type": "application/json" }
       });
@@ -100,7 +113,7 @@ export async function POST({ request }) {
     });
 
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
+    return new Response(JSON.stringify({ error: err.message, details: err.stack }), {
       status: 500,
       headers: { "Content-Type": "application/json" }
     });
