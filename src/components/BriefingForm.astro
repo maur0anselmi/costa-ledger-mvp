@@ -205,6 +205,7 @@ const {
           const fullNameVal = document.getElementById('fullName')?.value || '';
           const emailVal = document.getElementById('email')?.value || '';
           const sourceVal = form.querySelector('input[name="source"]')?.value || 'general';
+          const isGeneralOptIn = document.getElementById('briefingsOptIn')?.checked || false;
 
           const payload = {
             email: emailVal,
@@ -217,7 +218,8 @@ const {
             primary_interest: interestArray[0] || "general",
             interests: interestArray,
             consent_version: "v1.0-2026-09",
-            subscriber_lifecycle_status: "subscriber"
+            subscriber_lifecycle_status: "subscriber",
+            general_briefing_opt_in: isGeneralOptIn
           };
 
           const response = await fetch('/api/subscribe', {
@@ -231,7 +233,7 @@ const {
             form.reset();
           } else {
             const errData = await response.json(); 
-           alert(`Unable to subscribe: ${errData.details || errData.error || 'Server error'}`);
+            alert(`Unable to subscribe: ${errData.details || errData.error || 'Server error'}`);
           }
         } catch (err) {
           console.error("Subscription error:", err);

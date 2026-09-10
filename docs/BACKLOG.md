@@ -3,9 +3,14 @@
 This document records planned features, optimizations, and technical tasks deferred post-MVP launch.
 
 ## 1. Backend & Email API Integration
-- [ ] **Transactional Email Endpoint:** Replace current simulated submission (`setTimeout`) with an active backend API endpoint (e.g., Cloudflare Workers + Resend, SendGrid, or ConvertKit).
-- [ ] **Double Opt-In Flow:** Implement real-time email dispatch for subscription verification links (`/join`) and automated PDF download delivery (`/report`).
-- [ ] **Form Spam Protection:** Integrate Turnstile or honeypot verification on `BriefingForm.astro` to prevent automated submissions.
+- [x] **Transactional Email Endpoint:** Serverless endpoint implemented at `src/pages/api/subscribe.js` via `@astrojs/cloudflare` adapter.
+- [x] **Telemetry & Lead Capture Pipeline:** Automated UTM, source page, and consent version ingestion into Klaviyo custom profile properties.
+- [ ] **Klaviyo Consent & Hosted Pages Customization:** Align all default Klaviyo transactional touchpoints with Costa Ledger brand styling (`#121212` background accents, serif typography, `#C5A059` gold branding):
+  - [ ] **Email Confirmation:** Custom HTML template for Double Opt-In verification email.
+  - [ ] **Subscription Confirmation Page:** Custom thank-you page displayed after confirming email.
+  - [ ] **Preferences Page:** Custom UI for subscribers to update interest topics.
+  - [ ] **Unsubscribe Page:** Branded opt-out confirmation screen.
+- [ ] **Form Spam Protection:** Integrate Cloudflare Turnstile or honeypot verification on `BriefingForm.astro` to prevent automated bot submissions.
 
 ## 2. Developer Experience & Maintenance
 - [ ] **VS Code Maintenance Agents:** Configure `.cursorrules` or `AGENTS.md` rulesets to automate code audits, accessibility checks, and Tailwind style enforcement.

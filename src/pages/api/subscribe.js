@@ -15,7 +15,8 @@ export async function POST(context) {
       primary_interest,
       interests,
       consent_version,
-      subscriber_lifecycle_status
+      subscriber_lifecycle_status,
+      general_briefing_opt_in
     } = data;
 
     if (!email) {
@@ -39,7 +40,7 @@ export async function POST(context) {
       "content-type": "application/vnd.api+json"
     };
 
-    // 1. Crear o actualizar Perfil (Guarda first_name, UTMs y Custom Properties)
+    // 1. Crear o actualizar Perfil (Guarda first_name, UTMs, Opt-in opcional y Custom Properties)
     const profilePayload = {
       data: {
         type: "profile",
@@ -56,7 +57,8 @@ export async function POST(context) {
             interests: interests || [],
             consent_timestamp: timestampNow,
             consent_version: consent_version || "v1.0-2026",
-            subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber"
+            subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber",
+            general_briefing_opt_in: general_briefing_opt_in || false
           }
         }
       }
