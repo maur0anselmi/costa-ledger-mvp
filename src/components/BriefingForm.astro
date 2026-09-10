@@ -51,7 +51,7 @@ const {
       />
     </div>
 
-    <!-- EMAIL ADDRESS (CAMBIO A "EMAIL ADDRESS") -->
+    <!-- EMAIL ADDRESS -->
     <div>
       <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-1">
         Email Address <span class="text-[#C5A059]">*</span>
@@ -66,12 +66,16 @@ const {
       />
     </div>
 
-    <!-- PRIMARY AREAS OF INTEREST (SELECCIÓN MÚLTIPLE) -->
+    <!-- PRIMARY AREAS OF INTEREST -->
     <div>
-      <label class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-2">
+      <label class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-0.5">
         Primary Areas of Interest <span class="text-[#C5A059]">*</span>
       </label>
-      <div class="space-y-2.5 bg-[#F9F9F6] border border-[#E5E4DF] p-3.5 rounded-sm text-xs text-[#2A2E33]">
+      <p class="text-[10px] text-[#666666] mb-2 italic">
+        Please select at least one option; you may select all that apply.
+      </p>
+      
+      <div id="interestContainer" class="space-y-2.5 bg-[#F9F9F6] border border-[#E5E4DF] p-3.5 rounded-sm text-xs text-[#2A2E33]">
         <label class="flex items-center gap-2.5 cursor-pointer hover:text-[#C5A059] transition-colors">
           <input type="checkbox" name="interest" value="general" class="accent-[#C5A059] rounded border-[#E5E4DF]" checked>
           <span>General Southern Europe Intelligence (All Topics)</span>
@@ -93,10 +97,14 @@ const {
           <span>Business Acquisitions & Commercial Assets</span>
         </label>
       </div>
+      <p id="interestError" class="text-[10px] text-red-600 font-semibold mt-1 hidden">
+        Please select at least one area of interest.
+      </p>
     </div>
 
     {showCheckboxes && (
       <div class="space-y-3 pt-2 text-[11px] text-[#2A2E33]">
+        <!-- PRIVACY POLICY (REQUIRED) -->
         <label class="flex items-start gap-2.5 cursor-pointer">
           <input type="checkbox" required class="mt-0.5 rounded border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059]">
           <span class="leading-tight">
@@ -104,10 +112,11 @@ const {
           </span>
         </label>
 
+        <!-- BRIEFINGS OPT-IN (OPTIONAL) -->
         <label class="flex items-start gap-2.5 cursor-pointer">
-          <input type="checkbox" required class="mt-0.5 rounded border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059]">
-          <span class="leading-tight">
-            I consent to receive the 2026–2027 Special Report and periodic market updates from <strong>Costa Ledger</strong>. <span class="text-[#C5A059]">*</span>
+          <input type="checkbox" class="mt-0.5 rounded border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059]">
+          <span class="leading-tight text-[#666666]">
+            I would also like to receive Costa Ledger briefings and market updates. I can unsubscribe at any time.
           </span>
         </label>
       </div>
@@ -166,10 +175,21 @@ const {
     const modal = document.getElementById('successModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const submitBtn = document.getElementById('submitBtn');
+    const interestError = document.getElementById('interestError');
 
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
+
+        // VALIDACIÓN: AL MENOS UN ÁREA DE INTERÉS SELECCIONADA
+        const checkedInterests = form.querySelectorAll('input[name="interest"]:checked');
+        if (checkedInterests.length === 0) {
+          if (interestError) interestError.classList.remove('hidden');
+          return;
+        } else {
+          if (interestError) interestError.classList.add('hidden');
+        }
+
         if (submitBtn) {
           const loadingText = submitBtn.getAttribute('data-loading-text') || 'PROCESSING...';
           submitBtn.innerHTML = `<span>${loadingText}</span>`;
