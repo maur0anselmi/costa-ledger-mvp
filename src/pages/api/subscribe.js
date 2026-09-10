@@ -25,7 +25,6 @@ export async function POST(context) {
       });
     }
 
-    // Resolución de variables con fallback explícito
     const cfEnv = locals?.cloudflare?.env || {};
     const apiKey = cfEnv.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY || "pk_V9tnGA_84600ba0fc04a3a017b9c57b610d5e5c7e";
     const listGeneral = cfEnv.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL || "RkLAuk";
@@ -34,7 +33,56 @@ export async function POST(context) {
     const listId = source_page?.includes("report") ? listReport : listGeneral;
     const timestampNow = new Date().toISOString();
 
-    const payload = {
+    const headers = {
+      "Authorization": `Klaviyo-API-Key ${apiKey}`,
+      "revision": "2024-07-15",
+      "content-type": "application/vnd.api+json"
+    };
+
+    // 1. Crear o actualizar Perfil (Guarda first_name, UTMs y Custom Properties)
+    const profilePayload = {
+      data: {
+        type: "profile",
+        attributes: {
+          email: email,
+          first_name: name || "",
+          properties: {
+            source_page: source_page || "",
+            form_used: form_used || "",
+            utm_source: utm_source || "direct",
+            utm_medium: utm_medium || "none",
+            utm_campaign: utm_campaign || "none",
+            primary_interest: primary_interest || "General",
+            interests: interests || [],
+            consent_timestamp: timestampNow,
+            consent_version: consent_version || "v1.0-2026",
+            subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber"
+          }
+        }
+      }
+    };
+
+    const profileRes = await fetch("https://a.klaviyo.com/api/profiles/", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(profilePayload)
+    });
+
+    // Si el perfil ya existía (HTTP 409 Conflict), actualizamos sus propiedades vía PATCH
+    if (!profileRes.ok && profileRes.status === 409) {
+      const conflictData = await profileRes.json();
+      const existingId = conflictData?.errors?.[0]?.meta?.duplicate_profile_id;
+      if (existingId) {
+        await fetch(`https://a.klaviyo.com/api/profiles/${existingId}/`, {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify(profilePayload)
+        });
+      }
+    }
+
+    // 2. Disparar suscripción y Double Opt-in
+    const subPayload = {
       data: {
         type: "profile-subscription-bulk-create-job",
         attributes: {
@@ -44,20 +92,7 @@ export async function POST(context) {
               {
                 type: "profile",
                 attributes: {
-                  email,
-                  first_name: name || "",
-                  properties: {
-                    source_page: source_page || "",
-                    form_used: form_used || "",
-                    utm_source: utm_source || "direct",
-                    utm_medium: utm_medium || "none",
-                    utm_campaign: utm_campaign || "none",
-                    primary_interest: primary_interest || "General",
-                    interests: interests || [],
-                    consent_timestamp: timestampNow,
-                    consent_version: consent_version || "v1.0-2026",
-                    subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber"
-                  },
+                  email: email,
                   subscriptions: {
                     email: {
                       marketing: { consent: "SUBSCRIBED" }
@@ -76,23 +111,19 @@ export async function POST(context) {
       }
     };
 
-    const klaviyoResponse = await fetch("https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/", {
+    const subRes = await fetch("https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/", {
       method: "POST",
-      headers: {
-        "Authorization": `Klaviyo-API-Key ${apiKey}`,
-        "revision": "2024-07-15",
-        "content-type": "application/vnd.api+json"
-      },
-      body: JSON.stringify(payload)
+      headers,
+      body: JSON.stringify(subPayload)
     });
 
-    if (!klaviyoResponse.ok) {
-      const errorData = await klaviyoResponse.text();
+    if (!subRes.ok) {
+      const errorData = await subRes.text();
       return new Response(JSON.stringify({ 
-        error: "Klaviyo sync failed", 
+        error: "Klaviyo subscription failed", 
         details: errorData 
       }), {
-        status: klaviyoResponse.status,
+        status: subRes.status,
         headers: { "Content-Type": "application/json" }
       });
     }
