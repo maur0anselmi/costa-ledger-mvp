@@ -40,45 +40,55 @@ export async function POST(context) {
       "content-type": "application/vnd.api+json"
     };
 
-    // 1. Crear o actualizar Perfil (Guarda first_name, UTMs, Opt-in opcional y Custom Properties)
-    const profilePayload = {
+    const profileAttributes = {
+      email: email,
+      first_name: name || "",
+      properties: {
+        source_page: source_page || "",
+        form_used: form_used || "",
+        utm_source: utm_source || "direct",
+        utm_medium: utm_medium || "none",
+        utm_campaign: utm_campaign || "none",
+        primary_interest: primary_interest || "General",
+        interests: interests || [],
+        consent_timestamp: timestampNow,
+        consent_version: consent_version || "v1.0-2026",
+        subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber",
+        general_briefing_opt_in: general_briefing_opt_in || false
+      }
+    };
+
+    // 1. Intentar crear el perfil
+    const createPayload = {
       data: {
         type: "profile",
-        attributes: {
-          email: email,
-          first_name: name || "",
-          properties: {
-            source_page: source_page || "",
-            form_used: form_used || "",
-            utm_source: utm_source || "direct",
-            utm_medium: utm_medium || "none",
-            utm_campaign: utm_campaign || "none",
-            primary_interest: primary_interest || "General",
-            interests: interests || [],
-            consent_timestamp: timestampNow,
-            consent_version: consent_version || "v1.0-2026",
-            subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber",
-            general_briefing_opt_in: general_briefing_opt_in || false
-          }
-        }
+        attributes: profileAttributes
       }
     };
 
     const profileRes = await fetch("https://a.klaviyo.com/api/profiles/", {
       method: "POST",
       headers,
-      body: JSON.stringify(profilePayload)
+      body: JSON.stringify(createPayload)
     });
 
-    // Si el perfil ya existía (HTTP 409 Conflict), actualizamos sus propiedades vía PATCH
+    // Si ya existe (409 Conflict), actualizamos pasando el ID requerido en data
     if (!profileRes.ok && profileRes.status === 409) {
       const conflictData = await profileRes.json();
       const existingId = conflictData?.errors?.[0]?.meta?.duplicate_profile_id;
       if (existingId) {
+        const patchPayload = {
+          data: {
+            type: "profile",
+            id: existingId,
+            attributes: profileAttributes
+          }
+        };
+
         await fetch(`https://a.klaviyo.com/api/profiles/${existingId}/`, {
           method: "PATCH",
           headers,
-          body: JSON.stringify(profilePayload)
+          body: JSON.stringify(patchPayload)
         });
       }
     }
