@@ -7,7 +7,7 @@ const { title } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-x-hidden w-full">
   <head>
     <meta name="robots" content="noindex, nofollow" />
     <meta charset="UTF-8" />
@@ -45,7 +45,7 @@ const { title } = Astro.props;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brandGold selection:text-white">
+  <body class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-brandGold selection:text-white overflow-x-hidden w-full">
     
     <!-- TOP ANNOUNCEMENT BAR -->
     <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2.5 px-4 text-center border-b border-brandGold/30 truncate">
@@ -56,7 +56,7 @@ const { title } = Astro.props;
     <header class="border-b border-brandBorder bg-offwhite sticky top-0 z-40 w-full overflow-hidden">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 h-16 sm:h-20 md:h-24 flex items-center justify-between gap-2 sm:gap-4">
         
-        <!-- LOGO (SIN ESTILOS INLINE Y CON LEMA OCULTO EN MOBILE) -->
+        <!-- LOGO -->
         <a href="/" class="flex items-center gap-2.5 sm:gap-3.5 group shrink-0">
           <svg 
             class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-brandGold shrink-0 transition-transform duration-500 group-hover:rotate-45" 
@@ -108,8 +108,8 @@ const { title } = Astro.props;
 
     <slot />
 
-    <!-- SINGLE-LINE EXECUTIVE FOOTER BAR -->
-    <footer class="bg-[#0B1528] text-white py-5 border-t border-slate-800 font-sans">
+    <!-- SINGLE-LINE EXECUTIVE FOOTER BAR (RESPONSIVO Y SIN DESBORDAMIENTO) -->
+    <footer class="bg-[#0B1528] text-white py-5 border-t border-slate-800 font-sans w-full overflow-hidden">
       <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] tracking-wider uppercase font-semibold">
         
         <!-- LEFT: BRAND & SHORT SLOGAN -->
@@ -119,17 +119,17 @@ const { title } = Astro.props;
           <span class="text-slate-400 font-normal">Southern Europe Intelligence</span>
         </div>
 
-        <!-- RIGHT: INLINE LEGAL LINKS & COPYRIGHT -->
-        <div class="flex items-center gap-2.5 text-slate-400 whitespace-nowrap">
-          <a href="/privacy" class="hover:text-[#C5A059] transition-colors">Privacy Policy</a>
+        <!-- RIGHT: INLINE LEGAL LINKS (CON FLEX-WRAP PARA MÓVIL) -->
+        <div class="flex flex-wrap items-center justify-center md:justify-end gap-x-2.5 gap-y-1.5 text-slate-400 text-center">
+          <a href="/privacy" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Privacy Policy</a>
           <span class="text-slate-700">•</span>
-          <a href="/terms" class="hover:text-[#C5A059] transition-colors">Terms of Service</a>
+          <a href="/terms" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Terms of Service</a>
           <span class="text-slate-700">•</span>
-          <a href="/disclosures" class="hover:text-[#C5A059] transition-colors">Disclosures & Disclaimers</a>
+          <a href="/disclosures" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Disclosures & Disclaimers</a>
           <span class="text-slate-700">•</span>
-          <a href="/cookies" class="hover:text-[#C5A059] transition-colors">Cookie Policy</a>
+          <a href="/cookies" class="hover:text-[#C5A059] transition-colors whitespace-nowrap">Cookie Policy</a>
           <span class="text-slate-700">•</span>
-          <span class="text-slate-300 font-normal">© 2026 COSTA LEDGER</span>
+          <span class="text-slate-300 font-normal whitespace-nowrap">© 2026 COSTA LEDGER</span>
         </div>
 
       </div>
