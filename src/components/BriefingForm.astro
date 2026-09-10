@@ -229,8 +229,14 @@ const {
             if (modal) modal.classList.remove('hidden');
             form.reset();
 
+            // EVENTO DE CONVERSIÓN ENRIQUECIDO CON LA RUTA EXACTA
             if (typeof window.plausible === 'function') {
-              window.plausible('LeadCapture', { props: { source: sourceVal } });
+              window.plausible('LeadCapture', { 
+                props: { 
+                  source: sourceVal,
+                  page_path: window.location.pathname 
+                } 
+              });
             }
           } else {
             const errData = await response.json(); 

@@ -3,9 +3,10 @@ interface Props {
   title: string;
   minimalHeader?: boolean;
   headerLabel?: string;
+  isAdvertorial?: boolean;
 }
 
-const { title, minimalHeader = false, headerLabel } = Astro.props;
+const { title, minimalHeader = false, headerLabel, isAdvertorial = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -17,11 +18,11 @@ const { title, minimalHeader = false, headerLabel } = Astro.props;
     <title>{title}</title>
     <link rel="icon" type="image/png" href="/favicon.png?v=2" />
     <!-- Privacy-friendly analytics by Plausible -->
-  <script async src="https://plausible.io/js/pa-W4vggGVLlXBe6G_5MU7Ph.js"></script>
-  <script is:inline>
-    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-    plausible.init()
-  </script>
+    <script async src="https://plausible.io/js/pa-W4vggGVLlXBe6G_5MU7Ph.js"></script>
+    <script is:inline>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init()
+    </script>
 
     <!-- TAILWIND CSS & BRAND CONFIGURATION -->
     <script is:inline src="https://cdn.tailwindcss.com"></script>
@@ -53,7 +54,7 @@ const { title, minimalHeader = false, headerLabel } = Astro.props;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden w-full selection:bg-brandGold selection:text-white">
+  <body data-page-type={isAdvertorial ? "advertorial" : "vault"} class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden w-full selection:bg-brandGold selection:text-white">
     
     {!minimalHeader && (
       <div class="bg-brandNavy text-offwhite text-[9px] sm:text-[10px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase py-2 px-4 text-center border-b border-brandGold/30 truncate">
@@ -224,5 +225,29 @@ const { title, minimalHeader = false, headerLabel } = Astro.props;
         });
       </script>
     )}
+
+    <!-- SCRIPT GLOBAL: DELEGACIÓN DE CLICS EN CTAS (VAULT VS ADVERTORIAL) -->
+    <script is:inline>
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        
+        if (href && (href === '/join' || href === '/report' || href === '/join/' || href === '/report/')) {
+          if (typeof window.plausible === 'function') {
+            const pageType = document.body.dataset.pageType || 'vault';
+            const eventName = pageType === 'advertorial' ? 'CTAClickAdvertorial' : 'CTAClickVault';
+
+            window.plausible(eventName, { 
+              props: { 
+                target_page: href,
+                page_path: window.location.pathname 
+              } 
+            });
+          }
+        }
+      });
+    </script>
   </body>
 </html>
