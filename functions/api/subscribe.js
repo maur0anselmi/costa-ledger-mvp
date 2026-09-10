@@ -1,3 +1,4 @@
+// Klaviyo API endpoint
 export async function onRequestPost(context) {
   try {
     const {
