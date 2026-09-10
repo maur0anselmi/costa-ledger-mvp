@@ -1,6 +1,8 @@
 export const prerender = false;
 
-export async function POST({ request, locals }) {
+import { env as cfEnv } from "cloudflare:workers";
+
+export async function POST({ request }) {
   try {
     const data = await request.json();
     const {
@@ -24,11 +26,10 @@ export async function POST({ request, locals }) {
       });
     }
 
-    // Extracción de secretos desde el entorno de Cloudflare Workers
-    const env = locals?.runtime?.env || {};
-    const apiKey = env.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY;
-    const listGeneral = env.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL;
-    const listReport = env.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT;
+    // Extracción de secretos desde el módulo oficial de Cloudflare Workers
+    const apiKey = cfEnv?.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY;
+    const listGeneral = cfEnv?.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL;
+    const listReport = cfEnv?.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT;
 
     const listId = source_page?.includes("report") ? listReport : listGeneral;
     const timestampNow = new Date().toISOString();
