@@ -283,22 +283,24 @@ const {
     </script>
     <!-- GLOBAL SCRIPT: CTA CLICK EVENT DELEGATION & SOURCE AUTO-APPEND -->
     <script is:inline>
-      // 1. Auto-append source path to CTA links in advertorials
       document.addEventListener('DOMContentLoaded', () => {
         const pageType = document.body.dataset.pageType;
         
         if (pageType === 'advertorial') {
-          // Obtiene la ruta actual (ej: /special/capital-shift) y limpia la barra final si existe
           const currentPath = window.location.pathname.replace(/\/$/, ''); 
           
-          // Busca todos los links que lleven a los formularios
-          const ctaLinks = document.querySelectorAll('a[href^="/special/apply"], a[href^="/join"], a[href^="/report"]');
+          // 1. Buscamos TODOS los enlaces que lleven a páginas de conversión
+          //    (ya sea por ruta o porque tienen el atributo data-track="cta")
+          const ctaLinks = document.querySelectorAll('a[href^="/special/apply"], a[href^="/join"], a[href^="/report"], a[data-track="cta"]');
           
           ctaLinks.forEach(link => {
             try {
-              const url = new URL(link.href);
-              url.searchParams.set('src', currentPath); // Inyecta el parámetro dinámicamente
-              link.href = url.toString();
+              const url = new URL(link.href, window.location.origin); // Añadido origin para evitar errores en links relativos
+              // Solo añadimos el parámetro si no es un link externo
+              if (url.origin === window.location.origin) {
+                url.searchParams.set('src', currentPath); 
+                link.href = url.pathname + url.search; // Mantener como ruta relativa si es posible
+              }
             } catch(e) {
               console.warn("Could not parse CTA link URL");
             }
@@ -311,16 +313,22 @@ const {
         const link = e.target.closest('a');
         if (!link) return;
 
-        const href = link.getAttribute('href');
+        const href = link.getAttribute('href') || '';
         
-        if (href && (href.includes('/join') || href.includes('/report') || href.includes('/special/apply'))) {
+        // Detecta si es un CTA evaluando si la URL contiene palabras clave de conversión O si tiene el atributo de tracking
+        const isCtaLink = href.includes('/join') || 
+                          href.includes('/report') || 
+                          href.includes('/special/apply') || 
+                          link.hasAttribute('data-track', 'cta');
+        
+        if (isCtaLink) {
           if (typeof window.plausible === 'function') {
             const pageType = document.body.dataset.pageType || 'vault';
             const eventName = pageType === 'advertorial' ? 'CTAClickAdvertorial' : 'CTAClickVault';
 
             window.plausible(eventName, { 
               props: { 
-                target_page: href.split('?')[0], // Envia la ruta limpia sin los query params a plausible
+                target_page: href.split('?')[0], 
                 page_path: window.location.pathname 
               } 
             });
