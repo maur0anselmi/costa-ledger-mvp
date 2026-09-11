@@ -1,0 +1,181 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+}
+
+const {
+  title = "REQUEST PREMIUM ADVISORY",
+  subtitle = "Connect with our vetted network of legal and financial partners across Southern Europe.",
+  buttonText = "SUBMIT ADVISORY REQUEST"
+} = Astro.props;
+---
+
+<div class="bg-white p-8 sm:p-10 border border-[#E5E4DF] shadow-xl relative font-sans">
+  
+  <div class="border-b border-[#E5E4DF] pb-5 mb-6 text-center">
+    <span class="text-[10px] font-bold tracking-[0.25em] text-[#C5A059] uppercase block mb-2">
+      COSTA LEDGER PARTNER NETWORK
+    </span>
+    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-[#121212]">{title}</h2>
+    <p class="text-xs sm:text-sm text-[#666666] mt-2 max-w-md mx-auto">{subtitle}</p>
+  </div>
+
+  <form id="consultationForm" class="space-y-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- FULL NAME -->
+      <div>
+        <label for="fullName" class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-1">
+          Full Name <span class="text-[#C5A059]">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="fullName" 
+          required 
+          placeholder="e.g. Alexander Vance" 
+          class="w-full bg-[#F9F9F6] border border-[#E5E4DF] px-4 py-3.5 text-xs text-[#121212] focus:outline-none focus:border-[#C5A059] focus:bg-white transition-colors"
+        />
+      </div>
+
+      <!-- EMAIL ADDRESS -->
+      <div>
+        <label for="email" class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-1">
+          Email Address <span class="text-[#C5A059]">*</span>
+        </label>
+        <input 
+          type="email" 
+          id="email" 
+          required 
+          placeholder="alexander@vancecapital.com" 
+          class="w-full bg-[#F9F9F6] border border-[#E5E4DF] px-4 py-3.5 text-xs text-[#121212] focus:outline-none focus:border-[#C5A059] focus:bg-white transition-colors"
+        />
+      </div>
+    </div>
+
+    <!-- PHONE NUMBER (OPTIONAL) -->
+    <div>
+      <label for="phone" class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-1">
+        Phone Number <span class="text-[#666666] font-normal lowercase">(optional)</span>
+      </label>
+      <input 
+        type="tel" 
+        id="phone" 
+        placeholder="+1 (555) 000-0000" 
+        class="w-full bg-[#F9F9F6] border border-[#E5E4DF] px-4 py-3.5 text-xs text-[#121212] focus:outline-none focus:border-[#C5A059] focus:bg-white transition-colors"
+      />
+    </div>
+
+    <!-- JURISDICTION / SERVICE -->
+    <div>
+      <label for="service" class="block text-[11px] font-bold uppercase tracking-wider text-[#121212] mb-1">
+        Primary Interest <span class="text-[#C5A059]">*</span>
+      </label>
+      <select id="service" required class="w-full bg-[#F9F9F6] border border-[#E5E4DF] px-4 py-3.5 text-xs text-[#121212] focus:outline-none focus:border-[#C5A059] focus:bg-white transition-colors appearance-none rounded-none cursor-pointer">
+        <option value="" disabled selected>Select an area of interest...</option>
+        <option value="golden-visa">Golden Visa & Residency by Investment</option>
+        <option value="real-estate">Real Estate Acquisition</option>
+        <option value="tax-structuring">Cross-Border Tax Structuring</option>
+        <option value="corporate">Corporate & Business Setup</option>
+      </select>
+    </div>
+
+    <!-- REQUIRED EXPLICIT CONSENTS (NO PRE-CHECKED) -->
+    <div class="space-y-3 pt-4 border-t border-[#E5E4DF] mt-6">
+      
+      <label class="flex items-start gap-3 cursor-pointer group">
+        <input type="checkbox" id="consentContact" required class="mt-1 w-4 h-4 rounded-sm border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059] cursor-pointer">
+        <span class="text-[11.5px] text-[#2A2E33] leading-relaxed group-hover:text-[#121212] transition-colors">
+          I would like Costa Ledger to contact me about this request. <span class="text-[#C5A059]">*</span>
+        </span>
+      </label>
+
+      <label class="flex items-start gap-3 cursor-pointer group">
+        <input type="checkbox" id="consentPartner" required class="mt-1 w-4 h-4 rounded-sm border-[#E5E4DF] text-[#C5A059] focus:ring-[#C5A059] accent-[#C5A059] cursor-pointer shrink-0">
+        <span class="text-[11.5px] text-[#2A2E33] leading-relaxed group-hover:text-[#121212] transition-colors">
+          I agree that Costa Ledger may share the information necessary for this request with selected premium partners so they can contact me. I understand Costa Ledger may receive compensation if an engagement or transaction results. <span class="text-[#C5A059]">*</span>
+        </span>
+      </label>
+    </div>
+
+    <!-- SUBMIT BUTTON -->
+    <button 
+      type="submit" 
+      id="submitAdvisoryBtn" 
+      class="w-full bg-[#121212] hover:bg-black text-white text-xs uppercase font-bold tracking-[0.2em] py-4 transition-all shadow-md hover:shadow-xl mt-4 flex items-center justify-center gap-2 cursor-pointer"
+    >
+      <span>{buttonText}</span>
+    </button>
+  </form>
+
+  <p class="text-[9.5px] text-[#666666] leading-relaxed italic text-center mt-5">
+    Your data is transmitted securely. We only partner with regulated legal and financial entities.
+  </p>
+</div>
+
+<!-- SUCCESS MODAL (Consultation) -->
+<div id="advisorySuccessModal" class="fixed inset-0 bg-[#121212]/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+  <div class="bg-[#F9F9F6] max-w-md w-full p-8 border border-[#C5A059] shadow-2xl text-center relative">
+    <div class="w-12 h-12 bg-[#C5A059]/20 rounded-full flex items-center justify-center mx-auto mb-4 text-[#C5A059]">
+      <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    </div>
+    
+    <span class="text-[10px] font-bold tracking-[0.25em] text-[#C5A059] uppercase block mb-1">REQUEST RECEIVED</span>
+    <h3 class="font-serif text-2xl font-bold text-[#121212] mb-3">WE ARE REVIEWING YOUR CASE</h3>
+    
+    <p class="text-xs text-[#2A2E33] leading-relaxed mb-6">
+      Our team will process your request and connect you with the appropriate premium partner within 24-48 hours. Check your inbox for the next steps.
+    </p>
+
+    <button id="closeAdvisoryModalBtn" class="w-full bg-[#121212] hover:bg-black text-white text-xs uppercase font-bold tracking-widest py-3.5 transition-all cursor-pointer">
+      RETURN TO PORTAL
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('consultationForm');
+    const modal = document.getElementById('advisorySuccessModal');
+    const closeBtn = document.getElementById('closeAdvisoryModalBtn');
+    const submitBtn = document.getElementById('submitAdvisoryBtn');
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // El navegador bloquea nativamente el envío si las casillas (required) no están marcadas.
+        submitBtn.innerHTML = `<span>PROCESSING...</span>`;
+        submitBtn.setAttribute('disabled', 'true');
+
+        try {
+          // Aquí en el futuro enviarás los datos a tu CRM (Klaviyo / Make.com / etc)
+          // Para simular el envío exitoso ahora:
+          await new Promise(resolve => setTimeout(resolve, 1200)); 
+
+          modal.classList.remove('hidden');
+          form.reset();
+
+          // Enviar evento de Lead Premium a Plausible
+          if (typeof window.plausible === 'function') {
+            window.plausible('PartnerLeadCapture', { 
+              props: { page_path: window.location.pathname } 
+            });
+          }
+
+        } catch (err) {
+          alert("Error processing request. Please try again.");
+        } finally {
+          submitBtn.innerHTML = `<span>SUBMIT ADVISORY REQUEST</span>`;
+          submitBtn.removeAttribute('disabled');
+        }
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+      });
+    }
+  });
+</script>

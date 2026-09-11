@@ -1,0 +1,43 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ConsultationForm from '../../components/ConsultationForm.astro';
+---
+
+<Layout 
+  title="Apply for Premium Advisory | Costa Ledger" 
+  minimalHeader={true} 
+  headerLabel="SECURE PARTNER PORTAL" 
+  isAdvertorial={true}
+>
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+    
+    <div class="mb-10 text-center">
+      <h1 class="font-serif text-3xl sm:text-5xl font-bold text-[#121212] leading-tight mb-4">
+        Premium Partner Advisory
+      </h1>
+      <p class="text-base sm:text-lg text-[#666666] font-sans leading-relaxed max-w-2xl mx-auto">
+        Bypass the bureaucracy. We connect high-net-worth individuals directly with our heavily vetted network of top-tier legal, tax, and real estate professionals in Southern Europe.
+      </p>
+    </div>
+
+    <!-- Consultation Form Component -->
+    <ConsultationForm />
+
+    <!-- Trust Indicators / FAQ -->
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center border-t border-[#E5E4DF] pt-12">
+      <div>
+        <h4 class="font-bold text-xs uppercase tracking-widest text-[#121212] mb-2">Strictly Vetted</h4>
+        <p class="text-[11px] text-[#666666]">Our partners undergo a rigorous due-diligence process before being recommended to our readers.</p>
+      </div>
+      <div>
+        <h4 class="font-bold text-xs uppercase tracking-widest text-[#121212] mb-2">Priority Access</h4>
+        <p class="text-[11px] text-[#666666]">Skip the waitlist. Our referrals are flagged for immediate senior-partner attention.</p>
+      </div>
+      <div>
+        <h4 class="font-bold text-xs uppercase tracking-widest text-[#121212] mb-2">Total Confidentiality</h4>
+        <p class="text-[11px] text-[#666666]">Your request details are encrypted and only shared with the specific firm tailored to your case.</p>
+      </div>
+    </div>
+
+  </main>
+</Layout>
