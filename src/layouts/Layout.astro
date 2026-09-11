@@ -281,5 +281,54 @@ const {
         }
       });
     </script>
+    <!-- GLOBAL SCRIPT: CTA CLICK EVENT DELEGATION & SOURCE AUTO-APPEND -->
+    <script is:inline>
+      // 1. Auto-append source path to CTA links in advertorials
+      document.addEventListener('DOMContentLoaded', () => {
+        const pageType = document.body.dataset.pageType;
+        
+        if (pageType === 'advertorial') {
+          // Obtiene la ruta actual (ej: /special/capital-shift) y limpia la barra final si existe
+          const currentPath = window.location.pathname.replace(/\/$/, ''); 
+          
+          // Busca todos los links que lleven a los formularios
+          const ctaLinks = document.querySelectorAll('a[href^="/special/apply"], a[href^="/join"], a[href^="/report"]');
+          
+          ctaLinks.forEach(link => {
+            try {
+              const url = new URL(link.href);
+              url.searchParams.set('src', currentPath); // Inyecta el parámetro dinámicamente
+              link.href = url.toString();
+            } catch(e) {
+              console.warn("Could not parse CTA link URL");
+            }
+          });
+        }
+      });
+
+      // 2. Track clicks in Plausible
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        
+        if (href && (href.includes('/join') || href.includes('/report') || href.includes('/special/apply'))) {
+          if (typeof window.plausible === 'function') {
+            const pageType = document.body.dataset.pageType || 'vault';
+            const eventName = pageType === 'advertorial' ? 'CTAClickAdvertorial' : 'CTAClickVault';
+
+            window.plausible(eventName, { 
+              props: { 
+                target_page: href.split('?')[0], // Envia la ruta limpia sin los query params a plausible
+                page_path: window.location.pathname 
+              } 
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
   </body>
 </html>
