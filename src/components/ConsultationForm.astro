@@ -144,27 +144,68 @@ const {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // El navegador bloquea nativamente el envío si las casillas (required) no están marcadas.
+        // Change button state
         submitBtn.innerHTML = `<span>PROCESSING...</span>`;
         submitBtn.setAttribute('disabled', 'true');
 
         try {
-          // Aquí en el futuro enviarás los datos a tu CRM (Klaviyo / Make.com / etc)
-          // Para simular el envío exitoso ahora:
-          await new Promise(resolve => setTimeout(resolve, 1200)); 
+          const urlParams = new URLSearchParams(window.location.search);
+          
+          // Get form values
+          const fullNameVal = document.getElementById('fullName')?.value || '';
+          const emailVal = document.getElementById('email')?.value || '';
+          const phoneVal = document.getElementById('phone')?.value || '';
+          const serviceVal = document.getElementById('service')?.value || '';
+          const consentContact = document.getElementById('consentContact')?.checked || false;
+          const consentPartner = document.getElementById('consentPartner')?.checked || false;
 
-          modal.classList.remove('hidden');
-          form.reset();
+          // Build Klaviyo payload
+          const payload = {
+            email: emailVal,
+            name: fullNameVal,
+            phone_number: phoneVal,
+            source_page: window.location.pathname,
+            form_used: 'ConsultationForm_PartnerAdvisory',
+            utm_source: urlParams.get("utm_source") || "direct",
+            utm_medium: urlParams.get("utm_medium") || "none",
+            utm_campaign: urlParams.get("utm_campaign") || "none",
+            primary_interest: serviceVal,
+            interests: [serviceVal],
+            consent_version: "v1.0-2026-09",
+            // This specific status tells Klaviyo to trigger the Advisory Flow
+            subscriber_lifecycle_status: "lead_partner_advisory", 
+            partner_consent_granted: consentPartner,
+            contact_consent_granted: consentContact
+          };
 
-          // Enviar evento de Lead Premium a Plausible
-          if (typeof window.plausible === 'function') {
-            window.plausible('PartnerLeadCapture', { 
-              props: { page_path: window.location.pathname } 
-            });
+          // Send to your existing Astro API endpoint
+          const response = await fetch('/api/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (response.ok) {
+            modal.classList.remove('hidden');
+            form.reset();
+
+            // Track Premium Lead Event in Plausible
+            if (typeof window.plausible === 'function') {
+              window.plausible('PartnerLeadCapture', { 
+                props: { 
+                  page_path: window.location.pathname,
+                  service_requested: serviceVal 
+                } 
+              });
+            }
+          } else {
+            const errData = await response.json(); 
+            alert(`Unable to submit request: ${errData.details || errData.error || 'Server error'}`);
           }
 
         } catch (err) {
-          alert("Error processing request. Please try again.");
+          console.error("Submission error:", err);
+          alert("Network connection issue. Please try again.");
         } finally {
           submitBtn.innerHTML = `<span>SUBMIT ADVISORY REQUEST</span>`;
           submitBtn.removeAttribute('disabled');
