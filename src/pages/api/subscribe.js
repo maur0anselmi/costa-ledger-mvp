@@ -7,8 +7,10 @@ export async function POST(context) {
     const {
       email,
       name,
+      phone_number,
       source_page,
       form_used,
+      list_type,
       utm_source,
       utm_medium,
       utm_campaign,
@@ -16,7 +18,9 @@ export async function POST(context) {
       interests,
       consent_version,
       subscriber_lifecycle_status,
-      general_briefing_opt_in
+      general_briefing_opt_in,
+      partner_consent_granted,
+      contact_consent_granted
     } = data;
 
     if (!email) {
@@ -30,8 +34,16 @@ export async function POST(context) {
     const apiKey = cfEnv.KLAVIYO_PRIVATE_API_KEY || process.env.KLAVIYO_PRIVATE_API_KEY || "pk_V9tnGA_84600ba0fc04a3a017b9c57b610d5e5c7e";
     const listGeneral = cfEnv.KLAVIYO_LIST_GENERAL || process.env.KLAVIYO_LIST_GENERAL || "RkLAuk";
     const listReport = cfEnv.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT || "VFDECK";
+    const listAdvisory = cfEnv.KLAVIYO_LIST_ADVISORY || process.env.KLAVIYO_LIST_ADVISORY || "T6saqJ";
 
-    const listId = source_page?.includes("report") ? listReport : listGeneral;
+    // Selector dinámico de lista (General vs Report vs Advisory)
+    let listId = listGeneral;
+    if (list_type === "advisory" || source_page?.includes("apply") || form_used?.includes("ConsultationForm")) {
+      listId = listAdvisory;
+    } else if (list_type === "report" || source_page?.includes("report")) {
+      listId = listReport;
+    }
+
     const timestampNow = new Date().toISOString();
 
     const headers = {
@@ -43,6 +55,7 @@ export async function POST(context) {
     const profileAttributes = {
       email: email,
       first_name: name || "",
+      ...(phone_number ? { phone_number: phone_number } : {}),
       properties: {
         source_page: source_page || "",
         form_used: form_used || "",
@@ -54,7 +67,9 @@ export async function POST(context) {
         consent_timestamp: timestampNow,
         consent_version: consent_version || "v1.0-2026",
         subscriber_lifecycle_status: subscriber_lifecycle_status || "subscriber",
-        general_briefing_opt_in: general_briefing_opt_in || false
+        general_briefing_opt_in: general_briefing_opt_in || false,
+        ...(partner_consent_granted !== undefined ? { partner_consent_granted } : {}),
+        ...(contact_consent_granted !== undefined ? { contact_consent_granted } : {})
       }
     };
 
@@ -93,7 +108,7 @@ export async function POST(context) {
       }
     }
 
-    // 2. Disparar suscripción y Double Opt-in
+    // 2. Disparar suscripción a la lista seleccionada
     const subPayload = {
       data: {
         type: "profile-subscription-bulk-create-job",
@@ -140,7 +155,7 @@ export async function POST(context) {
       });
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ success: true, list_used: listId }), {
       status: 200,
       headers: { "Content-Type": "application/json" }
     });

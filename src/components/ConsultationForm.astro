@@ -160,23 +160,21 @@ const {
           const consentPartner = document.getElementById('consentPartner')?.checked || false;
 
           // Build Klaviyo payload
-          const payload = {
-            email: emailVal,
-            name: fullNameVal,
-            phone_number: phoneVal,
-            source_page: window.location.pathname,
-            form_used: 'ConsultationForm_PartnerAdvisory',
-            utm_source: urlParams.get("utm_source") || "direct",
-            utm_medium: urlParams.get("utm_medium") || "none",
-            utm_campaign: urlParams.get("utm_campaign") || "none",
-            primary_interest: serviceVal,
-            interests: [serviceVal],
-            consent_version: "v1.0-2026-09",
-            // This specific status tells Klaviyo to trigger the Advisory Flow
-            subscriber_lifecycle_status: "lead_partner_advisory", 
-            partner_consent_granted: consentPartner,
-            contact_consent_granted: consentContact
-          };
+const payload = {
+  email: emailVal,
+  name: fullNameVal,
+  phone_number: phoneVal,
+  source_page: window.location.pathname,
+  form_used: 'ConsultationForm_PartnerAdvisory',
+  primary_interest: serviceVal,
+  list_type: 'advisory', // Enruta los datos a la nueva lista (T6saqJ)
+  subscriber_lifecycle_status: "lead_partner_advisory",
+  partner_consent_granted: consentPartner,
+  contact_consent_granted: consentContact,
+  utm_source: urlParams.get("utm_source") || "direct",
+  utm_medium: urlParams.get("utm_medium") || "none",
+  utm_campaign: urlParams.get("utm_campaign") || "none"
+};
 
           // Send to your existing Astro API endpoint
           const response = await fetch('/api/subscribe', {
