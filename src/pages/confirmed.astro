@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Access Granted | Costa Ledger" 
+  minimalHeader={true} 
+  headerLabel="SECURE VERIFICATION"
+  disableLogoLink={true}
+>
+  <main class="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-12 py-20 min-h-[75vh]">
+    <div class="max-w-2xl mx-auto text-center flex flex-col items-center">
+      
+      <!-- Icon (Success / Shield) -->
+      <div class="flex justify-center mb-8">
+        <svg class="w-16 h-16 sm:w-20 sm:h-20 text-brandGold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+        </svg>
+      </div>
+
+      <!-- Title (Rule 4: font-serif) -->
+      <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-[0.05em] text-brandDark uppercase leading-none mb-4">
+        Access Granted
+      </h1>
+      
+      <!-- Subtitle -->
+      <p class="font-sans text-[10px] sm:text-xs font-bold tracking-[0.2em] text-brandGold uppercase mb-10">
+        Your subscription is confirmed
+      </p>
+
+      <!-- Body Text (Rule 4: font-sans) -->
+      <div class="space-y-5 mb-12">
+        <p class="font-sans text-brandSlate text-base sm:text-lg leading-relaxed max-w-lg mx-auto font-medium">
+          Your email address has been securely verified.
+        </p>
+        <p class="font-sans text-[#666666] text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+          You will now receive our independent briefings on Southern Europe property, capital, and tax frameworks directly in your inbox. You can safely close this window or return to the platform to explore our latest analysis.
+        </p>
+      </div>
+
+      <!-- CTA Button -->
+      <a 
+        href="/" 
+        class="inline-flex items-center gap-3 bg-brandGold hover:bg-[#B28E46] text-white text-xs sm:text-sm font-bold tracking-[0.15em] uppercase px-8 py-4 transition-all shadow-sm group"
+      >
+        <span>Return to the Intelligence Vault</span>
+        <svg class="w-4 h-4 transform transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+        </svg>
+      </a>
+
+    </div>
+  </main>
+</Layout>
