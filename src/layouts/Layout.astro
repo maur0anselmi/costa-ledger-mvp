@@ -24,6 +24,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <link rel="icon" type="image/png" href="/favicon.png?v=2" />
+    
     <!-- Privacy-friendly analytics by Plausible -->
     <script async src="https://plausible.io/js/pa-W4vggGVLlXBe6G_5MU7Ph.js"></script>
     <script is:inline>
@@ -60,6 +61,11 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Klaviyo Active on Site Tracking -->
+    <script type="text/javascript" async 
+      src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=V9tnGA">
+    </script>
   </head>
   <body data-page-type={isAdvertorial ? "advertorial" : "vault"} class="bg-offwhite text-brandDark font-sans antialiased min-h-screen flex flex-col justify-between overflow-x-hidden w-full selection:bg-brandGold selection:text-white">
     
@@ -258,29 +264,6 @@ const {
       </script>
     )}
 
-    <!-- GLOBAL SCRIPT: CTA CLICK EVENT DELEGATION (VAULT VS ADVERTORIAL) -->
-    <script is:inline>
-      document.addEventListener('click', (e) => {
-        const link = e.target.closest('a');
-        if (!link) return;
-
-        const href = link.getAttribute('href');
-        
-        if (href && (href === '/join' || href === '/report' || href === '/join/' || href === '/report/')) {
-          if (typeof window.plausible === 'function') {
-            const pageType = document.body.dataset.pageType || 'vault';
-            const eventName = pageType === 'advertorial' ? 'CTAClickAdvertorial' : 'CTAClickVault';
-
-            window.plausible(eventName, { 
-              props: { 
-                target_page: href,
-                page_path: window.location.pathname 
-              } 
-            });
-          }
-        }
-      });
-    </script>
     <!-- GLOBAL SCRIPT: CTA CLICK EVENT DELEGATION & SOURCE AUTO-APPEND -->
     <script is:inline>
       document.addEventListener('DOMContentLoaded', () => {
@@ -336,7 +319,5 @@ const {
         }
       });
     </script>
-  </body>
-</html>
   </body>
 </html>
