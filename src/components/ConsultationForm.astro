@@ -22,7 +22,8 @@ const {
     <p class="text-xs sm:text-sm text-[#666666] mt-2 max-w-md mx-auto">{subtitle}</p>
   </div>
 
-  <form id="consultationForm" class="space-y-4">
+  <!-- CAMBIADO: Ahora es un div en lugar de un form para evitar que Klaviyo lo secuestre -->
+  <div id="consultationFormWrapper" class="space-y-4">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <!-- FULL NAME -->
       <div>
@@ -100,13 +101,13 @@ const {
 
     <!-- SUBMIT BUTTON -->
     <button 
-      type="submit" 
+      type="button" 
       id="submitAdvisoryBtn" 
       class="w-full bg-[#121212] hover:bg-black text-white text-xs uppercase font-bold tracking-[0.2em] py-4 transition-all shadow-md hover:shadow-xl mt-4 flex items-center justify-center gap-2 cursor-pointer"
     >
       <span>{buttonText}</span>
     </button>
-  </form>
+  </div>
 
   <p class="text-[9.5px] text-[#666666] leading-relaxed italic text-center mt-5">
     Your data is transmitted securely. We only partner with regulated legal and financial entities.
@@ -135,15 +136,28 @@ const {
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('consultationForm');
     const modal = document.getElementById('advisorySuccessModal');
     const closeBtn = document.getElementById('closeAdvisoryModalBtn');
     const submitBtn = document.getElementById('submitAdvisoryBtn');
 
-    if (form) {
-      form.addEventListener('submit', async (e) => {
+    if (submitBtn) {
+      submitBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         
+        // Get form values
+        const fullNameVal = document.getElementById('fullName')?.value || '';
+        const emailVal = document.getElementById('email')?.value || '';
+        const phoneVal = document.getElementById('phone')?.value || '';
+        const serviceVal = document.getElementById('service')?.value || '';
+        const consentContact = document.getElementById('consentContact')?.checked || false;
+        const consentPartner = document.getElementById('consentPartner')?.checked || false;
+
+        // Manual Validation (Since we removed the <form> tag)
+        if (!fullNameVal || !emailVal || !serviceVal || !consentContact || !consentPartner) {
+          alert("Please fill in all required fields and accept the consent agreements to proceed.");
+          return;
+        }
+
         // Change button state
         submitBtn.innerHTML = `<span>PROCESSING...</span>`;
         submitBtn.setAttribute('disabled', 'true');
@@ -151,30 +165,22 @@ const {
         try {
           const urlParams = new URLSearchParams(window.location.search);
           
-          // Get form values
-          const fullNameVal = document.getElementById('fullName')?.value || '';
-          const emailVal = document.getElementById('email')?.value || '';
-          const phoneVal = document.getElementById('phone')?.value || '';
-          const serviceVal = document.getElementById('service')?.value || '';
-          const consentContact = document.getElementById('consentContact')?.checked || false;
-          const consentPartner = document.getElementById('consentPartner')?.checked || false;
-
           // Build Klaviyo payload
-const payload = {
-  email: emailVal,
-  name: fullNameVal,
-  phone_number: phoneVal,
-  source_page: window.location.pathname,
-  form_used: 'ConsultationForm_PartnerAdvisory',
-  primary_interest: serviceVal,
-  list_type: 'advisory', // Enruta los datos a la nueva lista (T6saqJ)
-  subscriber_lifecycle_status: "lead_partner_advisory",
-  partner_consent_granted: consentPartner,
-  contact_consent_granted: consentContact,
-  utm_source: urlParams.get("utm_source") || "direct",
-  utm_medium: urlParams.get("utm_medium") || "none",
-  utm_campaign: urlParams.get("utm_campaign") || "none"
-};
+          const payload = {
+            email: emailVal,
+            name: fullNameVal,
+            phone_number: phoneVal,
+            source_page: window.location.pathname,
+            form_used: 'ConsultationForm_PartnerAdvisory',
+            primary_interest: serviceVal,
+            list_type: 'advisory',
+            subscriber_lifecycle_status: "lead_partner_advisory",
+            partner_consent_granted: consentPartner,
+            contact_consent_granted: consentContact,
+            utm_source: urlParams.get("utm_source") || "direct",
+            utm_medium: urlParams.get("utm_medium") || "none",
+            utm_campaign: urlParams.get("utm_campaign") || "none"
+          };
 
           // Send to your existing Astro API endpoint
           const response = await fetch('/api/subscribe', {
@@ -185,7 +191,14 @@ const payload = {
 
           if (response.ok) {
             modal.classList.remove('hidden');
-            form.reset();
+            
+            // Clear inputs manually
+            document.getElementById('fullName').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('service').value = '';
+            document.getElementById('consentContact').checked = false;
+            document.getElementById('consentPartner').checked = false;
 
             // Track Premium Lead Event in Plausible
             if (typeof window.plausible === 'function') {
