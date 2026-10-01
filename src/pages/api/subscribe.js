@@ -1,6 +1,6 @@
 export const prerender = false;
 
-// Función de ayuda para encriptar en SHA-256 (Requisito estricto de Meta para CAPI)
+// Helper function to hash data in SHA-256 (Strict Meta requirement for CAPI)
 async function hashData(string) {
   if (!string) return undefined;
   const encoder = new TextEncoder();
@@ -82,6 +82,7 @@ export async function POST(context) {
       }
     };
 
+    // 1. Attempt to create profile in Klaviyo
     const createPayload = {
       data: { type: "profile", attributes: profileAttributes }
     };
@@ -90,6 +91,7 @@ export async function POST(context) {
       method: "POST", headers, body: JSON.stringify(createPayload)
     });
 
+    // Update if it already exists (409 Conflict)
     if (!profileRes.ok && profileRes.status === 409) {
       const conflictData = await profileRes.json();
       const existingId = conflictData?.errors?.[0]?.meta?.duplicate_profile_id;
@@ -103,6 +105,7 @@ export async function POST(context) {
       }
     }
 
+    // 2. Trigger list subscription in Klaviyo
     const subPayload = {
       data: {
         type: "profile-subscription-bulk-create-job",
@@ -139,7 +142,12 @@ export async function POST(context) {
       });
     }
 
-    // 3. INTEGRACIÓN META CONVERSIONS API
+    // Capture network data for tracking APIs
+    const clientIp = request.headers.get("CF-Connecting-IP") || request.headers.get("x-forwarded-for") || "";
+    const userAgent = request.headers.get("user-agent") || "";
+    const requestUrl = new URL(request.url);
+
+    // 3. META CONVERSIONS API INTEGRATION
     try {
       const metaPixelId = "1107377358470069";
       const metaToken = cfEnv.META_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN;
@@ -154,10 +162,6 @@ export async function POST(context) {
         eventName = "Lead";
         contentName = "Intelligence Report";
       }
-
-      const clientIp = request.headers.get("CF-Connecting-IP") || request.headers.get("x-forwarded-for") || "";
-      const userAgent = request.headers.get("user-agent") || "";
-      const requestUrl = new URL(request.url);
       
       const hashedEmail = await hashData(email);
       const hashedName = await hashData(name?.split(" ")[0]);
@@ -190,6 +194,37 @@ export async function POST(context) {
 
     } catch (metaErr) {
       console.error("Meta CAPI Error:", metaErr);
+    }
+
+    // 4. PLAUSIBLE EVENTS API INTEGRATION (Server-Side)
+    try {
+      let plausibleEventName = "LeadCapture";
+      let plausibleProps = { source: list_type || "general", page_path: source_page || window.location.pathname };
+
+      if (list_type === "advisory" || source_page?.includes("apply")) {
+        plausibleEventName = "PartnerLeadCapture";
+        plausibleProps = { service_requested: primary_interest || "advisory", page_path: source_page || "" };
+      }
+
+      const plausiblePayload = {
+        name: plausibleEventName,
+        url: requestUrl.origin + (source_page || ""),
+        domain: "costaledger.com",
+        props: plausibleProps
+      };
+
+      await fetch("https://plausible.io/api/event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": userAgent,
+          "X-Forwarded-For": clientIp
+        },
+        body: JSON.stringify(plausiblePayload)
+      });
+      
+    } catch (plausibleErr) {
+      console.error("Plausible API Error:", plausibleErr);
     }
 
     return new Response(JSON.stringify({ success: true, list_used: listId }), {
