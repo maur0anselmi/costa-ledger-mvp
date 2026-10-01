@@ -229,7 +229,7 @@ const {
             if (modal) modal.classList.remove('hidden');
             form.reset();
 
-            // EVENTO DE CONVERSIÓN ENRIQUECIDO CON LA RUTA EXACTA
+            // EVENTO DE CONVERSIÓN ENRIQUECIDO CON LA RUTA EXACTA EN PLAUSIBLE
             if (typeof window.plausible === 'function') {
               window.plausible('LeadCapture', { 
                 props: { 
@@ -238,6 +238,20 @@ const {
                 } 
               });
             }
+
+            // EVENTO DE CONVERSIÓN EN META PIXEL (SEGÚN EL SOURCE/PÁGINA)
+            if (typeof window.fbq === 'function') {
+              if (sourceVal === 'report' || window.location.pathname.includes('/report')) {
+                window.fbq('track', 'Lead', {
+                  content_name: 'Intelligence Report'
+                });
+              } else {
+                window.fbq('track', 'Subscribe', {
+                  content_name: 'Vault Newsletter'
+                });
+              }
+            }
+
           } else {
             const errData = await response.json(); 
             alert(`Unable to subscribe: ${errData.details || errData.error || 'Server error'}`);

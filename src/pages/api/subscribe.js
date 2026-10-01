@@ -1,5 +1,15 @@
 export const prerender = false;
 
+// Función de ayuda para encriptar en SHA-256 (Requisito estricto de Meta para CAPI)
+async function hashData(string) {
+  if (!string) return undefined;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(string.toLowerCase().trim());
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 export async function POST(context) {
   try {
     const { request, locals } = context;
@@ -73,7 +83,7 @@ export async function POST(context) {
       }
     };
 
-    // 1. Intentar crear el perfil
+    // 1. Intentar crear el perfil en Klaviyo
     const createPayload = {
       data: {
         type: "profile",
@@ -108,7 +118,7 @@ export async function POST(context) {
       }
     }
 
-    // 2. Disparar suscripción a la lista seleccionada
+    // 2. Disparar suscripción a la lista seleccionada en Klaviyo
     const subPayload = {
       data: {
         type: "profile-subscription-bulk-create-job",
@@ -153,6 +163,64 @@ export async function POST(context) {
         status: subRes.status,
         headers: { "Content-Type": "application/json" }
       });
+    }
+
+    // 3. INTEGRACIÓN META CONVERSIONS API (Ejecutada solo si Klaviyo fue exitoso)
+    try {
+      const metaPixelId = "1107377358470069";
+      // El Token está hardcodeado como respaldo, pero buscará primero en las variables de entorno de Cloudflare
+      const metaToken = cfEnv.META_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN || "EAANp4CD7nrQBSgSTasHYjLH0AST4mBn7G9dxdKlRKx2MFWfq5Au5ZCRtRU0xFaGq6gIAhEOyWEAOjCAUofzo9nKIYA6kmfvZACFK5vDMbcmER3RiAnjZCSfKL6dhwjqJSLLfzxCcY6cxRjCIEZC2hAh5r6moEZB0Cp8Saqb3hxJUeYZCX2cTu6hzLVV8kIZBmRkZAwZDZD";
+
+      // Mapeo del evento de Meta según la fuente
+      let eventName = "Subscribe";
+      let contentName = "Vault Newsletter";
+
+      if (list_type === "advisory" || source_page?.includes("apply")) {
+        eventName = "Lead";
+        contentName = "Partner Advisory";
+      } else if (list_type === "report" || source_page?.includes("report")) {
+        eventName = "Lead";
+        contentName = "Intelligence Report";
+      }
+
+      // Captura de red y encriptación de datos de usuario
+      const clientIp = request.headers.get("CF-Connecting-IP") || request.headers.get("x-forwarded-for") || "";
+      const userAgent = request.headers.get("user-agent") || "";
+      const requestUrl = new URL(request.url);
+      
+      const hashedEmail = await hashData(email);
+      const hashedName = await hashData(name?.split(" ")[0]); // Meta optimiza mejor recibiendo solo el primer nombre en "fn"
+
+      const metaPayload = {
+        data: [
+          {
+            event_name: eventName,
+            event_time: Math.floor(Date.now() / 1000),
+            action_source: "website",
+            event_source_url: requestUrl.origin + (source_page || ""),
+            user_data: {
+              em: [hashedEmail],
+              ...(hashedName ? { fn: [hashedName] } : {}),
+              client_ip_address: clientIp,
+              client_user_agent: userAgent
+            },
+            custom_data: {
+              content_name: contentName
+            }
+          }
+        ]
+      };
+
+      // Disparar a Meta de forma asíncrona
+      await fetch(`https://graph.facebook.com/v19.0/${metaPixelId}/events?access_token=${metaToken}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(metaPayload)
+      });
+
+    } catch (metaErr) {
+      // Si Meta falla, no bloqueamos la respuesta exitosa al usuario ya que la suscripción a Klaviyo sí se completó
+      console.error("Meta CAPI Error:", metaErr);
     }
 
     return new Response(JSON.stringify({ success: true, list_used: listId }), {
