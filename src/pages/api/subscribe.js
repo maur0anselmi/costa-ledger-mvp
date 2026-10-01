@@ -179,9 +179,7 @@ export async function POST(context) {
               content_name: contentName
             }
           }
-        ],
-        // CÓDIGO DE PRUEBA AÑADIDO AQUÍ:
-        test_event_code: "TEST68699"
+        ]
       };
 
       await fetch(`https://graph.facebook.com/v19.0/${metaPixelId}/events?access_token=${metaToken}`, {
