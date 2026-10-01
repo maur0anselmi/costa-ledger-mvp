@@ -209,6 +209,15 @@ const {
                 } 
               });
             }
+
+            // Track Lead Event in Meta Pixel
+            if (typeof window.fbq === 'function') {
+              window.fbq('track', 'Lead', {
+                content_name: 'Partner Advisory Request',
+                content_category: serviceVal
+              });
+            }
+            
           } else {
             const errData = await response.json(); 
             alert(`Unable to submit request: ${errData.details || errData.error || 'Server error'}`);
