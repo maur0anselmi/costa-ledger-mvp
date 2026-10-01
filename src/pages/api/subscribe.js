@@ -46,7 +46,6 @@ export async function POST(context) {
     const listReport = cfEnv.KLAVIYO_LIST_REPORT || process.env.KLAVIYO_LIST_REPORT || "VFDECK";
     const listAdvisory = cfEnv.KLAVIYO_LIST_ADVISORY || process.env.KLAVIYO_LIST_ADVISORY || "T6saqJ";
 
-    // Selector dinámico de lista (General vs Report vs Advisory)
     let listId = listGeneral;
     if (list_type === "advisory" || source_page?.includes("apply") || form_used?.includes("ConsultationForm")) {
       listId = listAdvisory;
@@ -83,42 +82,27 @@ export async function POST(context) {
       }
     };
 
-    // 1. Intentar crear el perfil en Klaviyo
     const createPayload = {
-      data: {
-        type: "profile",
-        attributes: profileAttributes
-      }
+      data: { type: "profile", attributes: profileAttributes }
     };
 
     const profileRes = await fetch("https://a.klaviyo.com/api/profiles/", {
-      method: "POST",
-      headers,
-      body: JSON.stringify(createPayload)
+      method: "POST", headers, body: JSON.stringify(createPayload)
     });
 
-    // Si ya existe (409 Conflict), actualizamos pasando el ID requerido en data
     if (!profileRes.ok && profileRes.status === 409) {
       const conflictData = await profileRes.json();
       const existingId = conflictData?.errors?.[0]?.meta?.duplicate_profile_id;
       if (existingId) {
         const patchPayload = {
-          data: {
-            type: "profile",
-            id: existingId,
-            attributes: profileAttributes
-          }
+          data: { type: "profile", id: existingId, attributes: profileAttributes }
         };
-
         await fetch(`https://a.klaviyo.com/api/profiles/${existingId}/`, {
-          method: "PATCH",
-          headers,
-          body: JSON.stringify(patchPayload)
+          method: "PATCH", headers, body: JSON.stringify(patchPayload)
         });
       }
     }
 
-    // 2. Disparar suscripción a la lista seleccionada en Klaviyo
     const subPayload = {
       data: {
         type: "profile-subscription-bulk-create-job",
@@ -131,9 +115,7 @@ export async function POST(context) {
                 attributes: {
                   email: email,
                   subscriptions: {
-                    email: {
-                      marketing: { consent: "SUBSCRIBED" }
-                    }
+                    email: { marketing: { consent: "SUBSCRIBED" } }
                   }
                 }
               }
@@ -141,37 +123,27 @@ export async function POST(context) {
           }
         },
         relationships: {
-          list: {
-            data: { type: "list", id: listId }
-          }
+          list: { data: { type: "list", id: listId } }
         }
       }
     };
 
     const subRes = await fetch("https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/", {
-      method: "POST",
-      headers,
-      body: JSON.stringify(subPayload)
+      method: "POST", headers, body: JSON.stringify(subPayload)
     });
 
     if (!subRes.ok) {
       const errorData = await subRes.text();
-      return new Response(JSON.stringify({ 
-        error: "Klaviyo subscription failed", 
-        details: errorData 
-      }), {
-        status: subRes.status,
-        headers: { "Content-Type": "application/json" }
+      return new Response(JSON.stringify({ error: "Klaviyo subscription failed", details: errorData }), {
+        status: subRes.status, headers: { "Content-Type": "application/json" }
       });
     }
 
-    // 3. INTEGRACIÓN META CONVERSIONS API (Ejecutada solo si Klaviyo fue exitoso)
+    // 3. INTEGRACIÓN META CONVERSIONS API
     try {
       const metaPixelId = "1107377358470069";
-      // El Token está hardcodeado como respaldo, pero buscará primero en las variables de entorno de Cloudflare
-      const metaToken = cfEnv.META_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN || "EAANp4CD7nrQBSgSTasHYjLH0AST4mBn7G9dxdKlRKx2MFWfq5Au5ZCRtRU0xFaGq6gIAhEOyWEAOjCAUofzo9nKIYA6kmfvZACFK5vDMbcmER3RiAnjZCSfKL6dhwjqJSLLfzxCcY6cxRjCIEZC2hAh5r6moEZB0Cp8Saqb3hxJUeYZCX2cTu6hzLVV8kIZBmRkZAwZDZD";
+      const metaToken = cfEnv.META_ACCESS_TOKEN || process.env.META_ACCESS_TOKEN;
 
-      // Mapeo del evento de Meta según la fuente
       let eventName = "Subscribe";
       let contentName = "Vault Newsletter";
 
@@ -183,13 +155,12 @@ export async function POST(context) {
         contentName = "Intelligence Report";
       }
 
-      // Captura de red y encriptación de datos de usuario
       const clientIp = request.headers.get("CF-Connecting-IP") || request.headers.get("x-forwarded-for") || "";
       const userAgent = request.headers.get("user-agent") || "";
       const requestUrl = new URL(request.url);
       
       const hashedEmail = await hashData(email);
-      const hashedName = await hashData(name?.split(" ")[0]); // Meta optimiza mejor recibiendo solo el primer nombre en "fn"
+      const hashedName = await hashData(name?.split(" ")[0]);
 
       const metaPayload = {
         data: [
@@ -208,10 +179,11 @@ export async function POST(context) {
               content_name: contentName
             }
           }
-        ]
+        ],
+        // CÓDIGO DE PRUEBA AÑADIDO AQUÍ:
+        test_event_code: "TEST68699"
       };
 
-      // Disparar a Meta de forma asíncrona
       await fetch(`https://graph.facebook.com/v19.0/${metaPixelId}/events?access_token=${metaToken}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -219,19 +191,16 @@ export async function POST(context) {
       });
 
     } catch (metaErr) {
-      // Si Meta falla, no bloqueamos la respuesta exitosa al usuario ya que la suscripción a Klaviyo sí se completó
       console.error("Meta CAPI Error:", metaErr);
     }
 
     return new Response(JSON.stringify({ success: true, list_used: listId }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" }
+      status: 200, headers: { "Content-Type": "application/json" }
     });
 
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message, details: err.stack }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" }
+      status: 500, headers: { "Content-Type": "application/json" }
     });
   }
 }
