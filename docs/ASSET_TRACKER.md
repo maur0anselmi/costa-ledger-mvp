@@ -11,6 +11,7 @@ Use this document to track image filenames, their references in code, and their 
 | `src/content/intelligence/2026-09-portugal-golden-visa-audit.md` | Golden Visa Audit Cover | `portugal-visa-cover.jpg` | 🟡 Pending |
 | `src/content/intelligence/2026-09-portugal-market-outlook.md` | Portugal Market Outlook Cover | `portugal-outlook-cover.jpg` | 🟡 Pending |
 | `src/pages/report.astro` | PDF Executive Briefing Mockup Card | `report-cover-2026.png` | 🟡 Pending |
+| `src/content/intelligence/2026-10-marbella-property-strategy.md` | Marbella Strategy Article Cover | `marbella-view.jpg` | 🟡 Pending |
 
 ---
 
