@@ -106,7 +106,7 @@ const taxonomy = [
             <div class="mt-4 pt-4 border-t border-[#E5E4DF] lg:border-t-0 lg:pt-2 lg:mt-4">
               {taxonomy.map(section => (
                 <div class="mb-6">
-                  <!-- PILLAR BUTTON (CLIKEABLE) -->
+                  <!-- PILLAR BUTTON -->
                   <button 
                     data-pillar={section.pillar}
                     class="pillar-btn font-serif font-bold text-base text-[#121212] hover:text-[#C5A059] transition-colors block text-left mb-2 cursor-pointer w-full"
@@ -166,8 +166,8 @@ const taxonomy = [
           </div>
         </div>
 
-        <!-- UNIFIED DOSSIERS GRID -->
-        <div id="dossiers-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- UNIFIED DOSSIERS GRID (Added items-start to fix stretching) -->
+        <div id="dossiers-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {sortedDossiers.map((dossier, index) => (
             <article 
               class={`dossier-card bg-white transition-all shadow-sm flex flex-col justify-between ${
@@ -180,7 +180,6 @@ const taxonomy = [
               data-pillars={JSON.stringify(dossier.data.pillar)}
             >
               <div>
-                <!-- BLOQUE DE IMAGEN CON CLASE card-image-wrapper Y ONERROR FALLBACK -->
                 {dossier.data.image && (
                   <a 
                     href={`/intelligence/${dossier.id}`} 
@@ -227,6 +226,11 @@ const taxonomy = [
           ))}
         </div>
 
+        <!-- PAGINATION CONTROLS -->
+        <div id="pagination-controls" class="flex flex-wrap justify-center items-center gap-2 mt-12 hidden">
+          <!-- Buttons dynamically injected via JS -->
+        </div>
+
         <!-- PENDING VERIFICATION STATE -->
         <div id="verification-state" class="hidden bg-white border-l-4 border-[#07182D] border-y border-r border-[#E5E4DF] p-8 md:p-12 shadow-sm">
           <div class="flex items-center justify-between mb-4">
@@ -236,24 +240,17 @@ const taxonomy = [
             </span>
             <span class="text-[11px] text-[#666666] font-mono">CODE: CL-AUDIT-2026</span>
           </div>
-
           <h3 class="font-serif text-2xl md:text-3xl font-bold text-[#121212] mb-3">
             Dossier Under Institutional Compliance Review
           </h3>
-
           <p class="text-xs md:text-sm text-[#2A2E33] leading-relaxed mb-6 max-w-2xl">
             Our legal and market intelligence desk is currently validating cross-border tax implications and primary asset source data for <strong id="active-filter-label" class="text-[#07182D] font-bold">this section</strong>. To preserve institutional accuracy for HNWI clients, unverified figures remain restricted from public indexing.
           </p>
-
           <div class="pt-6 border-t border-[#E5E4DF] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="text-[11px] text-[#666666]">
               <span class="font-bold text-[#121212] uppercase">Estimated Release:</span> Pending Desk Sign-off
             </div>
-            
-            <a 
-              href="/join" 
-              class="inline-flex items-center gap-2 bg-[#C5A059] hover:bg-[#B28E46] text-white text-xs uppercase font-bold tracking-widest px-6 py-3 transition-colors font-bold"
-            >
+            <a href="/join" class="inline-flex items-center gap-2 bg-[#C5A059] hover:bg-[#B28E46] text-white text-xs uppercase font-bold tracking-widest px-6 py-3 transition-colors font-bold">
               <span>REQUEST DIRECT DESK BRIEFING</span>
               <span>→</span>
             </a>
@@ -265,7 +262,7 @@ const taxonomy = [
     </div>
   </main>
 
-  <!-- DYNAMIC FILTER & URL SYNC SCRIPT -->
+  <!-- DYNAMIC FILTER, PAGINATION & URL SYNC SCRIPT -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       const indexDetails = document.getElementById('intelligence-index-details');
@@ -273,11 +270,15 @@ const taxonomy = [
         indexDetails.open = true;
       }
 
-      // Leer parámetros iniciales de la URL
+      // Parámetros de URL
       const urlParams = new URLSearchParams(window.location.search);
       let selectedRegion = urlParams.get('region') || 'all';
       let selectedPillar = urlParams.get('pillar') || null;
       let selectedSub = urlParams.get('sub') || null;
+      
+      // Variables de Paginación
+      let currentPage = 1;
+      const itemsPerPage = 9; // 1 Hero + 8 Tarjetas = 9 por página (5 filas en la pág. 1)
 
       const regionBtns = document.querySelectorAll('.region-btn');
       const pillarBtns = document.querySelectorAll('.pillar-btn');
@@ -286,19 +287,55 @@ const taxonomy = [
       const verificationState = document.getElementById('verification-state');
       const activeFilterLabel = document.getElementById('active-filter-label');
       const resetBtn = document.getElementById('reset-filters');
+      const paginationControls = document.getElementById('pagination-controls');
 
       function updateURL() {
         const params = new URLSearchParams();
         if (selectedRegion && selectedRegion !== 'all') params.set('region', selectedRegion);
         if (selectedPillar) params.set('pillar', selectedPillar);
         if (selectedSub) params.set('sub', selectedSub);
-
+        
         const newQuery = params.toString() ? '?' + params.toString() : window.location.pathname;
         history.pushState(null, '', newQuery);
       }
 
+      function renderPagination(totalItems) {
+        paginationControls.innerHTML = '';
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        if (totalPages <= 1) {
+          paginationControls.classList.add('hidden');
+          return;
+        }
+
+        paginationControls.classList.remove('hidden');
+
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.textContent = i;
+          
+          if (i === currentPage) {
+            btn.className = "px-4 py-2 text-xs font-bold bg-[#C5A059] text-[#07182D] border border-[#C5A059]";
+          } else {
+            btn.className = "px-4 py-2 text-xs font-bold bg-white text-[#666666] border border-[#E5E4DF] hover:border-[#C5A059] hover:text-[#07182D] transition-colors";
+          }
+          
+          btn.addEventListener('click', () => {
+            currentPage = i;
+            applyFilters();
+            // Scroll suave hacia arriba cuando cambian de página
+            window.scrollTo({
+              top: document.getElementById('dossiers-container').offsetTop - 50,
+              behavior: 'smooth'
+            });
+          });
+          
+          paginationControls.appendChild(btn);
+        }
+      }
+
       function applyFilters() {
-        // Actualizar estilos de región
+        // Estilos de región
         regionBtns.forEach(btn => {
           const r = btn.getAttribute('data-region');
           if (r.toLowerCase() === selectedRegion.toLowerCase()) {
@@ -310,7 +347,7 @@ const taxonomy = [
           }
         });
 
-        // Actualizar estilos de pilar
+        // Estilos de pilar
         pillarBtns.forEach(btn => {
           const p = btn.getAttribute('data-pillar');
           if (selectedPillar && p.toLowerCase() === selectedPillar.toLowerCase()) {
@@ -322,7 +359,7 @@ const taxonomy = [
           }
         });
 
-        // Actualizar estilos de subcategoría
+        // Estilos de subcategoría
         subBtns.forEach(btn => {
           const s = btn.getAttribute('data-sub');
           if (selectedSub && s.toLowerCase() === selectedSub.toLowerCase()) {
@@ -332,7 +369,7 @@ const taxonomy = [
           }
         });
 
-        // Filtrar tarjetas en el DOM
+        // Filtrar todas las tarjetas en memoria
         let visibleCards = [];
         cards.forEach(card => {
           const cardRegions = JSON.parse(card.getAttribute('data-regions') || '[]');
@@ -344,15 +381,27 @@ const taxonomy = [
           const matchesSub = (!selectedSub || cardSubs.some(s => s.toLowerCase() === selectedSub.toLowerCase()));
 
           if (matchesRegion && matchesPillar && matchesSub) {
-            card.classList.remove('hidden');
             visibleCards.push(card);
-          } else {
-            card.classList.add('hidden');
           }
+          // Ocultamos todas por ahora
+          card.classList.add('hidden');
         });
 
-        // Resetear todas las tarjetas a formato secundario (y mostrar sus imágenes)
-        cards.forEach(card => {
+        // Aplicar la lógica de paginación
+        const totalPages = Math.ceil(visibleCards.length / itemsPerPage);
+        if (currentPage > totalPages && totalPages > 0) {
+          currentPage = totalPages;
+        }
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedCards = visibleCards.slice(startIndex, endIndex);
+
+        // Renderizar las tarjetas de la página actual
+        paginatedCards.forEach((card, index) => {
+          card.classList.remove('hidden');
+          
+          // Formato estándar para todas las tarjetas
           card.classList.remove('md:col-span-2', 'border-2', 'border-[#C5A059]', 'p-8');
           card.classList.add('col-span-1', 'border', 'border-[#E5E4DF]', 'p-6');
           
@@ -373,9 +422,9 @@ const taxonomy = [
           }
         });
 
-        // Promocionar la primera tarjeta visible como Hero (y ocultar su imagen)
-        if (visibleCards.length > 0) {
-          const heroCard = visibleCards[0];
+        // Si estamos en la página 1, la primera tarjeta asume el rol de Hero
+        if (currentPage === 1 && paginatedCards.length > 0) {
+          const heroCard = paginatedCards[0];
           heroCard.classList.remove('col-span-1', 'border-[#E5E4DF]', 'p-6');
           heroCard.classList.add('md:col-span-2', 'border-2', 'border-[#C5A059]', 'p-8');
           
@@ -396,7 +445,7 @@ const taxonomy = [
           }
         }
 
-        // Mostrar estado vacío si no hay resultados
+        // Mostrar estado de verificación si no hay resultados
         if (visibleCards.length === 0) {
           verificationState.classList.remove('hidden');
           const filterLabels = [];
@@ -414,9 +463,13 @@ const taxonomy = [
         } else {
           resetBtn.classList.add('hidden');
         }
+
+        // Actualizar la botonera de paginación
+        renderPagination(visibleCards.length);
       }
 
       function filterContent() {
+        currentPage = 1; // Volver a la pág 1 siempre que se aplique un filtro nuevo
         updateURL();
         applyFilters();
       }
@@ -463,16 +516,16 @@ const taxonomy = [
         filterContent();
       });
 
-      // Escuchar cambios en la navegación del navegador (botón atrás/adelante)
       window.addEventListener('popstate', () => {
         const params = new URLSearchParams(window.location.search);
         selectedRegion = params.get('region') || 'all';
         selectedPillar = params.get('pillar') || null;
         selectedSub = params.get('sub') || null;
+        currentPage = 1; // Volver a pág 1 al navegar por historial
         applyFilters();
       });
 
-      // Ejecución inicial al cargar la página
+      // Ejecución inicial
       applyFilters();
     });
   </script>
