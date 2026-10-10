@@ -11,7 +11,7 @@ subcategory:
   - "Cross-Border Tax"
 badgeType: "DOSSIER"
 keyMetric: "Focus: Cross-Border Friction"
-publishedDate: "2026-10-15"
+publishedDate: "2026-10-03"
 readTime: "4 min read"
 featured: false
 image: "/us-buyers-spain.jpg"

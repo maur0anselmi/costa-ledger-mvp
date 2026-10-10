@@ -50,5 +50,3 @@ The strongest property search, therefore, starts with the buyer's blueprint, not
 
 **Ready to define your strategy?**
 If you are considering Marbella or the wider Costa del Sol, Costa Ledger can help you narrow the decision around how you actually plan to utilize the property and protect your capital. 
-
-[Request a Private Partner Consultation &rarr;](/special/apply) {data-track="cta"}

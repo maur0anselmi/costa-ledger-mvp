@@ -9,7 +9,7 @@ subcategory:
   - "Travel, Mobility & Access"
 badgeType: "MARKET BRIEFING"
 keyMetric: "Focus: Strategic Mobility"
-publishedDate: "2026-10-16"
+publishedDate: "2026-10-08"
 readTime: "3 min read"
 featured: false
 image: "/european-base-spain.jpg"

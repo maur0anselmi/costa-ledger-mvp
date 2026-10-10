@@ -11,7 +11,7 @@ subcategory:
   - "Rentals & Income Property"
 badgeType: "MARKET BRIEFING"
 keyMetric: "Focus: Capital Flexibility"
-publishedDate: "2026-10-17"
+publishedDate: "2026-10-07"
 readTime: "3 min read"
 featured: false
 image: "/marbella-rent-buy.jpg"
