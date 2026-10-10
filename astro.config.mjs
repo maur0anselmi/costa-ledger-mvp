@@ -10,6 +10,8 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-
-  adapter: cloudflare()
+  adapter: cloudflare(),
+  image: {
+    domains: ['images.unsplash.com']
+  }
 });
