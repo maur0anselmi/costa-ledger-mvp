@@ -12,6 +12,11 @@ Use this document to track image filenames, their references in code, and their 
 | `src/content/intelligence/2026-09-portugal-market-outlook.md` | Portugal Market Outlook Cover | `portugal-outlook-cover.jpg` | 🟡 Pending |
 | `src/pages/report.astro` | PDF Executive Briefing Mockup Card | `report-cover-2026.png` | 🟡 Pending |
 | `src/content/intelligence/2026-10-marbella-property-strategy.md` | Marbella Strategy Article Cover | `marbella-view.jpg` | 🟡 Pending |
+| `src/content/intelligence/2026-10-750k-property-utility.md` | 750k Property Utility Cover | `750k-costa-del-sol.jpg` | 🟡 Pending |
+| `src/content/intelligence/2026-10-us-expat-mortgage.md` | US Expat Mortgage Cover | `us-expat-mortgage.jpg` | 🟡 Pending |
+| `src/content/intelligence/2026-10-us-buyers-discoveries.md` | US Buyers Discoveries Cover | `us-buyers-spain.jpg` | 🟡 Pending |
+| `src/content/intelligence/2026-10-european-base-strategy.md` | European Base Strategy Cover | `european-base-spain.jpg` | 🟡 Pending |
+| `src/content/intelligence/2026-10-renting-vs-buying-marbella.md` | Renting vs Buying Cover | `marbella-rent-buy.jpg` | 🟡 Pending |
 
 ---
 
