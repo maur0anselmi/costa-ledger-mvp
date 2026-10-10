@@ -1,5 +1,5 @@
 ---
-title: "Spain’s Tourism Boom Is Becoming More Valuable — And Andalucía Is Outpacing the National Market"
+title: "Spain’s Tourism Boom Is Becoming More Valuable. And Andalucía Is Outpacing the National Market"
 summary: "Southern Spain is capturing international demand and expenditure at a faster rate than the national average, signaling shifts in high-value asset allocation."
 region:
   - "Costa del Sol"
@@ -14,7 +14,7 @@ keyMetric: "Andalucía Expenditure: +23.4%"
 publishedDate: "2026-10-10"
 readTime: "4 min read"
 featured: true
-image: "/andalucia-tourism-data.jpeg"
+image: "/andalucia-tourism-data.jpg"
 imageCaption: "Evaluating regional tourism expenditure and its impact on real estate asset classes. Source: Costa Ledger Desk."
 ---
 

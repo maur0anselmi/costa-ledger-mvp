@@ -180,13 +180,17 @@ const taxonomy = [
               data-pillars={JSON.stringify(dossier.data.pillar)}
             >
               <div>
-                <!-- BLOQUE DE IMAGEN AGREGADO -->
+                <!-- BLOQUE DE IMAGEN CON CLASE card-image-wrapper Y ONERROR FALLBACK -->
                 {dossier.data.image && (
-                  <a href={`/intelligence/${dossier.id}`} class="block mb-5 overflow-hidden bg-[#F4F3EF] border border-[#E5E4DF]">
+                  <a 
+                    href={`/intelligence/${dossier.id}`} 
+                    class={`card-image-wrapper block mb-5 overflow-hidden bg-[#F4F3EF] border border-[#E5E4DF] ${index === 0 ? 'hidden' : ''}`}
+                  >
                     <img 
                       src={dossier.data.image} 
                       alt={dossier.data.title} 
                       class="w-full aspect-[16/9] object-cover transition-transform duration-700 hover:scale-105"
+                      onerror="this.parentElement.style.display='none';"
                     />
                   </a>
                 )}
@@ -347,34 +351,48 @@ const taxonomy = [
           }
         });
 
-        // Resetear todas las tarjetas a formato secundario
+        // Resetear todas las tarjetas a formato secundario (y mostrar sus imágenes)
         cards.forEach(card => {
           card.classList.remove('md:col-span-2', 'border-2', 'border-[#C5A059]', 'p-8');
           card.classList.add('col-span-1', 'border', 'border-[#E5E4DF]', 'p-6');
+          
           const title = card.querySelector('.card-title');
           if (title) {
             title.classList.remove('text-2xl', 'md:text-3xl');
             title.classList.add('text-lg', 'md:text-xl');
           }
+          
           const summary = card.querySelector('.card-summary');
           if (summary) {
             summary.classList.add('line-clamp-3');
           }
+
+          const imageWrapper = card.querySelector('.card-image-wrapper');
+          if (imageWrapper) {
+            imageWrapper.classList.remove('hidden');
+          }
         });
 
-        // Promocionar la primera tarjeta visible como Hero
+        // Promocionar la primera tarjeta visible como Hero (y ocultar su imagen)
         if (visibleCards.length > 0) {
           const heroCard = visibleCards[0];
           heroCard.classList.remove('col-span-1', 'border-[#E5E4DF]', 'p-6');
           heroCard.classList.add('md:col-span-2', 'border-2', 'border-[#C5A059]', 'p-8');
+          
           const title = heroCard.querySelector('.card-title');
           if (title) {
             title.classList.remove('text-lg', 'md:text-xl');
             title.classList.add('text-2xl', 'md:text-3xl');
           }
+          
           const summary = heroCard.querySelector('.card-summary');
           if (summary) {
             summary.classList.remove('line-clamp-3');
+          }
+
+          const imageWrapper = heroCard.querySelector('.card-image-wrapper');
+          if (imageWrapper) {
+            imageWrapper.classList.add('hidden');
           }
         }
 
