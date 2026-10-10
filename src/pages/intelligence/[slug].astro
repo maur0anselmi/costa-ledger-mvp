@@ -40,9 +40,9 @@ const relatedDossiers = allDossiers
 <Layout title={`${dossier.data.title} - Costa Ledger`}>
   <main class="max-w-4xl mx-auto px-6 lg:px-12 pt-8 pb-16 flex-grow w-full">
     
-    <!-- BACK NAVIGATION -->
+    <!-- BACK NAVIGATION (SMART BUTTON) -->
     <div class="mb-8">
-      <a href="/#" class="inline-flex items-center text-[10px] font-bold text-[#666666] hover:text-[#C5A059] uppercase tracking-[0.2em] transition-colors">
+      <a id="back-btn" href="/categories" class="inline-flex items-center text-[10px] font-bold text-[#666666] hover:text-[#C5A059] uppercase tracking-[0.2em] transition-colors">
         <span class="mr-2 text-sm">←</span> BACK TO VAULT
       </a>
     </div>
@@ -123,9 +123,27 @@ const relatedDossiers = allDossiers
       <Content />
     </div>
 
+    <!-- GENERAL VAULT ARTICLE CLOSING CTA -->
+    <div class="my-16 p-8 md:p-10 bg-[#0B1528] rounded-none border border-slate-800 text-center text-white font-sans">
+      <span class="block text-[#C5A059] text-xs font-semibold tracking-widest uppercase mb-3">
+        COSTA LEDGER BRIEFING
+      </span>
+      <h3 class="font-serif text-2xl md:text-3xl text-white font-normal leading-tight mb-4 max-w-2xl mx-auto">
+        Information is Abundant. Trusted Judgement is Scarce.
+      </h3>
+      <p class="text-slate-300 text-sm leading-relaxed max-w-xl mx-auto mb-8 font-light">
+        Unfiltered data, cross-border tax updates, and verified capital insights tailored for international founders, family offices, and investors.
+      </p>
+      <div>
+        <a href="/join" class="inline-block bg-[#C5A059] hover:bg-[#B08C46] text-[#07182D] font-semibold text-xs uppercase tracking-wider px-8 py-3.5 transition-colors duration-200">
+          JOIN THE BRIEFING
+        </a>
+      </div>
+    </div>
+
     <!-- DYNAMIC RELATED ARTICLES SECTION -->
     {relatedDossiers.length > 0 && (
-      <div class="mt-16 pt-12 border-t border-[#E5E4DF]">
+      <div class="pt-12 border-t border-[#E5E4DF]">
         <h3 class="font-serif text-2xl font-bold text-[#121212] mb-6">Continue Reading</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           {relatedDossiers.map(related => (
@@ -155,30 +173,21 @@ const relatedDossiers = allDossiers
       </div>
     )}
 
-    <!-- GENERAL VAULT ARTICLE CLOSING CTA -->
-    <div class="my-12 p-8 md:p-10 bg-[#0B1528] rounded-none border border-slate-800 text-center text-white font-sans">
-      <!-- EYEBROW -->
-      <span class="block text-[#C5A059] text-xs font-semibold tracking-widest uppercase mb-3">
-        COSTA LEDGER BRIEFING
-      </span>
-
-      <!-- HEADLINE -->
-      <h3 class="font-serif text-2xl md:text-3xl text-white font-normal leading-tight mb-4 max-w-2xl mx-auto">
-        Information is Abundant. Trusted Judgement is Scarce.
-      </h3>
-
-      <!-- BODY -->
-      <p class="text-slate-300 text-sm leading-relaxed max-w-xl mx-auto mb-8 font-light">
-        Unfiltered data, cross-border tax updates, and verified capital insights tailored for international founders, family offices, and investors.
-      </p>
-
-      <!-- CTA BUTTON -->
-      <div>
-        <a href="/join" class="inline-block bg-[#C5A059] hover:bg-[#B08C46] text-[#07182D] font-semibold text-xs uppercase tracking-wider px-8 py-3.5 transition-colors duration-200">
-          JOIN THE BRIEFING
-        </a>
-      </div>
-    </div>
-
   </main>
+
+  <!-- SMART BACK BUTTON SCRIPT -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const backBtn = document.getElementById('back-btn');
+      if (backBtn) {
+        backBtn.addEventListener('click', (e) => {
+          // Si el usuario navegó desde la misma web, retrocede preservando parámetros URL
+          if (document.referrer.includes(window.location.host)) {
+            e.preventDefault();
+            window.history.back();
+          }
+        });
+      }
+    });
+  </script>
 </Layout>
