@@ -180,6 +180,17 @@ const taxonomy = [
               data-pillars={JSON.stringify(dossier.data.pillar)}
             >
               <div>
+                <!-- BLOQUE DE IMAGEN AGREGADO -->
+                {dossier.data.image && (
+                  <a href={`/intelligence/${dossier.id}`} class="block mb-5 overflow-hidden bg-[#F4F3EF] border border-[#E5E4DF]">
+                    <img 
+                      src={dossier.data.image} 
+                      alt={dossier.data.title} 
+                      class="w-full aspect-[16/9] object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                  </a>
+                )}
+                
                 <div class="flex items-center justify-between mb-3">
                   <span class="bg-[#C5A059] text-[#07182D] text-[9px] font-bold tracking-widest uppercase px-2.5 py-1">
                     {dossier.data.badgeType}
