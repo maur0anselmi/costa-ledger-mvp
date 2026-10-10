@@ -12,7 +12,7 @@ keyMetric: "Focus: Capital Allocation"
 publishedDate: "2026-10-10"
 readTime: "3 min read"
 featured: false
-image: "/500k-property-spain.jpeg"
+image: "/500k-property-spain.jpg"
 imageCaption: "Evaluating property acquisitions and capital allocation on the Costa del Sol. Source: Costa Ledger Desk."
 ---
 

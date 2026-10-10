@@ -13,7 +13,7 @@ keyMetric: "Focus: Total Cost of Ownership"
 publishedDate: "2026-10-10"
 readTime: "3 min read"
 featured: false
-image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop"
+image: "/750k-costa-del-sol.jpg"
 imageCaption: "Evaluating premium real estate in Marbella requires a primary focus on lifestyle utility and capital efficiency. Source: Costa Ledger Desk."
 ---
 
