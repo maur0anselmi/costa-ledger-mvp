@@ -13,7 +13,7 @@ keyMetric: "Focus: Complete Relocation Strategy"
 publishedDate: "2026-10-10"
 readTime: "3 min read"
 featured: false
-image: "/us-relocation-spain.jpeg"
+image: "/us-relocation-spain.jpg"
 imageCaption: "Aligning property acquisition with cross-border tax, residency, and lifestyle infrastructure. Source: Costa Ledger Desk."
 ---
 
